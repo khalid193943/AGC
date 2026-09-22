@@ -1,0 +1,277 @@
+{
+  "entities": {
+    "News": {
+      "title": "News",
+      "description": "School news and updates",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string" },
+        "date": { "type": "string", "format": "date-time" },
+        "image": { "type": "string" },
+        "category": { "type": "string" },
+        "content": { "type": "string" },
+        "isFeatured": { "type": "boolean" },
+        "authorUid": { "type": "string" }
+      },
+      "required": ["title", "date", "image", "category", "content"]
+    },
+    "Events": {
+      "title": "Events",
+      "description": "School events and calendar items",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string" },
+        "date": { "type": "string", "format": "date-time" },
+        "time": { "type": "string" },
+        "image": { "type": "string" },
+        "location": { "type": "string" },
+        "description": { "type": "string" },
+        "authorUid": { "type": "string" }
+      },
+      "required": ["title", "date", "time", "image", "description"]
+    },
+    "User": {
+      "title": "User",
+      "description": "User profile and roles",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "email": { "type": "string" },
+        "role": { "type": "string", "enum": ["admin", "editor"] }
+      },
+      "required": ["uid", "email", "role"]
+    },
+    "Section": {
+      "title": "Section",
+      "description": "School section (Preschool, Primary, etc.)",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" }
+      },
+      "required": ["name"]
+    },
+    "Class": {
+      "title": "Class",
+      "description": "A class within a section",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "sectionId": { "type": "string" }
+      },
+      "required": ["name", "sectionId"]
+    },
+    "Teacher": {
+      "title": "Teacher",
+      "description": "A teacher at the school",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "email": { "type": "string" },
+        "subjectIds": { "type": "array", "items": { "type": "string" } },
+        "availability": { "type": "object" },
+        "maxWorkload": { "type": "number" }
+      },
+      "required": ["name", "subjectIds"]
+    },
+    "Subject": {
+      "title": "Subject",
+      "description": "A subject taught in a section",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "sectionId": { "type": "string" },
+        "weeklyHours": { "type": "number" },
+        "preferredMorning": { "type": "boolean" },
+        "requiredRoomType": { "type": "string" }
+      },
+      "required": ["name", "sectionId", "weeklyHours"]
+    },
+    "Room": {
+      "title": "Room",
+      "description": "A classroom or specialized room",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "type": { "type": "string" },
+        "capacity": { "type": "number" }
+      },
+      "required": ["name", "type"]
+    },
+    "TimetableEntry": {
+      "title": "TimetableEntry",
+      "description": "A single session in the timetable",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "classId": { "type": "string" },
+        "teacherId": { "type": "string" },
+        "subjectId": { "type": "string" },
+        "roomId": { "type": "string" },
+        "day": { "type": "number" },
+        "slotIndex": { "type": "number" },
+        "status": { "type": "string", "enum": ["draft", "published"] }
+      },
+      "required": ["classId", "teacherId", "subjectId", "day", "slotIndex"]
+    },
+    "SchoolConfig": {
+      "title": "SchoolConfig",
+      "description": "Global school configuration",
+      "type": "object",
+      "properties": {
+        "workingDays": { "type": "array", "items": { "type": "number" } },
+        "timeSlots": { "type": "array" }
+      }
+    },
+    "Moment": {
+      "title": "Moment",
+      "description": "A gallery image or moment",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string" },
+        "url": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["url"]
+    },
+    "Message": {
+      "title": "Message",
+      "description": "A contact message from the website",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "email": { "type": "string" },
+        "phone": { "type": "string" },
+        "subject": { "type": "string" },
+        "message": { "type": "string" },
+        "type": { "type": "string", "enum": ["homepage", "admissions", "contact"] },
+        "status": { "type": "string", "enum": ["new", "read", "archived"] },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["name", "email", "message", "type", "status"]
+    },
+    "JobOpening": {
+      "title": "JobOpening",
+      "description": "A job offer at the school",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string" },
+        "category": { "type": "string", "enum": ["Professor", "Driver", "Intern", "Administration", "Other"] },
+        "description": { "type": "string" },
+        "requirements": { "type": "string" },
+        "status": { "type": "string", "enum": ["active", "closed"] },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["title", "category", "description", "status"]
+    },
+    "JobApplication": {
+      "title": "JobApplication",
+      "description": "A candidate's application for a job",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "jobId": { "type": "string" },
+        "jobTitle": { "type": "string" },
+        "fullName": { "type": "string" },
+        "email": { "type": "string" },
+        "phone": { "type": "string" },
+        "cvUrl": { "type": "string" },
+        "coverLetterUrl": { "type": "string" },
+        "message": { "type": "string" },
+        "status": { "type": "string", "enum": ["new", "reviewed", "accepted", "rejected"] },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["fullName", "email", "phone", "cvUrl", "status"]
+    },
+    "AdminUser": {
+      "title": "AdminUser",
+      "description": "Custom admin user for panel access",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "username": { "type": "string" },
+        "email": { "type": "string" },
+        "password": { "type": "string" },
+        "role": { "type": "string", "enum": ["admin", "editor"] },
+        "name": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["username", "email", "password", "role", "name"]
+    }
+  },
+  "firestore": {
+    "/news": {
+      "schema": "News",
+      "description": "Collection of school news"
+    },
+    "/events": {
+      "schema": "Events",
+      "description": "Collection of school events"
+    },
+    "/users": {
+      "schema": "User",
+      "description": "User profiles and roles"
+    },
+    "/sections": {
+      "schema": "Section",
+      "description": "School sections"
+    },
+    "/classes": {
+      "schema": "Class",
+      "description": "School classes"
+    },
+    "/teachers": {
+      "schema": "Teacher",
+      "description": "School teachers"
+    },
+    "/subjects": {
+      "schema": "Subject",
+      "description": "School subjects"
+    },
+    "/rooms": {
+      "schema": "Room",
+      "description": "School classrooms and specialized rooms"
+    },
+    "/timetable": {
+      "schema": "TimetableEntry",
+      "description": "Timetable entries"
+    },
+    "/config": {
+      "schema": "SchoolConfig",
+      "description": "School configuration"
+    },
+    "/moments": {
+      "schema": "Moment",
+      "description": "Collection of gallery moments"
+    },
+    "/messages": {
+      "schema": "Message",
+      "description": "Collection of contact messages"
+    },
+    "/test": {
+      "schema": "object",
+      "description": "Connection test collection"
+    },
+    "/admin_users": {
+      "schema": "AdminUser",
+      "description": "Custom admin users for panel access"
+    },
+    "/jobs": {
+      "schema": "JobOpening",
+      "description": "Collection of job offers"
+    },
+    "/applications": {
+      "schema": "JobApplication",
+      "description": "Collection of job applications"
+    }
+  }
+}

@@ -1,0 +1,16 @@
+import fs from 'fs';
+let content = fs.readFileSync('src/constants.ts', 'utf8');
+content = content.replaceAll('Squalli', 'Dehbi Alaoui');
+content = content.replaceAll('guessous', 'kaderi');
+content = content.replaceAll('guessos', 'kaderi');
+content = content.replaceAll('tazi', 'el mrini');
+content = content.replaceAll('kabbaj', 'majdi');
+content = content.replaceAll('chraibi', 'el alaoui');
+content = content.replaceAll('bennani', 'rehhal');
+content = content.replaceAll('Guessous', 'Kaderi');
+content = content.replaceAll('Tazi', 'El Mrini');
+content = content.replaceAll('Kabbaj', 'Majdi');
+content = content.replaceAll('Chraibi', 'El Alaoui');
+content = content.replaceAll('Bennani', 'Rehhal');
+fs.writeFileSync('src/constants.ts', content);
+console.log("Done");

@@ -1,0 +1,165 @@
+import { useRef } from 'react';
+import { Link, useParams, Navigate } from 'react-router-dom';
+import { motion, useScroll, useTransform, useReducedMotion } from 'motion/react';
+import { ArrowUpRight, ArrowLeft, ArrowRight } from 'lucide-react';
+import { useLanguage } from '../contexts/LanguageContext';
+import { IMG } from '../content/site';
+import { WordReveal, Reveal, Parallax } from '../components/ui/motion';
+import { Seo, Chapter } from '../components/ui';
+import { PageHero, CtaBand } from '../components/sections';
+
+const ORDER = ['maternelle', 'primaire', 'college', 'lycee'] as const;
+type CycleId = (typeof ORDER)[number];
+
+const Cycle = () => {
+  const { id } = useParams<{ id: string }>();
+  const { t, currentLang } = useLanguage();
+  const fr = currentLang === 'FR';
+  const dayRef = useRef<HTMLDivElement>(null);
+  const reduce = useReducedMotion();
+  const { scrollYProgress } = useScroll({ target: dayRef, offset: ['start 70%', 'end 60%'] });
+  const line = useTransform(scrollYProgress, [0, 1], ['0%', '100%']);
+  if (!id || !ORDER.includes(id as CycleId)) return <Navigate to="/programmes" replace />;
+  const cid = id as CycleId;
+  const c = t[cid];
+  const idx = ORDER.indexOf(cid);
+  const prev = idx > 0 ? ORDER[idx - 1] : null;
+  const next = idx < 3 ? ORDER[idx + 1] : null;
+  const badge = { maternelle: t.common.cycle1, primaire: t.common.cycle23, college: t.common.cycle4, lycee: t.lycee.cycleLabel }[cid];
+  const marker = { maternelle: t.common.fulfillment, primaire: t.common.academicSuccess, college: t.common.middleSchoolCertificate, lycee: t.lycee.successLabel }[cid];
+  const gallery = IMG.cycleGallery[cid];
+  const spacesImgs = [IMG.spaces[0], IMG.library, IMG.spaces[1], IMG.spaces[2]];
+
+  return (
+    <main>
+      <Seo title={`${c.title} — ${c.subtitle} | Georges Claude Private Academy El Jadida`} description={c.heroDesc} path={`/programmes/${cid}`} image={IMG.cycles[cid]} />
+      <PageHero chapter={`${badge} — ${t.ui.cycleFor} ${t.ui.cycleAges[cid]}`} title={c.title} lead={c.heroDesc} image={IMG.cycles[cid]} imageAlt={c.title}>
+        <Link to="/inscription" className="btn btn-saffron">{c.enrollBtn}</Link>
+        <Link to="/contact" className="btn btn-ghost-light">{c.admissionBtn}</Link>
+      </PageHero>
+
+      {/* Présentation + vision */}
+      <section className="section bg-salt">
+        <div className="wrap grid lg:grid-cols-12 gap-12">
+          <div className="lg:col-span-7">
+            <p className="t-statement max-w-[30ch]"><WordReveal text={c.presentation} stagger={0.015} /></p>
+          </div>
+          <div className="lg:col-span-4 lg:col-start-9">
+            <Reveal delay={0.2}>
+              <Chapter className="mb-4">{c.visionTitle}</Chapter>
+              <p className="t-body text-mute">{c.visionText}</p>
+              <p className="mt-6 inline-flex items-center gap-2 rounded-full bg-saffron/25 px-4 py-2 text-sm font-semibold">{marker}</p>
+            </Reveal>
+          </div>
+        </div>
+      </section>
+
+      {/* Piliers */}
+      <section className="section bg-ink text-salt on-dark grain relative overflow-hidden">
+        <div className="wrap">
+          <Chapter saffron className="mb-6">{t.ui.pillars}</Chapter>
+          <div className="grid md:grid-cols-2 gap-x-12 gap-y-10 mt-6">
+            {c.pillars.map((p: any, i: number) => (
+              <Reveal key={i} delay={0.06 * i} className="border-t border-white/15 pt-6">
+                <h2 className="t-h3">{p.title}</h2>
+                <p className="t-body text-sea mt-3 max-w-[40ch]">{p.desc}</p>
+              </Reveal>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Programme */}
+      <section className="section bg-salt">
+        <div className="wrap">
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-12">
+            <div>
+              <Chapter className="mb-6">{t.common.curriculum}</Chapter>
+              <h2 className="t-h2"><WordReveal text={c.curriculumTitle} /></h2>
+            </div>
+            <Reveal delay={0.1}><p className="t-body text-mute max-w-[40ch]">{c.curriculumSubtitle}</p></Reveal>
+          </div>
+          <div className="grid md:grid-cols-3 gap-5">
+            {c.curriculum.map((col: any, i: number) => (
+              <Reveal key={i} delay={0.08 * i} className="card p-7">
+                <h3 className="t-h4">{col.title}</h3>
+                <ul className="mt-5 divide-y divide-ink/10">
+                  {col.items.map((it: string) => <li key={it} className="py-2.5 text-[15px]">{it}</li>)}
+                </ul>
+              </Reveal>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Journée type — ligne de temps progressive */}
+      <section className="section bg-salt-2/60">
+        <div className="wrap grid lg:grid-cols-12 gap-12">
+          <div className="lg:col-span-5">
+            <div className="lg:sticky lg:top-28">
+              <Chapter className="mb-6">{t.common.dailyLife}</Chapter>
+              <h2 className="t-h2"><WordReveal text={c.dailyLifeTitle} /></h2>
+              <div className="grid grid-cols-2 gap-4 mt-10">
+                {gallery.slice(0, 2).map((src, i) => (
+                  <Parallax key={i} amount={i ? 40 : 20} className={`img-frame ${i ? 'aspect-[3/4] mt-8' : 'aspect-[3/4]'}`}>
+                    <img src={src} alt={`${c.title} ${i + 1}`} loading="lazy" referrerPolicy="no-referrer" className="w-full h-full object-cover scale-110" />
+                  </Parallax>
+                ))}
+              </div>
+            </div>
+          </div>
+          <div ref={dayRef} className="lg:col-span-6 lg:col-start-7 relative pl-10">
+            <div className="absolute left-2 top-2 bottom-2 w-px bg-ink/12" aria-hidden>
+              <motion.div className="w-full bg-ink origin-top" style={reduce ? { height: '100%' } : { height: line }} />
+            </div>
+            <ol className="space-y-8">
+              {c.dailyLife.map((d: any, i: number) => (
+                <Reveal key={i} as="li" amount={0.6} className="relative">
+                  <span className="absolute -left-10 top-1.5 w-[17px] h-[17px] rounded-full bg-salt border border-ink/25 flex items-center justify-center"><span className="w-1.5 h-1.5 rounded-full bg-ink" /></span>
+                  <p className="font-display text-mute text-sm">{d.time}</p>
+                  <p className="t-h3 mt-1">{d.activity}</p>
+                </Reveal>
+              ))}
+            </ol>
+          </div>
+        </div>
+      </section>
+
+      {/* Espaces */}
+      <section className="section bg-salt">
+        <div className="wrap">
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-10">
+            <div>
+              <Chapter className="mb-6">{t.common.infrastructure}</Chapter>
+              <h2 className="t-h2"><WordReveal text={c.spacesTitle} /></h2>
+            </div>
+            <Reveal delay={0.1}>
+              <p className="t-body text-mute max-w-[40ch]">{c.spacesSubtitle}</p>
+              <Link to="/vie-scolaire" className="ulink font-semibold inline-flex items-center gap-1.5 mt-3">{t.common.visitCampus} <ArrowUpRight size={15} /></Link>
+            </Reveal>
+          </div>
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+            {c.spaces.map((s: any, i: number) => (
+              <Reveal key={i} delay={0.06 * i} className="group">
+                <div className="img-frame img-zoom aspect-[4/5]"><img src={spacesImgs[i % spacesImgs.length]} alt={s.title} loading="lazy" referrerPolicy="no-referrer" /></div>
+                <p className="t-h4 mt-4">{s.title}</p>
+              </Reveal>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Navigation entre cycles */}
+      <nav className="bg-salt border-t border-ink/10" aria-label={fr ? 'Autres cycles' : 'Other cycles'}>
+        <div className="wrap py-6 flex justify-between gap-4">
+          {prev ? <Link to={`/programmes/${prev}`} className="group inline-flex items-center gap-3 font-semibold"><ArrowLeft size={18} className="group-hover:-translate-x-1 transition-transform" /><span><span className="block t-meta">{t.ui.prevCycle}</span>{t[prev].title}</span></Link> : <span />}
+          {next ? <Link to={`/programmes/${next}`} className="group inline-flex items-center gap-3 font-semibold text-right"><span><span className="block t-meta">{t.ui.nextCycle}</span>{t[next].title}</span><ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" /></Link> : <span />}
+        </div>
+      </nav>
+
+      <CtaBand title={c.ctaTitle} desc={c.ctaDesc} primary={{ label: c.enrollBtn, to: '/inscription' }} secondary={{ label: c.admissionBtn, to: '/contact' }} tone="sea" />
+    </main>
+  );
+};
+
+export default Cycle;
