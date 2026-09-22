@@ -42,8 +42,13 @@ const Enrollment = () => {
       {/* Étapes */}
       <section className="section bg-salt">
         <div className="wrap">
-          <Chapter className="mb-6">{t.admissionsPage.journey}</Chapter>
-          <h2 className="t-h2 max-w-[14ch]"><WordReveal text={t.ui.stepsTitle} /></h2>
+          <div className="grid lg:grid-cols-12 items-end">
+            <div className="lg:col-span-8">
+              <Chapter className="mb-6">{t.admissionsPage.journey}</Chapter>
+              <h2 className="t-h2 max-w-[14ch]"><WordReveal text={t.ui.stepsTitle} /></h2>
+            </div>
+            <div data-mascot-spot className="hidden lg:block lg:col-span-3 lg:col-start-10 h-56" aria-hidden />
+          </div>
           <ol className="grid md:grid-cols-4 gap-px bg-ink/12 border border-ink/12 rounded-[1.75rem] overflow-hidden mt-12">
             {e.steps.map((s: any, i: number) => (
               <Reveal key={i} as="li" delay={0.08 * i} className="bg-salt p-7 md:p-8">
@@ -62,7 +67,7 @@ const Enrollment = () => {
         <div className="wrap grid lg:grid-cols-12 gap-12">
           <div className="lg:col-span-5">
             <Chapter saffron className="mb-6">{e.formTitle}</Chapter>
-            <h2 className="t-h2 max-w-[12ch]"><WordReveal text={fr ? 'Commencez la demande en deux minutes.' : 'Start the request in two minutes.'} /></h2>
+            <h2 className="t-h2 max-w-[12ch]"><WordReveal text={t.copy.enrollFormTitle} /></h2>
             <Reveal delay={0.1}><p className="t-body text-sea mt-6 max-w-[42ch]">{e.formDesc}</p></Reveal>
             <Reveal delay={0.2} className="mt-10 space-y-6">
               <div>

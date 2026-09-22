@@ -61,7 +61,7 @@ const Recruitment = () => {
           {/* Postes */}
           <div className="lg:col-span-5">
             <Chapter className="mb-6">{t.ui.jobsTitle}</Chapter>
-            <h2 className="t-h2 mb-8"><WordReveal text={fr ? 'Les talents que nous cherchons.' : 'The talent we are looking for.'} /></h2>
+            <h2 className="t-h2 mb-8"><WordReveal text={t.copy.recruitJobs} /></h2>
             <div className="space-y-3">
               {jobs.length === 0 && <p className="t-body text-mute mb-4">{t.ui.jobsEmpty}</p>}
               {jobs.map((j) => (

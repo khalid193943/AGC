@@ -163,6 +163,7 @@ export const Practical = () => {
                 <a href={SITE.whatsappHref} target="_blank" rel="noopener noreferrer" className="btn btn-ghost">{t.ui.whatsapp}</a>
                 <Link to="/contact" className="btn btn-ink">{t.ui.writeUs}</Link>
               </div>
+              <div data-mascot-spot data-say={fr ? 'Une question ? Je suis là.' : 'A question? I’m here.'} className="hidden lg:block h-56 mt-10" aria-hidden />
             </div>
             <div className="lg:col-span-8"><Accordion items={faqs} /></div>
           </div>

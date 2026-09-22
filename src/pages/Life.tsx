@@ -110,7 +110,7 @@ const Life = () => {
       <section className="section bg-salt overflow-hidden">
         <div className="wrap">
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-10">
-            <h2 className="t-h2"><WordReveal text={c.ctaTitle} /></h2>
+            <h2 className="t-h2"><WordReveal text={t.copy.lifeMoments} /></h2>
             <Reveal delay={0.1}><Link to="/galerie" className="ulink font-semibold inline-flex items-center gap-1.5">{t.life.exploreGallery} <ArrowUpRight size={15} /></Link></Reveal>
           </div>
           <div className="grid grid-cols-3 gap-4 items-end">
@@ -123,7 +123,7 @@ const Life = () => {
         </div>
       </section>
 
-      <CtaBand title={c.ctaTitle} desc={c.ctaDesc} primary={{ label: c.ctaEnroll, to: '/inscription' }} secondary={{ label: c.ctaPrograms, to: '/programmes' }} tone="sea" />
+      <CtaBand title={t.copy.lifeMoments} desc={c.ctaDesc} primary={{ label: c.ctaEnroll, to: '/inscription' }} secondary={{ label: c.ctaPrograms, to: '/programmes' }} tone="sea" />
     </main>
   );
 };

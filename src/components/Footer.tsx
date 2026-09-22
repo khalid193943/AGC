@@ -61,6 +61,7 @@ export const Footer = () => {
           <Reveal className="lg:col-span-5 flex flex-col sm:flex-row lg:flex-col gap-3 sm:items-center lg:items-start" delay={0.2}>
             <Link to="/contact" className="btn btn-saffron btn-lg"><span className="swap"><span>{t.contact.step2.title}</span><span aria-hidden>{t.contact.step2.title}</span></span></Link>
             <a href={SITE.whatsappHref} target="_blank" rel="noopener noreferrer" className="btn btn-ghost-light btn-lg">{t.ui.whatsapp} · {SITE.mobile}<ArrowUpRight size={18} /></a>
+            <div data-mascot-spot data-say={currentLang === 'FR' ? 'À très bientôt !' : 'See you very soon!'} className="hidden lg:block h-56 mt-6 w-full" aria-hidden />
           </Reveal>
         </div>
       </div>

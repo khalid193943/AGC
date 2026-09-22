@@ -49,6 +49,7 @@ export const PageHero = ({
             )}
             {children && <div className="mt-10 flex flex-wrap gap-3">{children}</div>}
           </motion.div>
+          {!image && <div data-mascot-spot className="hidden lg:block lg:col-span-3 lg:col-start-10 h-64 self-center" aria-hidden />}
           {image && (
             <motion.div className="lg:col-span-4 lg:col-start-9" initial={reduce ? false : { opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1.2, delay: 0.35, ease: EASE }}>
               <div className="img-arch aspect-[4/5] max-w-[380px] lg:max-w-none ml-auto">

@@ -31,7 +31,7 @@ const Partners = () => {
           </Reveal>
           <div className="lg:col-span-6 lg:col-start-7">
             <Chapter className="mb-6">Cambridge Assessment International Education</Chapter>
-            <h2 className="t-h2 max-w-[16ch]"><WordReveal text={fr ? 'Un standard mondial, intégré progressivement.' : 'A global standard, progressively integrated.'} /></h2>
+            <h2 className="t-h2 max-w-[16ch]"><WordReveal text={t.copy.cambridgeStandard} /></h2>
             <Reveal delay={0.1}><p className="t-body text-mute mt-8 max-w-[58ch]">
               {fr ? 'L’Académie intègre progressivement le programme Cambridge pour offrir une éducation répondant aux standards mondiaux. L’approche Cambridge développe non seulement une maîtrise exceptionnelle de la langue anglaise, mais cultive également la pensée critique, la créativité et la résolution de problèmes complexes — des compétences essentielles pour exceller dans un monde globalisé.' : 'The Academy is progressively integrating the Cambridge programme to offer an education that meets global standards. The Cambridge approach not only develops exceptional mastery of English but also cultivates critical thinking, creativity and complex problem-solving — essential skills to excel in a globalised world.'}
             </p></Reveal>

@@ -82,6 +82,7 @@ const Academy = () => {
               <Chapter className="mb-6">{a.valuesLabel}</Chapter>
               <h2 className="t-h2"><WordReveal text={a.missionTitle} /></h2>
               <Reveal delay={0.1}><p className="t-body text-mute mt-6 max-w-[36ch]">{a.presentationText2}</p></Reveal>
+              <div data-mascot-spot className="hidden lg:block h-60 mt-10" aria-hidden />
             </div>
             <ul className="lg:col-span-7 lg:col-start-6 divide-y divide-ink/12 border-y border-ink/12">
               {values.map((v: any, i: number) => (

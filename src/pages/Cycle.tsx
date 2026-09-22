@@ -50,6 +50,7 @@ const Cycle = () => {
               <p className="t-body text-mute">{c.visionText}</p>
               <p className="mt-6 inline-flex items-center gap-2 rounded-full bg-saffron/25 px-4 py-2 text-sm font-semibold">{marker}</p>
             </Reveal>
+            <div data-mascot-spot className="hidden lg:block h-60 mt-8" aria-hidden />
           </div>
         </div>
       </section>

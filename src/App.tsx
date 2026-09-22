@@ -7,6 +7,7 @@ import ReactGA from 'react-ga4';
 import { LanguageProvider, useLanguage } from './contexts/LanguageContext';
 import { Header } from './components/Header';
 import { Footer } from './components/Footer';
+import { Mascot } from './components/Mascot';
 import { ErrorBoundary } from './components/ErrorBoundary';
 import { IMG } from './content/site';
 
@@ -124,6 +125,7 @@ function AppContent() {
         <AppRoutes />
       </div>
       {!isAdmin && <Footer />}
+      {!isAdmin && <Mascot />}
     </div>
   );
 }

@@ -46,6 +46,9 @@ export const Hero = () => {
           <div className="absolute inset-0 bg-gradient-to-r from-ink/70 via-transparent to-transparent" />
         </motion.div>
 
+        {/* Zone libre pour la mascotte */}
+        <div data-mascot-spot className="hidden lg:block absolute right-[10%] top-[26%] w-[280px] h-[260px]" aria-hidden />
+
         {/* Contenu */}
         <motion.div className="wrap relative z-10 min-h-[100svh] flex flex-col justify-end pb-10 md:pb-14" style={reduce ? undefined : { y: textY, opacity: fade }} >
           <div style={{ paddingTop: 'calc(var(--header-h) + 3rem)' }} />
@@ -63,7 +66,7 @@ export const Hero = () => {
                 <span className="w-1 h-1 rounded-full bg-saffron" aria-hidden />
                 <span>{currentLang === 'FR' ? 'De la maternelle au lycée' : 'From preschool to high school'}</span>
               </motion.p>
-              <h1 className="t-hero max-w-[19ch]">
+              <h1 className="t-display max-w-[12ch]">
                 <WordReveal text={t.copy.heroTitle} inView={false} delay={0.45} stagger={0.045} />
               </h1>
               <motion.p
@@ -72,7 +75,7 @@ export const Hero = () => {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 1, delay: 1.2, ease: EASE }}
               >
-                {t.copy.heroSub} <span className="text-salt not-italic font-display font-medium">{SITE.motto[currentLang]}</span>
+                {t.copy.heroSub}<br /><span className="text-salt not-italic font-display font-medium">{SITE.motto[currentLang]}</span>
               </motion.p>
               <motion.div
                 className="mt-10 flex flex-wrap items-center gap-3"
@@ -160,6 +163,7 @@ export const Identity = () => {
               ))}
             </div>
             <Reveal delay={0.3} className="mt-10"><Link to="/academie" className="btn btn-ink">{t.ui.discoverAcademy}</Link></Reveal>
+            <div data-mascot-spot data-say={fr ? 'Bienvenue à l’académie.' : 'Welcome to the academy.'} className="hidden lg:block h-60 mt-8" aria-hidden />
           </div>
 
           {/* Composition d'images */}
@@ -226,6 +230,7 @@ export const Director = () => {
               </div>
               <img src={IMG.signature} alt="" className="h-14 w-auto opacity-80 mix-blend-multiply" loading="lazy" referrerPolicy="no-referrer" />
             </div>
+            <div data-mascot-spot className="hidden lg:block h-56 mt-10 max-w-[460px]" aria-hidden />
           </div>
           <div className="lg:col-span-7">
             <p className="chapter mb-8">{t.copy.directorTitle}</p>
@@ -264,6 +269,7 @@ export const Vision = () => {
           <div className="lg:col-span-4 lg:sticky lg:top-28 self-start">
             <p className="chapter mb-6">{t.vision.label}</p>
             <h2 className="t-h2"><WordReveal text={t.copy.visionTitle} /></h2>
+            <div data-mascot-spot className="hidden lg:block h-64 mt-12" aria-hidden />
           </div>
           <div className="lg:col-span-7 lg:col-start-6 space-y-6">
             {cards.map((c, i) => (

@@ -148,6 +148,7 @@ export const Openness = () => {
             <div className="rounded-[2rem] bg-white p-10 md:p-14 flex items-center justify-center shadow-[0_40px_80px_-30px_rgba(0,0,0,0.5)]">
               <img src={SITE.cambridgeLogo} alt="Cambridge Assessment International Education" className="w-full h-auto" loading="lazy" referrerPolicy="no-referrer" />
             </div>
+            <div data-mascot-spot className="hidden lg:block h-60 mt-6" aria-hidden />
           </Reveal>
         </div>
       </div>
