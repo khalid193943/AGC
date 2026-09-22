@@ -34,3 +34,8 @@
    `src/pages/admin/AdminLogin.tsx` et `src/firebase.ts`, mots de passe en clair dans la collection
    Firestore `admin_users` lisible publiquement. À traiter en priorité : Firebase Auth uniquement,
    règles Firestore restrictives, changement des mots de passe.
+
+## Aperçu autonome (sans Firebase)
+`npx vite build --config vite.preview.config.ts` produit un seul fichier HTML navigable (`/home/claude/preview-dist/index.html` — modifier `outDir` au besoin).
+Il utilise la navigation `#/`, des données d'exemple (`preview/firestore-mock.ts`), des formulaires simulés et des aplats à la place des photos si le CDN est inaccessible.
+Le build de production (`npm run build`) n'est pas concerné.
