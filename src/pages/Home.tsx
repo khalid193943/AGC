@@ -29,7 +29,7 @@ export const Home = () => {
       <Identity />
       <Director />
       <Vision />
-      <VideoSection title={t.ui.videoTitle} desc={t.ui.videoDesc} />
+      <VideoSection title={t.copy.videoTitle} desc={t.ui.videoDesc} />
       <Programs />
       <Openness />
       <Activities />

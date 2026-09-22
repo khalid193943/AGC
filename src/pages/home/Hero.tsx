@@ -4,7 +4,7 @@ import { motion, useScroll, useTransform, useReducedMotion } from 'motion/react'
 import { Award, Leaf } from 'lucide-react';
 import { useLanguage } from '../../contexts/LanguageContext';
 import { SITE, IMG } from '../../content/site';
-import { WordReveal, EASE } from '../../components/ui/motion';
+import { WordReveal, Reveal, ClipReveal, Parallax, EASE } from '../../components/ui/motion';
 import { Button, Marquee, ScrollHint } from '../../components/ui';
 
 export const Hero = () => {
@@ -63,14 +63,22 @@ export const Hero = () => {
                 <span className="w-1 h-1 rounded-full bg-saffron" aria-hidden />
                 <span>{currentLang === 'FR' ? 'De la maternelle au lycée' : 'From preschool to high school'}</span>
               </motion.p>
-              <h1 className="t-display max-w-[13ch]">
-                <WordReveal text={SITE.motto[currentLang]} inView={false} delay={0.45} stagger={0.07} />
+              <h1 className="t-hero max-w-[19ch]">
+                <WordReveal text={t.copy.heroTitle} inView={false} delay={0.45} stagger={0.045} />
               </h1>
+              <motion.p
+                className="mt-7 font-serif italic text-sea text-[clamp(1.2rem,1.7vw,1.6rem)] leading-snug max-w-[40ch]"
+                initial={reduce ? false : { opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 1, delay: 1.2, ease: EASE }}
+              >
+                {t.copy.heroSub} <span className="text-salt not-italic font-display font-medium">{SITE.motto[currentLang]}</span>
+              </motion.p>
               <motion.div
                 className="mt-10 flex flex-wrap items-center gap-3"
                 initial={reduce ? false : { opacity: 0, y: 16 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 1, delay: 1.1, ease: EASE }}
+                transition={{ duration: 1, delay: 1.4, ease: EASE }}
               >
                 <Button to="/inscription" variant="saffron" size="lg">{t.ui.enroll}</Button>
                 <Button to="/academie" variant="ghost-light" size="lg" icon="none">{t.ui.discoverAcademy}</Button>
@@ -120,31 +128,65 @@ export const Hero = () => {
 /* ------------------------------------------------------------------ */
 export const Identity = () => {
   const { t, currentLang } = useLanguage();
+  const fr = currentLang === 'FR';
+  const numbers = [
+    { n: '5+', l: t.academy.yearsExperience },
+    { n: '+500', l: fr ? 'élèves inscrits' : 'students enrolled' },
+    { n: '3', l: fr ? 'langues au quotidien' : 'languages every day' },
+    { n: '25', l: fr ? 'élèves maximum par classe' : 'students maximum per class' },
+  ];
   return (
-    <section className="section bg-salt">
+    <section className="section bg-salt overflow-hidden">
       <div className="wrap">
-        <div className="grid lg:grid-cols-12 gap-10 lg:gap-6">
-          <div className="lg:col-span-3">
-            <p className="chapter">{t.welcome.presentation}</p>
+        <div className="grid lg:grid-cols-12 gap-x-6 gap-y-12 items-start">
+          {/* Titre */}
+          <div className="lg:col-span-8">
+            <p className="chapter mb-6">{t.welcome.presentation}</p>
+            <h2 className="t-h1 max-w-[18ch]"><WordReveal text={t.copy.identityTitle} stagger={0.035} /></h2>
           </div>
-          <div className="lg:col-span-9">
-            <p className="t-statement max-w-[30ch]">
-              <WordReveal text={t.welcome.text} stagger={0.015} />
-            </p>
-            <div className="grid md:grid-cols-2 gap-6 mt-14 max-w-4xl">
+          <Reveal className="lg:col-span-4 lg:pt-16" delay={0.3}>
+            <p className="font-serif italic t-lead text-mute max-w-[26ch]">{t.copy.identityAside}</p>
+          </Reveal>
+
+          {/* Texte + preuves */}
+          <div className="lg:col-span-5 lg:pt-6">
+            <Reveal delay={0.1}><p className="t-lead">{t.welcome.text}</p></Reveal>
+            <div className="mt-10 space-y-6">
               {[[t.welcome.feature1, t.welcome.feature1Desc], [t.welcome.feature2, t.welcome.feature2Desc]].map(([h, d], i) => (
-                <div key={i} className="border-t border-ink/15 pt-5">
-                  <p className="t-h4">{h}</p>
-                  <p className="t-body text-mute mt-2 max-w-[38ch]">{d}</p>
-                </div>
+                <Reveal key={i} delay={0.15 + i * 0.08} className="flex gap-5 border-t border-ink/15 pt-5">
+                  <span className="w-2 h-2 rounded-full bg-saffron mt-2.5 shrink-0" aria-hidden />
+                  <span><span className="block t-h4">{h}</span><span className="block t-body text-mute mt-1 max-w-[40ch]">{d}</span></span>
+                </Reveal>
               ))}
             </div>
-            <div className="mt-10 flex flex-wrap gap-x-10 gap-y-4 text-sm text-mute">
-              <span><strong className="text-ink font-display text-2xl mr-2">5+</strong>{t.academy.yearsExperience}</span>
-              <span><strong className="text-ink font-display text-2xl mr-2">+500</strong>{currentLang === 'FR' ? 'élèves inscrits' : 'students enrolled'}</span>
-              <span><strong className="text-ink font-display text-2xl mr-2">3</strong>{currentLang === 'FR' ? 'langues au quotidien' : 'languages every day'}</span>
-            </div>
+            <Reveal delay={0.3} className="mt-10"><Link to="/academie" className="btn btn-ink">{t.ui.discoverAcademy}</Link></Reveal>
           </div>
+
+          {/* Composition d'images */}
+          <div className="lg:col-span-6 lg:col-start-7 relative">
+            <ClipReveal className="img-arch aspect-[4/5] lg:w-[78%]" from="bottom">
+              <Parallax amount={40} className="h-full"><img src={IMG.campus} alt={fr ? 'Le campus de l’académie à Sidi Bouzid' : 'The academy campus in Sidi Bouzid'} loading="lazy" decoding="async" referrerPolicy="no-referrer" className="w-full h-full object-cover scale-110" /></Parallax>
+            </ClipReveal>
+            <Reveal delay={0.4} className="hidden lg:block absolute right-0 bottom-[14%] w-[40%]">
+              <div className="img-frame aspect-square shadow-[0_40px_80px_-30px_rgba(6,25,58,0.45)] border-[6px] border-salt">
+                <img src={IMG.kids} alt="" loading="lazy" decoding="async" referrerPolicy="no-referrer" />
+              </div>
+            </Reveal>
+            <Reveal delay={0.5} className="absolute -left-2 lg:left-[8%] -bottom-4 lg:-bottom-6 bg-ink text-salt rounded-2xl px-5 py-4 shadow-[0_30px_60px_-30px_rgba(6,25,58,0.6)]">
+              <span className="block font-display font-semibold text-2xl leading-none">Cambridge</span>
+              <span className="block text-sea text-[13px] mt-1">{t.ui.cambridgeDesc}</span>
+            </Reveal>
+          </div>
+        </div>
+
+        {/* Chiffres */}
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-8 mt-20 lg:mt-24 pt-8 border-t border-ink/15">
+          {numbers.map((x, i) => (
+            <Reveal key={i} delay={i * 0.06} amount={0.6}>
+              <p className="t-num">{x.n}</p>
+              <p className="t-small text-mute mt-2 max-w-[18ch]">{x.l}</p>
+            </Reveal>
+          ))}
         </div>
       </div>
     </section>
@@ -186,7 +228,7 @@ export const Director = () => {
             </div>
           </div>
           <div className="lg:col-span-7">
-            <p className="chapter mb-8">{t.direction.title}</p>
+            <p className="chapter mb-8">{t.copy.directorTitle}</p>
             <p className="t-quote">
               <WordReveal text={first + '.'} stagger={0.02} />
             </p>
@@ -221,7 +263,7 @@ export const Vision = () => {
         <div className="grid lg:grid-cols-12 gap-10">
           <div className="lg:col-span-4 lg:sticky lg:top-28 self-start">
             <p className="chapter mb-6">{t.vision.label}</p>
-            <h2 className="t-h2"><WordReveal text={t.vision.title} /></h2>
+            <h2 className="t-h2"><WordReveal text={t.copy.visionTitle} /></h2>
           </div>
           <div className="lg:col-span-7 lg:col-start-6 space-y-6">
             {cards.map((c, i) => (

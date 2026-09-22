@@ -6,8 +6,8 @@ import { db } from '../../firebase';
 import { useLanguage } from '../../contexts/LanguageContext';
 import { SITE, IMG } from '../../content/site';
 import { WordReveal, Reveal } from '../../components/ui/motion';
-import { Button, Chapter, Marquee, Accordion } from '../../components/ui';
-import { StatGrid, NewsCard } from '../../components/sections';
+import { Button, Chapter, Marquee, Accordion, fmtDate } from '../../components/ui';
+import { StatGrid } from '../../components/sections';
 
 /* ------------------------------------------------------------------ */
 /* Preuves — résultats + témoignages                                    */
@@ -31,7 +31,7 @@ export const Proof = () => {
         <div className="grid lg:grid-cols-12 gap-8 items-end mb-12">
           <div className="lg:col-span-7">
             <Chapter className="mb-6">{t.ui.results} — {t.ui.resultsYear}</Chapter>
-            <h2 className="t-h2 max-w-[14ch]"><WordReveal text={t.ui.trustTitle} /></h2>
+            <h2 className="t-h2 max-w-[14ch]"><WordReveal text={t.copy.proofTitle} /></h2>
           </div>
           <Reveal className="lg:col-span-5" delay={0.15}>
             <p className="t-body text-mute max-w-[44ch]">{t.testimonials.desc} {t.ui.mentionsLine}</p>
@@ -51,47 +51,67 @@ export const Proof = () => {
 /* Journal — actualités dynamiques                                      */
 /* ------------------------------------------------------------------ */
 export const Journal = () => {
-  const { t } = useLanguage();
+  const { t, currentLang } = useLanguage();
   const [news, setNews] = useState<any[]>([]);
   useEffect(() => {
-    const q = query(collection(db, 'news'), orderBy('date', 'desc'), limit(4));
+    const q = query(collection(db, 'news'), orderBy('date', 'desc'), limit(5));
     const unsub = onSnapshot(q, (snap) => setNews(snap.docs.map((d) => ({ id: d.id, ...d.data() }))), () => setNews([]));
     return () => unsub();
   }, []);
   const featured = news.find((n) => n.isFeatured || n.featured) || news[0];
-  const rest = news.filter((n) => n.id !== featured?.id).slice(0, 3);
+  const rest = news.filter((n) => n.id !== featured?.id).slice(0, 4);
   return (
-    <section className="section bg-salt-2/60">
+    <section className="section bg-salt-2/60 overflow-hidden">
       <div className="wrap">
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
-          <div>
+        <div className="grid lg:grid-cols-12 gap-6 items-end mb-12">
+          <div className="lg:col-span-7">
             <Chapter className="mb-6">{t.nav.newsEvents}</Chapter>
-            <h2 className="t-h2 max-w-[14ch]"><WordReveal text={t.ui.journalTitle} /></h2>
+            <h2 className="t-h2 max-w-[14ch]"><WordReveal text={t.copy.journalTitle} /></h2>
           </div>
-          <Reveal delay={0.15} className="max-w-[44ch]">
-            <p className="t-body text-mute">{t.ui.journalDesc}</p>
-            <Link to="/actualites" className="ulink font-semibold inline-block mt-4">{t.news.allNews}</Link>
+          <Reveal delay={0.15} className="lg:col-span-4 lg:col-start-9">
+            <p className="t-body text-mute max-w-[40ch]">{t.copy.journalDesc}</p>
           </Reveal>
         </div>
         {news.length === 0 ? (
           <div className="card p-10 text-center text-mute">{t.ui.journalEmpty}</div>
         ) : (
-          <div className="grid lg:grid-cols-12 gap-10">
-            <Reveal className="lg:col-span-7"><NewsCard item={featured} big /></Reveal>
-            <div className="lg:col-span-5 grid sm:grid-cols-2 lg:grid-cols-1 gap-8">
-              {rest.map((n, i) => (
-                <Reveal key={n.id} delay={i * 0.08}>
-                  <Link to={`/actualites/${n.id}`} className="group flex gap-5 items-start">
-                    <div className="img-frame img-zoom w-32 sm:w-36 aspect-square shrink-0"><img src={n.image} alt={n.title} loading="lazy" referrerPolicy="no-referrer" /></div>
-                    <div>
-                      <p className="t-meta">{n.category}</p>
-                      <p className="t-h4 mt-1 group-hover:text-ink-3 transition-colors">{n.title}</p>
-                      <span className="inline-flex items-center gap-1 text-sm font-semibold mt-2 ulink">{t.ui.readMore} <ArrowUpRight size={14} /></span>
-                    </div>
-                  </Link>
-                </Reveal>
-              ))}
-            </div>
+          <div className="grid lg:grid-cols-12 gap-6">
+            {/* À la une : image plein cadre, titre posé dessus */}
+            <Reveal className="lg:col-span-7">
+              <Link to={`/actualites/${featured.id}`} className="group relative block img-frame img-zoom aspect-[4/3] lg:aspect-auto lg:h-full lg:min-h-[560px]">
+                <img src={featured.image} alt={featured.title} loading="lazy" decoding="async" referrerPolicy="no-referrer" className="absolute inset-0 w-full h-full object-cover" />
+                <div className="absolute inset-0 bg-gradient-to-t from-ink via-ink/40 to-transparent" />
+                <div className="absolute inset-x-0 bottom-0 p-7 md:p-10 text-salt">
+                  <p className="t-meta !text-sea flex items-center gap-3">
+                    <span className="rounded-full bg-saffron text-ink px-3 py-1 text-xs font-semibold">{featured.category || t.newsPage.latestNews}</span>
+                    <span>{fmtDate(featured.date, currentLang)}</span>
+                  </p>
+                  <h3 className="t-h2 mt-4 max-w-[16ch] group-hover:text-saffron-2 transition-colors">{featured.title}</h3>
+                  <span className="inline-flex items-center gap-1.5 text-sm font-semibold mt-5 ulink">{t.ui.readMore} <ArrowUpRight size={15} /></span>
+                </div>
+              </Link>
+            </Reveal>
+            {/* À suivre : panneau encre */}
+            <Reveal className="lg:col-span-5" delay={0.1}>
+              <div className="bg-ink text-salt on-dark rounded-[1.5rem] p-6 md:p-8 h-full flex flex-col">
+                <p className="chapter saffron mb-4">{t.newsPage.latestNews}</p>
+                <ul className="divide-y divide-white/10 flex-1">
+                  {rest.map((n) => (
+                    <li key={n.id}>
+                      <Link to={`/actualites/${n.id}`} className="group flex gap-5 py-5 items-center">
+                        <div className="img-frame img-zoom w-20 aspect-square shrink-0 !rounded-xl"><img src={n.image} alt="" loading="lazy" referrerPolicy="no-referrer" /></div>
+                        <div className="min-w-0">
+                          <p className="t-meta">{n.category}{n.date ? ` — ${fmtDate(n.date, currentLang)}` : ''}</p>
+                          <p className="t-h4 mt-1 group-hover:text-saffron transition-colors">{n.title}</p>
+                        </div>
+                        <ArrowUpRight size={18} className="ml-auto shrink-0 text-sea-2 group-hover:text-saffron group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all" />
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+                <Link to="/actualites" className="btn btn-saffron mt-6 self-start">{t.news.allNews}</Link>
+              </div>
+            </Reveal>
           </div>
         )}
       </div>
@@ -106,39 +126,47 @@ export const Practical = () => {
   const { t, currentLang } = useLanguage();
   const faqs = [1, 2, 3, 4].map((n) => ({ q: t.faq[`q${n}`].q, a: t.faq[`q${n}`].a }));
   const fr = currentLang === 'FR';
+  const tiles = [
+    { icon: Clock, k: t.ui.hours, v: SITE.hours[currentLang] },
+    { icon: Bus, k: fr ? 'Transport scolaire' : 'School transport', v: fr ? 'Bus couvrant El Jadida, Sidi Bouzid, Haouzia et les environs.' : 'Buses covering El Jadida, Sidi Bouzid, Haouzia and surroundings.' },
+    { icon: ShieldCheck, k: fr ? 'École homologuée' : 'Accredited school', v: fr ? 'Ministère de l’Éducation Nationale · programme Cambridge' : 'Ministry of National Education · Cambridge programme' },
+  ];
   return (
     <section className="section bg-salt">
       <div className="wrap">
-        <div className="grid lg:grid-cols-12 gap-12">
-          <div className="lg:col-span-4">
+        <div className="grid lg:grid-cols-12 gap-6 items-end mb-12">
+          <div className="lg:col-span-7">
             <Chapter className="mb-6">{t.faq.label}</Chapter>
-            <h2 className="t-h2"><WordReveal text={t.ui.practicalTitle} /></h2>
-            <Reveal delay={0.1}><p className="t-body text-mute mt-6 max-w-[36ch]">{t.ui.practicalDesc}</p></Reveal>
-            <Reveal delay={0.2} className="mt-10 card p-6 space-y-5">
-              {[
-                { icon: Clock, k: t.ui.hours, v: SITE.hours[currentLang] },
-                { icon: Bus, k: fr ? 'Transport' : 'Transport', v: fr ? 'Flotte de bus couvrant El Jadida, Sidi Bouzid, Haouzia…' : 'Bus fleet covering El Jadida, Sidi Bouzid, Haouzia…' },
-                { icon: ShieldCheck, k: fr ? 'Homologation' : 'Accreditation', v: fr ? 'Ministère de l’Éducation Nationale' : 'Ministry of National Education' },
-              ].map((r, i) => (
-                <div key={i} className="flex gap-4">
-                  <span className="w-9 h-9 rounded-full bg-sea/50 flex items-center justify-center shrink-0 text-ink"><r.icon size={16} /></span>
-                  <span><span className="block font-semibold text-sm">{r.k}</span><span className="block t-small text-mute">{r.v}</span></span>
-                </div>
-              ))}
-              <div className="pt-2 border-t border-ink/10">
-                <p className="font-semibold text-sm">{t.ui.moreQuestions}</p>
-                <p className="t-small text-mute mt-1">{t.ui.moreQuestionsDesc}</p>
-                <div className="flex flex-wrap gap-2 mt-4">
-                  <a href={SITE.phoneHref} className="btn btn-ghost !h-10 text-sm">{t.ui.call}</a>
-                  <Link to="/contact" className="btn btn-ink !h-10 text-sm">{t.ui.writeUs}</Link>
-                </div>
-              </div>
-            </Reveal>
+            <h2 className="t-h2 max-w-[14ch]"><WordReveal text={t.copy.practicalTitle} /></h2>
           </div>
-          <Reveal className="lg:col-span-7 lg:col-start-6" delay={0.1}>
-            <Accordion items={faqs} />
-          </Reveal>
+          <Reveal delay={0.15} className="lg:col-span-4 lg:col-start-9"><p className="t-body text-mute max-w-[38ch]">{t.copy.practicalDesc}</p></Reveal>
         </div>
+
+        {/* Trois repères */}
+        <div className="grid md:grid-cols-3 gap-4">
+          {tiles.map((r, i) => (
+            <Reveal key={i} delay={0.08 * i} className="card p-6 md:p-7 flex flex-col gap-5">
+              <span className="w-11 h-11 rounded-full bg-ink text-salt flex items-center justify-center"><r.icon size={18} /></span>
+              <span><span className="block t-h4">{r.k}</span><span className="block t-small text-mute mt-1.5">{r.v}</span></span>
+            </Reveal>
+          ))}
+        </div>
+
+        {/* Questions fréquentes */}
+        <Reveal delay={0.1} className="mt-6 rounded-[2rem] bg-salt-2/70 p-6 md:p-10 lg:p-14">
+          <div className="grid lg:grid-cols-12 gap-10">
+            <div className="lg:col-span-4">
+              <p className="t-h3">{t.faq.title}</p>
+              <p className="t-body text-mute mt-3 max-w-[30ch]">{t.ui.moreQuestionsDesc}</p>
+              <div className="flex flex-wrap gap-2 mt-8">
+                <a href={SITE.phoneHref} className="btn btn-ghost">{t.ui.call}</a>
+                <a href={SITE.whatsappHref} target="_blank" rel="noopener noreferrer" className="btn btn-ghost">{t.ui.whatsapp}</a>
+                <Link to="/contact" className="btn btn-ink">{t.ui.writeUs}</Link>
+              </div>
+            </div>
+            <div className="lg:col-span-8"><Accordion items={faqs} /></div>
+          </div>
+        </Reveal>
       </div>
     </section>
   );
@@ -175,8 +203,8 @@ export const Action = () => {
         <div className="grid lg:grid-cols-12 gap-12 items-start">
           <div className="lg:col-span-6">
             <Chapter saffron className="mb-6">{t.nav.admissions} {SITE.year}</Chapter>
-            <h2 className="t-h1 max-w-[12ch]"><WordReveal text={t.contact.title} /></h2>
-            <Reveal delay={0.15}><p className="t-lead text-sea mt-8 max-w-[40ch]">{t.contact.desc}</p></Reveal>
+            <h2 className="t-h1 max-w-[14ch]"><WordReveal text={t.copy.actionTitle} /></h2>
+            <Reveal delay={0.15}><p className="t-lead text-sea mt-8 max-w-[40ch]">{t.copy.actionDesc} {t.contact.desc}</p></Reveal>
             <ol className="mt-12 space-y-6 max-w-md">
               {steps.map((s: any, i: number) => (
                 <Reveal key={i} delay={0.1 + i * 0.08} as="li" className="flex gap-5 border-t border-white/15 pt-5">

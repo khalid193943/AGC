@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { motion, useTransform, useReducedMotion, AnimatePresence } from 'motion/react';
+import { motion, useTransform, useReducedMotion, AnimatePresence, useMotionValueEvent } from 'motion/react';
 import { ArrowUpRight, BookOpen, Brain, Palette, Trophy, Leaf, Sun, Recycle, Droplets } from 'lucide-react';
 import { useLanguage } from '../../contexts/LanguageContext';
 import { SITE, IMG } from '../../content/site';
@@ -45,21 +45,21 @@ export const Programs = () => {
   const isDesktop = useMedia('(min-width: 1024px)');
   const reduce = useReducedMotion();
   const ref = useRef<HTMLDivElement>(null);
-  const trackRef = useRef<HTMLDivElement>(null);
   const progress = useSmoothProgress(ref);
-  const distance = useTrackDistance(trackRef, [isDesktop, reduce]);
-  const x = useTransform(progress, [0.05, 0.95], [0, -distance]);
+  const x = useTransform(progress, [0, 1], ['0%', '-62%']);
   const bar = useTransform(progress, [0, 1], ['0%', '100%']);
+  const [active, setActive] = useState(0);
+  useMotionValueEvent(progress, 'change', (v) => setActive(Math.min(3, Math.max(0, Math.round(v * 3)))));
 
   const header = (
     <div className="wrap">
-      <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
-        <div>
-          <Chapter className="mb-4">{t.programs.curriculum}</Chapter>
-          <h2 className="t-h2 max-w-[14ch]"><WordReveal text={t.ui.programsTitle} /></h2>
+      <div className="grid lg:grid-cols-12 gap-6 items-end">
+        <div className="lg:col-span-7">
+          <Chapter className="mb-6">{t.programs.curriculum} — {t.copy.programsRail}</Chapter>
+          <h2 className="t-h2 max-w-[14ch]"><WordReveal text={t.copy.programsTitle} /></h2>
         </div>
-        <Reveal delay={0.15} className="max-w-[44ch]">
-          <p className="t-body text-mute">{t.ui.programsDesc}</p>
+        <Reveal delay={0.15} className="lg:col-span-4 lg:col-start-9">
+          <p className="t-body text-mute max-w-[38ch]">{t.copy.programsDesc}</p>
           <Link to="/programmes" className="ulink font-semibold inline-block mt-4">{t.ui.seePrograms}</Link>
         </Reveal>
       </div>
@@ -78,16 +78,27 @@ export const Programs = () => {
   }
 
   return (
-    <section ref={ref} className="relative bg-salt" style={{ height: '280vh' }}>
-      <div className="sticky top-0 h-screen flex flex-col justify-center overflow-hidden" style={{ paddingTop: 'calc(var(--header-h) * 0.5)' }}>
-        <div className="pb-8">{header}</div>
-        <motion.div ref={trackRef} className="flex gap-10 pl-[var(--gutter)] will-change-transform" style={{ x }}>
+    <section ref={ref} className="relative bg-salt" style={{ height: '320vh', paddingTop: 'var(--section)', paddingBottom: 'var(--section)' }}>
+      <div className="sticky top-0 h-screen flex flex-col justify-center overflow-hidden">
+        <div className="pb-6">{header}</div>
+        <motion.div className="flex gap-10 pl-[var(--gutter)] will-change-transform" style={{ x }}>
           {cycles.map((c, i) => <CycleCard key={c.id} c={c} t={t} index={i} />)}
-          <div className="w-[var(--gutter)] shrink-0" aria-hidden />
+          <div className="w-[28vw] shrink-0" aria-hidden />
         </motion.div>
-        <div className="wrap mt-6 flex items-center gap-3 text-sm text-mute">
-          <span className="w-24 h-px bg-ink/15 relative overflow-hidden"><motion.span className="absolute inset-y-0 left-0 bg-ink" style={{ width: bar }} /></span>
-          {t.ui.dragHint}
+        {/* Rail de progression : où en est-on dans le parcours */}
+        <div className="wrap mt-6 pb-2">
+          <div className="relative flex items-center">
+            <div className="absolute inset-x-0 top-1/2 h-px bg-ink/12" />
+            <motion.div className="absolute left-0 top-1/2 h-px bg-ink" style={{ width: bar }} />
+            <ol className="relative w-full grid grid-cols-4">
+              {cycles.map((c, i) => (
+                <li key={c.id} className="flex flex-col items-start gap-2">
+                  <span className={`w-3 h-3 rounded-full border-2 border-salt transition-colors duration-500 ${i <= active ? 'bg-ink' : 'bg-sea'}`} />
+                  <span className={`text-sm transition-colors duration-500 ${i === active ? 'text-ink font-semibold' : 'text-mute'}`}>{c.title} · {c.ages}</span>
+                </li>
+              ))}
+            </ol>
+          </div>
         </div>
       </div>
     </section>
@@ -119,7 +130,7 @@ export const Openness = () => {
         <div className="grid lg:grid-cols-12 gap-12 items-center">
           <div className="lg:col-span-7">
             <Chapter saffron className="mb-6">{fr ? 'Partenariat stratégique' : 'Strategic partnership'}</Chapter>
-            <h2 className="t-h2 max-w-[16ch]"><WordReveal text={fr ? 'Le programme Cambridge, une ouverture sur le monde.' : 'The Cambridge programme, a window on the world.'} /></h2>
+            <h2 className="t-h2 max-w-[16ch]"><WordReveal text={t.copy.cambridgeTitle} /></h2>
             <Reveal delay={0.15}><p className="t-lead text-sea mt-8 max-w-[46ch]">
               {fr ? 'L’Académie intègre progressivement le programme Cambridge pour offrir une éducation répondant aux standards mondiaux, favorisant le trilinguisme et la pensée critique.' : 'The Academy is progressively integrating the Cambridge programme to offer an education that meets global standards, fostering trilingualism and critical thinking.'}
             </p></Reveal>
@@ -152,7 +163,7 @@ export const Openness = () => {
             </div>
             <div className="lg:col-span-6 lg:col-start-7">
               <Chapter saffron className="mb-6">{t.academy.ecoRibbonLabel}</Chapter>
-              <h2 className="t-h2 max-w-[14ch]"><WordReveal text={fr ? 'Première école Ruban Vert d’El Jadida.' : 'The first Green Ribbon school in El Jadida.'} /></h2>
+              <h2 className="t-h2 max-w-[14ch]"><WordReveal text={t.copy.ecoTitle} /></h2>
               <Reveal delay={0.15}><p className="t-body text-sea mt-8 max-w-[56ch]">{t.academy.ecoRibbonText1}</p></Reveal>
               <div className="mt-10 grid sm:grid-cols-2 gap-6">
                 {eco.map((e, i) => (
@@ -186,9 +197,9 @@ export const Activities = () => {
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
           <div>
             <Chapter className="mb-6">{t.activities.extracurricular} {t.activities.parascolaires.toLowerCase()}</Chapter>
-            <h2 className="t-h2 max-w-[14ch]"><WordReveal text={t.activities.title} /></h2>
+            <h2 className="t-h2 max-w-[14ch]"><WordReveal text={t.copy.activitiesTitle} /></h2>
           </div>
-          <Reveal delay={0.15}><p className="t-body text-mute max-w-[44ch]">{t.activities.desc}</p></Reveal>
+          <Reveal delay={0.15}><p className="t-body text-mute max-w-[44ch]">{t.copy.activitiesDesc}</p></Reveal>
         </div>
 
         {isDesktop ? (
@@ -256,7 +267,7 @@ export const LifeTeaser = () => {
         <div className="grid lg:grid-cols-12 gap-8 items-end mb-12">
           <div className="lg:col-span-7">
             <Chapter className="mb-6">{t.nav.life}</Chapter>
-            <h2 className="t-h2 max-w-[14ch]"><WordReveal text={t.ui.lifeTeaser} /></h2>
+            <h2 className="t-h2 max-w-[14ch]"><WordReveal text={t.copy.lifeTitle} /></h2>
           </div>
           <Reveal className="lg:col-span-5" delay={0.15}>
             <p className="t-body text-mute max-w-[44ch]">{t.ui.lifeTeaserDesc}</p>

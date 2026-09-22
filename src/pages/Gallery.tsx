@@ -36,7 +36,7 @@ const Gallery = () => {
   return (
     <main>
       <Seo title={`${c.title} | ${c.archive} — Georges Claude Private Academy El Jadida`} description={c.desc} path="/galerie" image={IMG.event} />
-      <PageHero chapter={c.archive} title={c.title} lead={c.desc} compact />
+      <PageHero chapter={`${c.archive} — ${c.title}`} title={t.copy.galleryTitle} lead={c.desc} compact />
 
       {/* Filtres */}
       {categories.length > 0 && (

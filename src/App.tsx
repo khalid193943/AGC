@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route, Navigate, useLocation, useParams } from 'react-router-dom';
+import { BrowserRouter, HashRouter, Routes, Route, Navigate, useLocation, useParams } from 'react-router-dom';
 import { Analytics } from '@vercel/analytics/react';
 import { HelmetProvider } from 'react-helmet-async';
 import { useEffect, lazy, Suspense, ReactNode } from 'react';
@@ -9,6 +9,9 @@ import { Header } from './components/Header';
 import { Footer } from './components/Footer';
 import { ErrorBoundary } from './components/ErrorBoundary';
 import { IMG } from './content/site';
+
+// Build d'aperçu autonome : navigation par #/ (voir vite.preview.config.ts)
+const Router = import.meta.env.VITE_HASH_ROUTER === '1' ? HashRouter : BrowserRouter;
 
 const Home = lazy(() => import('./pages/Home'));
 const Academy = lazy(() => import('./pages/Academy'));
@@ -39,11 +42,18 @@ const PageLoader = () => (
 const ScrollManager = () => {
   const { pathname, hash } = useLocation();
   useEffect(() => {
-    if (hash) {
-      const el = document.getElementById(hash.slice(1));
-      if (el) { setTimeout(() => el.scrollIntoView({ behavior: 'smooth', block: 'start' }), 80); return; }
-    }
     window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+    if (!hash) return;
+    // La page est chargée à la demande : on attend que la section existe avant d'y descendre.
+    let tries = 0;
+    let timer = 0;
+    const seek = () => {
+      const el = document.getElementById(hash.slice(1));
+      if (el) { timer = window.setTimeout(() => el.scrollIntoView({ behavior: 'smooth', block: 'start' }), 250); return; }
+      if (tries++ < 40) timer = window.setTimeout(seek, 75);
+    };
+    seek();
+    return () => window.clearTimeout(timer);
   }, [pathname, hash]);
   return null;
 };

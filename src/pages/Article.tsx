@@ -69,7 +69,7 @@ const Article = () => {
           </motion.div>
           <div className="absolute inset-0 bg-gradient-to-t from-ink via-ink/60 to-ink/10" />
           <div className="wrap relative z-10 pb-14" style={{ paddingTop: 'calc(var(--header-h) + 6rem)' }}>
-            <Link to="/actualites" className="inline-flex items-center gap-2 text-sm text-sea hover:text-white mb-8 group"><ArrowLeft size={15} className="group-hover:-translate-x-1 transition-transform" /> {t.ui.backNews}</Link>
+            <Link to="/actualites" className="flex w-fit items-center gap-2 text-sm text-sea hover:text-white mb-8 group"><ArrowLeft size={15} className="group-hover:-translate-x-1 transition-transform" /> {t.ui.backNews}</Link>
             <Chapter saffron className="mb-5">{article.category}{article.date ? ` — ${fmtDate(article.date, currentLang)}` : ''}</Chapter>
             <h1 className="t-h1 max-w-[18ch]"><WordReveal text={article.title} inView={false} /></h1>
             {article.author && <p className="text-sea mt-6">{article.author}</p>}

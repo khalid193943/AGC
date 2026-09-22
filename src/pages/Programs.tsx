@@ -3,7 +3,7 @@ import { ArrowUpRight } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 import { IMG } from '../content/site';
 import { WordReveal, Reveal, ClipReveal } from '../components/ui/motion';
-import { Seo, Chapter } from '../components/ui';
+import { Seo, Chapter, scrollToId } from '../components/ui';
 import { PageHero, CtaBand } from '../components/sections';
 import { CYCLES } from './home/Discover';
 
@@ -17,13 +17,13 @@ const Programs = () => {
   return (
     <main>
       <Seo title={`${t.nav.programs} | ${fr ? 'Maternelle, Primaire, Collège, Lycée' : 'Preschool, Primary, Middle, High School'} — ${fr ? 'École privée El Jadida' : 'Private school El Jadida'}`} description={t.programs.heroDesc} path="/programmes" image={IMG.cycles.primaire} />
-      <PageHero chapter={t.programs.curriculum} title={`${t.programs.heroTitle1} ${t.programs.heroTitle2}`} lead={t.programs.heroDesc} image={IMG.cycles.college} imageAlt={fr ? 'Élèves de l’académie' : 'Academy students'} />
+      <PageHero chapter={`${t.programs.curriculum} — ${t.copy.programsRail}`} title={t.copy.programsPageTitle} lead={t.programs.heroDesc} image={IMG.cycles.college} imageAlt={fr ? 'Élèves de l’académie' : 'Academy students'} />
 
       {/* Le parcours en une ligne */}
       <section className="bg-salt border-b border-ink/10">
         <div className="wrap py-8 grid grid-cols-2 md:grid-cols-4 gap-4">
           {cycles.map((c, i) => (
-            <a key={c.id} href={`#${c.id}`} className="group flex items-baseline gap-3 border-l border-ink/15 pl-4 py-1">
+            <a key={c.id} href={`#${c.id}`} onClick={scrollToId(c.id)} className="group flex items-baseline gap-3 border-l border-ink/15 pl-4 py-1">
               <span className="text-mute text-sm">{c.ages}</span>
               <span className="font-semibold group-hover:text-ink-3 transition-colors">{c.title}</span>
               {i < 3 && <span className="hidden md:inline text-mute ml-auto" aria-hidden>→</span>}

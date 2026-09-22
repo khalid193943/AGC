@@ -33,7 +33,7 @@ const Contact = () => {
   return (
     <main>
       <Seo title={`${t.nav.contact} | Georges Claude Private Academy — Sidi Bouzid, El Jadida`} description={t.ui.contactDesc} path="/contact" image={IMG.campus} />
-      <PageHero chapter={t.nav.contact} title={t.ui.contactTitle} lead={t.ui.contactDesc} compact />
+      <PageHero chapter={t.nav.contact} title={t.copy.contactTitle} lead={t.ui.contactDesc} compact />
 
       {/* Canaux */}
       <section className="bg-salt border-b border-ink/10">

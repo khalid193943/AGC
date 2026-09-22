@@ -17,7 +17,7 @@ const Space = () => {
   return (
     <main>
       <Seo title={`${s.title[currentLang]} | ${t.nav.life} — Georges Claude Private Academy El Jadida`} description={s.intro[currentLang]} path={`/espaces/${slug}`} image={s.image} />
-      <PageHero chapter={t.common.infrastructure} title={s.title[currentLang]} lead={s.intro[currentLang]} image={s.image} imageAlt={s.title[currentLang]}>
+      <PageHero chapter={`${t.copy.spaceChapter} — ${t.common.infrastructure}`} title={s.title[currentLang]} lead={s.intro[currentLang]} image={s.image} imageAlt={s.title[currentLang]}>
         <Link to="/vie-scolaire" className="btn btn-ghost-light"><ArrowLeft size={16} /> {t.ui.spaceBack}</Link>
       </PageHero>
 

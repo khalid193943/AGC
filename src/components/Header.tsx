@@ -66,10 +66,10 @@ export const Header = () => {
           <div className="wrap flex items-center justify-between" style={{ height: 'var(--header-h)' }}>
             {/* Logo */}
             <Link to="/" className="flex items-center gap-3 shrink-0" aria-label={t.ui.backHome}>
-              <img src={IMG.logo} alt="" className="h-11 w-11 object-contain" width={44} height={44} referrerPolicy="no-referrer" />
+              <img src={IMG.logo} alt="" className="h-14 w-14 md:h-[68px] md:w-[68px] object-contain drop-shadow-[0_2px_8px_rgba(0,0,0,0.25)]" width={68} height={68} referrerPolicy="no-referrer" />
               <span className={`hidden sm:block font-display font-semibold tracking-tight leading-none ${light || open ? 'text-salt' : 'text-ink'}`}>
-                <span className="block text-[15px]">Georges Claude</span>
-                <span className={`block text-[11px] font-medium mt-0.5 ${light || open ? 'text-salt/60' : 'text-mute'}`}>{t.nav.tagline}</span>
+                <span className="block text-[17px] md:text-[19px]">Georges Claude</span>
+                <span className={`block text-[12px] font-medium mt-0.5 ${light || open ? 'text-salt/60' : 'text-mute'}`}>{t.nav.tagline}</span>
               </span>
             </Link>
 

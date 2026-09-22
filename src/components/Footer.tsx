@@ -55,7 +55,7 @@ export const Footer = () => {
           <div className="lg:col-span-7">
             <p className="chapter saffron mb-6">{t.ui.contactTitle}</p>
             <h2 className="t-h1 max-w-[12ch]">
-              <WordReveal text={currentLang === 'FR' ? 'Venez voir l’école de vos propres yeux.' : 'Come and see the school with your own eyes.'} />
+              <WordReveal text={t.copy.footerTitle} />
             </h2>
           </div>
           <Reveal className="lg:col-span-5 flex flex-col sm:flex-row lg:flex-col gap-3 sm:items-center lg:items-start" delay={0.2}>
@@ -93,14 +93,22 @@ export const Footer = () => {
             <a href={SITE.mapsUrl} target="_blank" rel="noopener noreferrer" className="ulink self-start text-sm font-semibold">{t.ui.openMaps}</a>
           </div>
           <div className="lg:col-span-7 min-h-[320px] lg:min-h-[420px] relative">
-            <iframe
+            {import.meta.env.VITE_PREVIEW === '1' ? (
+              <a href={SITE.mapsUrl} target="_blank" rel="noopener noreferrer" className="absolute inset-0 flex flex-col items-center justify-center gap-3 bg-ink-2 text-center p-8 hover:bg-ink-3 transition-colors">
+                <span className="w-12 h-12 rounded-full bg-saffron text-ink flex items-center justify-center"><ArrowUpRight size={20} /></span>
+                <span className="t-h4">{t.ui.openMaps}</span>
+                <span className="text-sea-2 text-sm">{SITE.address.plusCode}</span>
+              </a>
+            ) : (
+              <iframe
               src={SITE.mapsEmbed}
               title="Localisation Georges Claude Private Academy — Sidi Bouzid, El Jadida"
               className="absolute inset-0 w-full h-full grayscale-[0.4] contrast-[1.05]"
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
               allowFullScreen
-            />
+              />
+            )}
           </div>
         </div>
       </div>
@@ -110,8 +118,8 @@ export const Footer = () => {
         <div className="grid md:grid-cols-2 lg:grid-cols-12 gap-10">
           <div className="lg:col-span-4">
             <Link to="/" className="inline-flex items-center gap-3">
-              <img src={IMG.logo} alt="" className="h-12 w-12 object-contain" referrerPolicy="no-referrer" loading="lazy" />
-              <span className="font-display font-semibold leading-tight">Georges Claude<br /><span className="text-sea-2 font-medium text-sm">Private Academy</span></span>
+              <img src={IMG.logo} alt="" className="h-20 w-20 object-contain" referrerPolicy="no-referrer" loading="lazy" />
+              <span className="font-display font-semibold leading-tight text-xl">Georges Claude<br /><span className="text-sea-2 font-medium text-base">Private Academy</span></span>
             </Link>
             <p className="font-serif italic text-lg text-sea mt-6 max-w-[30ch]">{SITE.motto[currentLang]}</p>
             <p className="text-sm text-sea-2 mt-4 max-w-[38ch]">{t.footer.desc}</p>

@@ -45,7 +45,7 @@ const News = () => {
   return (
     <main>
       <Seo title={`${c.title1} ${c.title2} | Georges Claude Private Academy El Jadida`} description={t.news.desc} path="/actualites" image={IMG.event} />
-      <PageHero chapter={t.nav.newsEvents} title={`${c.title1} ${c.title2.toLowerCase()}`} lead={t.news.desc} compact />
+      <PageHero chapter={t.nav.newsEvents} title={t.copy.newsTitle} lead={t.news.desc} compact />
 
       {/* À la une */}
       <section className="section bg-salt">

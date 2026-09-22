@@ -32,7 +32,7 @@ const Academy = () => {
   return (
     <main>
       <Seo title={`${a.title} | ${fr ? 'Histoire, valeurs et engagement' : 'History, values and commitment'} — El Jadida`} description={a.heritageText1} path="/academie" image={IMG.classroom} />
-      <PageHero chapter={t.nav.academy} title={a.heroSubtitle} lead={a.heritageText1} image={IMG.classroom} imageAlt={fr ? 'Salle de classe de l’académie' : 'Academy classroom'} />
+      <PageHero chapter={`${t.nav.academy} — ${a.heroSubtitle}`} title={t.copy.academyTitle} lead={t.copy.academyLead} image={IMG.classroom} imageAlt={fr ? 'Salle de classe de l’académie' : 'Academy classroom'} />
 
       {/* Lettre du directeur — lecture éditoriale */}
       <section className="section bg-salt">

@@ -6,7 +6,7 @@ import { db } from '../firebase';
 import { useLanguage } from '../contexts/LanguageContext';
 import { SITE, IMG, REQUIREMENTS } from '../content/site';
 import { WordReveal, Reveal } from '../components/ui/motion';
-import { Seo, Chapter, Button, Accordion } from '../components/ui';
+import { Seo, Chapter, Button, Accordion, scrollToId } from '../components/ui';
 import { PageHero } from '../components/sections';
 
 const Enrollment = () => {
@@ -34,8 +34,8 @@ const Enrollment = () => {
   return (
     <main>
       <Seo title={`${fr ? 'Inscription en ligne' : 'Online enrolment'} ${SITE.year} | Georges Claude Private Academy El Jadida`} description={e.heroDesc} path="/inscription" image={IMG.kids} />
-      <PageHero chapter={`${t.nav.admissions} ${SITE.year}`} title={`${e.heroTitle1} ${e.heroTitle2}`} lead={e.heroDesc} image={IMG.kids} imageAlt={fr ? 'Élèves de l’académie' : 'Academy students'}>
-        <a href="#formulaire" className="btn btn-saffron">{e.formTitle}</a>
+      <PageHero chapter={`${t.nav.admissions} ${SITE.year}`} title={t.copy.enrollTitle} lead={t.copy.enrollLead} image={IMG.kids} imageAlt={fr ? 'Élèves de l’académie' : 'Academy students'}>
+        <a href="#formulaire" onClick={scrollToId('formulaire')} className="btn btn-saffron">{e.formTitle}</a>
         <a href={SITE.phoneHref} className="btn btn-ghost-light"><Phone size={16} /> {SITE.phone}</a>
       </PageHero>
 

@@ -33,7 +33,7 @@ const Cycle = () => {
   return (
     <main>
       <Seo title={`${c.title} — ${c.subtitle} | Georges Claude Private Academy El Jadida`} description={c.heroDesc} path={`/programmes/${cid}`} image={IMG.cycles[cid]} />
-      <PageHero chapter={`${badge} — ${t.ui.cycleFor} ${t.ui.cycleAges[cid]}`} title={c.title} lead={c.heroDesc} image={IMG.cycles[cid]} imageAlt={c.title}>
+      <PageHero chapter={`${c.title} — ${badge} — ${t.ui.cycleFor} ${t.ui.cycleAges[cid]}`} title={t.copy.cycleTitles[cid]} lead={c.heroDesc} image={IMG.cycles[cid]} imageAlt={c.title}>
         <Link to="/inscription" className="btn btn-saffron">{c.enrollBtn}</Link>
         <Link to="/contact" className="btn btn-ghost-light">{c.admissionBtn}</Link>
       </PageHero>

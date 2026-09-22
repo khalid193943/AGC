@@ -205,3 +205,14 @@ export const fmtDate = (d: any, lang: 'FR' | 'EN') => {
   if (!date) return '';
   return date.toLocaleDateString(lang === 'FR' ? 'fr-FR' : 'en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
 };
+
+/* ------------------------------------------------------------------ */
+/* Défilement vers une ancre de la page (compatible avec tout routeur)  */
+/* ------------------------------------------------------------------ */
+export const scrollToId = (id: string) => (e?: { preventDefault: () => void }) => {
+  e?.preventDefault();
+  const el = document.getElementById(id);
+  if (!el) return;
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  el.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
+};

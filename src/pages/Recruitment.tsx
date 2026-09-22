@@ -54,7 +54,7 @@ const Recruitment = () => {
   return (
     <main>
       <Seo title={`${r.title} | ${r.subtitle} — Georges Claude Private Academy El Jadida`} description={r.heroDesc} path="/recrutement" image={IMG.team} />
-      <PageHero chapter={r.title} title={r.subtitle} lead={r.heroDesc} image={IMG.team} imageAlt={fr ? 'L’équipe de l’académie' : 'The academy team'} compact />
+      <PageHero chapter={`${r.title} — ${r.subtitle}`} title={t.copy.recruitTitle} lead={r.heroDesc} image={IMG.team} imageAlt={fr ? 'L’équipe de l’académie' : 'The academy team'} compact />
 
       <section className="section bg-salt">
         <div className="wrap grid lg:grid-cols-12 gap-12">

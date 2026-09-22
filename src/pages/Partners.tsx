@@ -19,7 +19,7 @@ const Partners = () => {
   return (
     <main>
       <Seo title={`${t.nav.partners} | Cambridge & ${fr ? 'réseau' : 'network'} — Georges Claude Private Academy El Jadida`} description={t.ui.partnersIntro} path="/partenaires" image={IMG.classroom} />
-      <PageHero chapter={fr ? 'Réseau d’excellence' : 'Network of excellence'} title={fr ? 'Nos partenaires.' : 'Our partners.'} lead={fr ? 'Une ouverture sur le monde et des collaborations stratégiques pour offrir à nos élèves les meilleures opportunités académiques et internationales.' : 'An opening to the world and strategic collaborations to offer our students the best academic and international opportunities.'} compact />
+      <PageHero chapter={fr ? 'Réseau d’excellence' : 'Network of excellence'} title={t.copy.partnersTitle} lead={fr ? 'Une ouverture sur le monde et des collaborations stratégiques pour offrir à nos élèves les meilleures opportunités académiques et internationales.' : 'An opening to the world and strategic collaborations to offer our students the best academic and international opportunities.'} compact />
 
       {/* Cambridge */}
       <section className="section bg-salt">

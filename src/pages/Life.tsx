@@ -18,7 +18,7 @@ const Life = () => {
   return (
     <main>
       <Seo title={`${t.nav.life} | ${fr ? 'Infrastructures, cantine, services' : 'Facilities, canteen, services'} — Georges Claude Private Academy`} description={c.heroSubtitle} path="/vie-scolaire" image={IMG.sport} />
-      <PageHero chapter={t.nav.life} title={c.heroTitle1} lead={c.heroSubtitle} image={IMG.kids} imageAlt={fr ? 'Élèves dans la cour' : 'Students in the playground'} />
+      <PageHero chapter={t.nav.life} title={t.copy.lifeTitleHero} lead={c.heroSubtitle} image={IMG.kids} imageAlt={fr ? 'Élèves dans la cour' : 'Students in the playground'} />
 
       <div className="bg-saffron text-ink py-4 border-b border-ink/10">
         <Marquee items={activities.map((a) => <span key={a} className="font-display font-medium text-2xl md:text-3xl whitespace-nowrap">{a}</span>)} duration={45} />
