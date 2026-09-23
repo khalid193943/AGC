@@ -61,7 +61,7 @@ const Article = () => {
 
   return (
     <main>
-      <Seo title={`${article.title} | ${t.nav.news} — Georges Claude Private Academy`} description={paragraphs[0]?.slice(0, 155) || article.title} path={`/actualites/${id}`} image={article.image || IMG.event} />
+      <Seo title={`${article.title} | ${t.nav.news} — Georges Claude Private Academy`} description={paragraphs[0]?.slice(0, 155) || article.title} path={`/actualites/${id}`} image={article.image || IMG.event} type="article" breadcrumbs={[{ name: t.nav.newsEvents, path: '/actualites' }, { name: article.title, path: `/actualites/${id}` }]} jsonLd={{ '@context': 'https://schema.org', '@type': 'NewsArticle', headline: article.title, image: article.image, datePublished: typeof article.date === 'string' ? article.date : undefined, author: { '@type': 'Organization', name: 'Georges Claude Private Academy' }, publisher: { '@id': 'https://agc.ma/#school' } }} />
       <article>
         <header className="relative bg-ink text-salt on-dark overflow-hidden min-h-[70svh] flex items-end">
           <motion.div className="absolute inset-0" style={reduce ? undefined : { y }}>

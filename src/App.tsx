@@ -7,8 +7,8 @@ import ReactGA from 'react-ga4';
 import { LanguageProvider, useLanguage } from './contexts/LanguageContext';
 import { Header } from './components/Header';
 import { Footer } from './components/Footer';
-import { Mascot } from './components/Mascot';
 import { ErrorBoundary } from './components/ErrorBoundary';
+import { Preloader, RouteProgress } from './components/Preloader';
 import { IMG } from './content/site';
 
 // Build d'aperçu autonome : navigation par #/ (voir vite.preview.config.ts)
@@ -29,16 +29,7 @@ const RecruitmentPage = lazy(() => import('./pages/Recruitment'));
 const PartnersPage = lazy(() => import('./pages/Partners'));
 const LegalPage = lazy(() => import('./pages/Legal'));
 const NotFound = lazy(() => import('./pages/NotFound'));
-const AdminLogin = lazy(() => import('./pages/admin/AdminLogin'));
-const AdminDashboard = lazy(() => import('./pages/admin/AdminDashboard'));
-
-const PageLoader = () => (
-  <div className="fixed inset-0 z-[60] bg-ink flex flex-col items-center justify-center gap-6" role="status" aria-live="polite">
-    <img src={IMG.logo} alt="" className="w-16 h-16 object-contain" referrerPolicy="no-referrer" />
-    <span className="w-24 h-px bg-white/15 overflow-hidden"><span className="block h-full bg-saffron origin-left" style={{ animation: 'loader-bar 1.4s cubic-bezier(.16,1,.3,1) infinite' }} /></span>
-    <span className="sr-only">Chargement</span>
-  </div>
-);
+const AdminApp = lazy(() => import('./admin/AdminApp'));
 
 const ScrollManager = () => {
   const { pathname, hash } = useLocation();
@@ -77,7 +68,7 @@ const LegacySpaceRedirect = () => {
 const AppRoutes = () => {
   const { currentLang } = useLanguage();
   return (
-    <Suspense fallback={<PageLoader />}>
+    <Suspense fallback={<RouteProgress />}>
       <PageTransition>
         <Routes>
           <Route path="/" element={<Home />} />
@@ -97,8 +88,7 @@ const AppRoutes = () => {
           <Route path="/partenaires" element={<PartnersPage />} />
           <Route path="/mentions-legales" element={<LegalPage kind="legal" />} />
           <Route path="/politique-confidentialite" element={<LegalPage kind="privacy" />} />
-          <Route path="/admin/login" element={<AdminLogin />} />
-          <Route path="/admin/dashboard" element={<AdminDashboard />} />
+          <Route path="/admin/*" element={<AdminApp />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </PageTransition>
@@ -120,12 +110,12 @@ function AppContent() {
 
   return (
     <div className="min-h-screen flex flex-col bg-salt text-ink">
+      {!isAdmin && <Preloader />}
       {!isAdmin && <Header />}
       <div className="flex-grow">
         <AppRoutes />
       </div>
       {!isAdmin && <Footer />}
-      {!isAdmin && <Mascot />}
     </div>
   );
 }

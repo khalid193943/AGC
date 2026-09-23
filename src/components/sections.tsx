@@ -1,11 +1,11 @@
 import { ReactNode, useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, useScroll, useTransform, useReducedMotion, useInView } from 'motion/react';
-import { Play, Pause, Volume2, VolumeX, ArrowUpRight } from 'lucide-react';
+import { Play, Pause, Volume2, VolumeX, ArrowUpRight, Award, Users, Sparkles, Leaf, GraduationCap, Cog, HeartPulse, Briefcase, Landmark, Compass } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
-import { SITE, IMG } from '../content/site';
+import { SITE, IMG, AFTER_BAC } from '../content/site';
 import { Reveal, WordReveal, Parallax, Counter, EASE } from './ui/motion';
-import { Button, Chapter, fmtDate } from './ui';
+import { Button, Chapter, fmtDate, Marquee } from './ui';
 
 /* ------------------------------------------------------------------ */
 /* PageHero — hero des pages secondaires : encre, très grande typo,
@@ -33,8 +33,15 @@ export const PageHero = ({
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start start', 'end start'] });
   const y = useTransform(scrollYProgress, [0, 1], ['0%', '25%']);
   const opacity = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
+  const bgY = useTransform(scrollYProgress, [0, 1], ['0%', '-12%']);
   return (
     <section ref={ref} className="relative bg-ink text-salt on-dark overflow-hidden grain">
+      {/* Façade de l'école en arrière-plan, fondue dans l'encre */}
+      <motion.div className="absolute inset-0" style={reduce ? undefined : { y: bgY }} aria-hidden>
+        <img src={IMG.school} alt="" className="w-full h-[120%] object-cover object-center opacity-40" loading="eager" decoding="async" />
+        <div className="absolute inset-0 bg-gradient-to-r from-ink via-ink/85 to-ink/35" />
+        <div className="absolute inset-0 bg-gradient-to-t from-ink via-transparent to-ink/60" />
+      </motion.div>
       <div className="wrap relative z-10" style={{ paddingTop: 'calc(var(--header-h) + clamp(3rem, 8vw, 7rem))', paddingBottom: compact ? 'clamp(3rem, 6vw, 5rem)' : 'clamp(4rem, 8vw, 7rem)' }}>
         <div className="grid lg:grid-cols-12 gap-10 items-end">
           <motion.div className={image ? 'lg:col-span-7' : 'lg:col-span-10'} style={reduce ? undefined : { y, opacity }}>
@@ -49,7 +56,6 @@ export const PageHero = ({
             )}
             {children && <div className="mt-10 flex flex-wrap gap-3">{children}</div>}
           </motion.div>
-          {!image && <div data-mascot-spot className="hidden lg:block lg:col-span-3 lg:col-start-10 h-64 self-center" aria-hidden />}
           {image && (
             <motion.div className="lg:col-span-4 lg:col-start-9" initial={reduce ? false : { opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1.2, delay: 0.35, ease: EASE }}>
               <div className="img-arch aspect-[4/5] max-w-[380px] lg:max-w-none ml-auto">
@@ -169,15 +175,16 @@ export const NewsCard = ({ item, big = false }: { item: any; big?: boolean }) =>
 export const StatGrid = ({ dark = false }: { dark?: boolean }) => {
   const { t, currentLang } = useLanguage();
   const stats = [
-    { n: 100, suffix: '%', label: t.ui.success100, sub: t.ui.success100Desc },
-    { n: 25, suffix: '', label: t.ui.maxClass, sub: t.ui.maxClassDesc },
-    { n: 15, suffix: '+', label: t.ui.activitiesCount, sub: t.ui.activitiesDesc },
-    { n: 1, suffix: currentLang === 'FR' ? 'ère' : 'st', label: t.ui.ecoFirst, sub: t.ui.ecoFirstDesc },
+    { n: 100, suffix: '%', label: t.ui.success100, sub: t.ui.success100Desc, Icon: Award },
+    { n: 25, suffix: '', label: t.ui.maxClass, sub: t.ui.maxClassDesc, Icon: Users },
+    { n: 15, suffix: '+', label: t.ui.activitiesCount, sub: t.ui.activitiesDesc, Icon: Sparkles },
+    { n: 1, suffix: currentLang === 'FR' ? 'ère' : 'st', label: t.ui.ecoFirst, sub: t.ui.ecoFirstDesc, Icon: Leaf },
   ];
   return (
     <div className={`grid grid-cols-2 lg:grid-cols-4 gap-px ${dark ? 'bg-white/12' : 'bg-ink/12'} rounded-[1.75rem] overflow-hidden border ${dark ? 'border-white/12' : 'border-ink/12'}`}>
       {stats.map((s, i) => (
         <div key={i} className={`p-7 md:p-9 ${dark ? 'bg-ink' : 'bg-salt'}`}>
+          <s.Icon size={18} className="text-saffron mb-4" />
           <p className="t-num"><Counter to={s.n} suffix={s.suffix} /></p>
           <p className="t-h4 mt-3">{s.label}</p>
           <p className={`t-small mt-1 ${dark ? 'text-sea-2' : 'text-mute'}`}>{s.sub}</p>
@@ -191,11 +198,82 @@ export const StatGrid = ({ dark = false }: { dark?: boolean }) => {
 /* ImageStrip — trois images qui se décalent au scroll                 */
 /* ------------------------------------------------------------------ */
 export const ImageStrip = ({ images, alt }: { images: string[]; alt: string }) => (
-  <div className="grid grid-cols-3 gap-3 md:gap-5 items-end">
+  <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-5 items-end">
     {images.slice(0, 3).map((src, i) => (
-      <Parallax key={i} amount={i === 1 ? 70 : 30} className={`img-frame ${i === 1 ? 'aspect-[3/4]' : 'aspect-square mb-10'}`}>
+      <Parallax
+        key={i}
+        amount={i === 1 ? 70 : 30}
+        className={`img-frame ${i === 0 ? 'col-span-2 md:col-span-1 aspect-[16/10] md:aspect-square md:mb-10' : i === 1 ? 'aspect-[3/4]' : 'aspect-[3/4] md:aspect-square md:mb-10'}`}
+      >
         <img src={src} alt={`${alt} ${i + 1}`} loading="lazy" decoding="async" referrerPolicy="no-referrer" className="w-full h-full object-cover scale-110" />
       </Parallax>
     ))}
   </div>
 );
+
+/* ------------------------------------------------------------------ */
+/* AfterBac — poursuite d'études : les grandes filières marocaines      */
+/* ------------------------------------------------------------------ */
+export const AfterBac = ({ compact = false }: { compact?: boolean }) => {
+  const { currentLang } = useLanguage();
+  const d = AFTER_BAC[currentLang];
+  const icons = [GraduationCap, Cog, HeartPulse, Briefcase, Landmark];
+  const all = d.families.flatMap((f) => f.items);
+  if (compact) {
+    return (
+      <section className="bg-ink text-salt on-dark grain relative overflow-hidden">
+        <div className="wrap py-14 grid lg:grid-cols-12 gap-8 items-center">
+          <div className="lg:col-span-5">
+            <Chapter saffron className="mb-4">{d.chapter}</Chapter>
+            <h2 className="t-h2 max-w-[14ch]"><WordReveal text={d.title} /></h2>
+          </div>
+          <Reveal className="lg:col-span-7" delay={0.1}>
+            <p className="t-body text-sea max-w-[60ch]">{d.lead}</p>
+            <div className="mt-6 flex flex-wrap gap-2">
+              {d.families.map((f, i) => { const I = icons[i]; return <span key={f.name} className="inline-flex items-center gap-2 rounded-full border border-white/20 px-3 py-1.5 text-sm"><I size={14} className="text-saffron" />{f.name}</span>; })}
+            </div>
+            <Link to="/programmes/lycee" className="ulink font-semibold inline-flex items-center gap-1.5 mt-6"><Compass size={15} />{currentLang === 'FR' ? 'Le parcours du lycée' : 'The high-school path'}</Link>
+          </Reveal>
+        </div>
+        <div className="border-t border-white/10 py-3">
+          <Marquee duration={60} items={all.map((x) => <span key={x} className="font-display font-medium text-lg whitespace-nowrap text-sea">{x}</span>)} />
+        </div>
+      </section>
+    );
+  }
+  return (
+    <section className="section bg-ink text-salt on-dark grain relative overflow-hidden">
+      <div className="wrap">
+        <div className="grid lg:grid-cols-12 gap-8 items-end mb-12">
+          <div className="lg:col-span-7">
+            <Chapter saffron className="mb-6">{d.chapter}</Chapter>
+            <h2 className="t-h1 max-w-[12ch]"><WordReveal text={d.title} /></h2>
+          </div>
+          <Reveal className="lg:col-span-5" delay={0.15}><p className="t-lead text-sea max-w-[40ch]">{d.lead}</p></Reveal>
+        </div>
+        <div className="grid md:grid-cols-2 xl:grid-cols-5 gap-4">
+          {d.families.map((f, i) => {
+            const I = icons[i];
+            return (
+              <Reveal key={f.name} delay={0.06 * i} className="card-dark p-6 flex flex-col">
+                <span className="w-11 h-11 rounded-full bg-saffron text-ink flex items-center justify-center mb-5"><I size={20} /></span>
+                <h3 className="t-h4">{f.name}</h3>
+                <p className="t-small text-sea-2 mt-2">{f.desc}</p>
+                <ul className="mt-4 flex flex-wrap gap-1.5">
+                  {f.items.map((it) => <li key={it} className="text-[12px] font-medium rounded-full border border-white/20 px-2.5 py-1">{it}</li>)}
+                </ul>
+              </Reveal>
+            );
+          })}
+        </div>
+        <Reveal delay={0.2} className="mt-10 flex flex-col md:flex-row md:items-center justify-between gap-4 border-t border-white/10 pt-6">
+          <p className="t-body text-sea max-w-[60ch] inline-flex items-start gap-3"><Compass size={18} className="text-saffron mt-1 shrink-0" />{d.note}</p>
+          <Button to="/inscription" variant="saffron">{currentLang === 'FR' ? 'Inscrire mon enfant au lycée' : 'Enrol my child in high school'}</Button>
+        </Reveal>
+      </div>
+      <div className="mt-12 border-t border-white/10 py-3">
+        <Marquee duration={60} items={all.map((x) => <span key={x} className="font-display font-medium text-xl whitespace-nowrap text-sea">{x}</span>)} />
+      </div>
+    </section>
+  );
+};

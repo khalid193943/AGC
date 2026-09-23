@@ -23,6 +23,11 @@
   --color-saffron: #E8B04B;
   --color-saffron-2: #F3CF80;
   --color-signal: #D7263D;
+  --color-brick: #B5253C;
+  /* Couleurs exactes du logo */
+  --color-logo-blue: #002147;
+  --color-logo-yellow: #FBBF24;
+  --color-logo-red: #E11D48;
   --color-leaf: #2E6B4C;
   --color-leaf-2: #0F3B28;
   --color-mute: #5C6578;
@@ -124,7 +129,9 @@
   .img-zoom:hover img { transform: scale(1.04); }
 
   /* Cartes */
-  .card { background: #fff; border: 1px solid var(--color-line); border-radius: 1.5rem; }
+  .card { background: transparent; border: 1px solid var(--color-line); border-radius: 1.5rem; }
+  .on-dark .card { border-color: var(--color-line-light); color: var(--color-salt); }
+  .on-dark .card .t-meta, .on-dark .card .text-mute { color: var(--color-sea-2); }
   .card-dark { background: rgba(255,255,255,0.05); border: 1px solid var(--color-line-light); border-radius: 1.5rem; }
 
   /* Champs */
@@ -175,9 +182,17 @@
 .marquee.reverse { animation-direction: reverse; }
 .marquee-wrap:hover .marquee { animation-play-state: paused; }
 
-/* Mascotte */
-@keyframes mc-wave { 0%,100% { transform: rotate(0deg); } 50% { transform: rotate(-22deg); } }
-@keyframes mc-blink { 0%,92%,100% { transform: scaleY(1); } 95% { transform: scaleY(0.1); } }
+/* Orbites (section Cambridge) */
+@keyframes orbit { from { transform: translate(-50%, -50%) rotate(0deg); } to { transform: translate(-50%, -50%) rotate(360deg); } }
+@keyframes orbit-counter { from { transform: translate(-50%, -50%) rotate(0deg); } to { transform: translate(-50%, -50%) rotate(-360deg); } }
+.orbit { animation: orbit 30s linear infinite; will-change: transform; }
+.orbit-counter { animation: orbit-counter 30s linear infinite; will-change: transform; }
+@media (prefers-reduced-motion: reduce) { .orbit, .orbit-counter { animation: none; } }
+
+/* Médaillon du logo */
+@keyframes crest-spin { to { transform: rotate(360deg); } }
+.crest-spin { animation: crest-spin 40s linear infinite; transform-origin: 50% 50%; will-change: transform; }
+@media (prefers-reduced-motion: reduce) { .crest-spin { animation: none; } }
 
 /* Loader */
 @keyframes loader-bar { from { transform: scaleX(0); } to { transform: scaleX(1); } }

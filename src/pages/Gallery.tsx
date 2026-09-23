@@ -35,7 +35,7 @@ const Gallery = () => {
 
   return (
     <main>
-      <Seo title={`${c.title} | ${c.archive} — Georges Claude Private Academy El Jadida`} description={c.desc} path="/galerie" image={IMG.event} />
+      <Seo title={`${c.title} | ${c.archive} — Georges Claude Private Academy El Jadida`} description={c.desc} path="/galerie" image={IMG.event} breadcrumbs={[{ name: t.nav.gallery, path: '/galerie' }]} />
       <PageHero chapter={`${c.archive} — ${c.title}`} title={t.copy.galleryTitle} lead={c.desc} compact />
 
       {/* Filtres */}

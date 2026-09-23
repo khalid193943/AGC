@@ -5,6 +5,7 @@ import { SITE, IMG } from '../content/site';
 import { WordReveal, Reveal } from '../components/ui/motion';
 import { Seo, Chapter } from '../components/ui';
 import { PageHero, CtaBand } from '../components/sections';
+import { TiltCard } from './home/Discover';
 
 const Partners = () => {
   const { currentLang, t } = useLanguage();
@@ -18,16 +19,18 @@ const Partners = () => {
 
   return (
     <main>
-      <Seo title={`${t.nav.partners} | Cambridge & ${fr ? 'réseau' : 'network'} — Georges Claude Private Academy El Jadida`} description={t.ui.partnersIntro} path="/partenaires" image={IMG.classroom} />
+      <Seo title={`${t.nav.partners} | Cambridge & ${fr ? 'réseau' : 'network'} — Georges Claude Private Academy El Jadida`} description={t.ui.partnersIntro} path="/partenaires" image={IMG.classroom} breadcrumbs={[{ name: t.nav.partners, path: '/partenaires' }]} />
       <PageHero chapter={fr ? 'Réseau d’excellence' : 'Network of excellence'} title={t.copy.partnersTitle} lead={fr ? 'Une ouverture sur le monde et des collaborations stratégiques pour offrir à nos élèves les meilleures opportunités académiques et internationales.' : 'An opening to the world and strategic collaborations to offer our students the best academic and international opportunities.'} compact />
 
       {/* Cambridge */}
       <section className="section bg-salt">
         <div className="wrap grid lg:grid-cols-12 gap-12 items-center">
-          <Reveal className="lg:col-span-5">
-            <div className="rounded-[2rem] bg-white border border-ink/10 p-12 md:p-16 flex items-center justify-center shadow-[0_40px_80px_-40px_rgba(6,25,58,0.25)]">
-              <img src={SITE.cambridgeLogo} alt="Cambridge Assessment International Education" className="w-full h-auto" loading="lazy" referrerPolicy="no-referrer" />
-            </div>
+          <Reveal className="lg:col-span-5" style={{ perspective: '1200px' }}>
+            <TiltCard>
+              <div className="rounded-[2rem] bg-white border border-ink/10 p-12 md:p-16 flex items-center justify-center shadow-[0_40px_80px_-40px_rgba(6,25,58,0.35)]">
+                <img src={SITE.cambridgeLogo} alt="Cambridge Assessment International Education" className="w-full h-auto" loading="lazy" referrerPolicy="no-referrer" />
+              </div>
+            </TiltCard>
           </Reveal>
           <div className="lg:col-span-6 lg:col-start-7">
             <Chapter className="mb-6">Cambridge Assessment International Education</Chapter>

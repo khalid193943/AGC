@@ -2,8 +2,9 @@ import { Link } from 'react-router-dom';
 import { ArrowUpRight } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 import { IMG } from '../content/site';
+import { FAQ } from '../content/faq';
 import { Seo } from '../components/ui';
-import { VideoSection } from '../components/sections';
+import { VideoSection, AfterBac } from '../components/sections';
 import { Reveal } from '../components/ui/motion';
 import { Hero, Identity, Director, Vision } from './home/Hero';
 import { Programs, Openness, Activities, LifeTeaser } from './home/Discover';
@@ -24,6 +25,7 @@ export const Home = () => {
         description={fr ? 'École privée homologuée à El Jadida : enseignement trilingue de la maternelle au lycée, programme Cambridge, 100 % de réussite au Bac et au BEM. Inscriptions 2026-2027 ouvertes.' : 'Accredited private school in El Jadida: trilingual teaching from preschool to high school, Cambridge programme, 100% success rate. Enrolment 2026-2027 open.'}
         path="/"
         image={IMG.school}
+        faq={FAQ[currentLang].filter((f) => f.home)}
       />
       <Hero />
       <Identity />
@@ -35,6 +37,7 @@ export const Home = () => {
       <Activities />
       <LifeTeaser />
       <Proof />
+      <AfterBac compact />
       <Journal />
       <Practical />
       <Action />

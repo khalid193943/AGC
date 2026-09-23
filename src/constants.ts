@@ -236,7 +236,7 @@ export const TRANSLATIONS = {
       a1: { title: "Sports de Compétition", desc: "Football, Basketball, Natation et Tennis avec des coachs professionnels." },
       a2: { title: "Arts Plastiques", desc: "Peinture, sculpture et design pour explorer toutes les formes d'expression." },
       a3: { title: "Théâtre", desc: "Expression scénique, chorale et apprentissage instrumental moderne." },
-      a4: { title: "Robotique & Coding", desc: "Programmation et ingénierie pour les futurs génies de la tech." },
+      a4: { title: "Robotique & Coding", desc: "Drones, impression 3D, robots et programmation pour les futurs génies de la tech." },
       a5: { title: "Échecs & Jeux de réflexion", desc: "Développer la logique, la concentration et la stratégie avec le Rubik's cube et les échecs." },
       a6: { title: "Arts Martiaux", desc: "Taekwondo et Karaté pour la discipline et le développement physique." },
       a7: { title: "Natation & Piscine", desc: "Initiation et perfectionnement pour la santé et le bien-être physique." },
@@ -284,7 +284,7 @@ export const TRANSLATIONS = {
       desc: "Tout ce que vous devez savoir sur Georges Claude Private Academy pour préparer au mieux la rentrée de votre enfant.",
       q1: { q: "Quelles sont les modalités d'inscription ?", a: "L'inscription se fait via notre plateforme en ligne ou directement au secrétariat. Un test de niveau est requis pour les nouveaux élèves." },
       q2: { q: "Proposez-vous un service de transport ?", a: "Oui, nous disposons d'une flotte de bus modernes couvrant tout El Jadida et ses environs (Sidi Bouzid, Haouzia, etc.)." },
-      q3: { q: "Quels sont les horaires de l'école ?", a: "Les cours débutent à 8h30 et se terminent à 16h30, avec des activités parascolaires jusqu'à 18h00." },
+      q3: { q: "Quels sont les horaires de l'école ?", a: "Les cours ont lieu du lundi au vendredi de 8h00 à 12h00, puis de 12h30 à 15h30, avec une pause déjeuner de 30 minutes." },
       q4: { q: "L'école est-elle homologuée ?", a: "Oui, Georges Claude Private Academy est homologuée par le Ministère de l'Éducation Nationale et suit un programme d'excellence trilingue." },
       cta: "Une question ?",
       ctaDesc: "Notre équipe est là pour vous répondre personnellement.",
@@ -720,17 +720,17 @@ export const TRANSLATIONS = {
       curriculumTitle: "Le Curriculum",
       curriculumSubtitle: "Une expertise disciplinaire de haut niveau.",
       curriculum: [
-        { title: 'Sciences & Technologie', items: ['Maths', 'PC (Physique-Chimie)', 'SVT', 'Informatique'] },
+        { title: 'Sciences & Technologie', items: ['Maths', 'PC (Physique-Chimie)', 'SVT', 'Informatique & Robotique (drones, impression 3D, robots)'] },
         { title: 'Langages & Humanités', items: ['Français', 'Anglais', 'Arabe', 'Histoire-Géo', 'Éducation Islamique'] },
         { title: 'Sport & Bien-être', items: ['Sport'] }
       ],
       dailyLifeTitle: "Journée Type",
       dailyLife: [
         { time: '08:00', activity: 'Cours magistraux' },
-        { time: '10:30', activity: 'Travaux dirigés' },
-        { time: '12:30', activity: 'Déjeuner & Conférences' },
-        { time: '14:00', activity: 'Spécialités & Projets' },
-        { time: '16:30', activity: 'Fin de journée' }
+        { time: '10:00', activity: 'Travaux dirigés' },
+        { time: '12:00', activity: 'Déjeuner' },
+        { time: '12:30', activity: 'Spécialités & Projets' },
+        { time: '15:30', activity: 'Fin de journée' }
       ],
       spacesTitle: "Nos Espaces",
       spacesSubtitle: "Un campus moderne tourné vers l'avenir.",
@@ -767,13 +767,14 @@ export const TRANSLATIONS = {
       ],
       dailyLifeTitle: "Une Journée Type",
       dailyLife: [
-        { time: '08:30', activity: 'Accueil & Jeux libres' },
-        { time: '09:30', activity: 'Ateliers dirigés' },
-        { time: '10:30', activity: 'Récréation & Collation' },
-        { time: '11:00', activity: 'Activités sportives' },
-        { time: '12:30', activity: 'Déjeuner' },
-        { time: '13:30', activity: 'Sieste / Repos' },
-        { time: '16:00', activity: 'Goûter & Départ' }
+        { time: '08:00', activity: 'Accueil & Jeux libres' },
+        { time: '08:45', activity: 'Ateliers dirigés' },
+        { time: '10:00', activity: 'Récréation & Collation' },
+        { time: '10:30', activity: 'Activités sportives & Éveil' },
+        { time: '12:00', activity: 'Déjeuner' },
+        { time: '12:30', activity: 'Sieste / Repos' },
+        { time: '14:00', activity: 'Ateliers créatifs' },
+        { time: '15:30', activity: 'Goûter & Départ' }
       ],
       spacesTitle: "Nos Espaces",
       spacesSubtitle: "Des infrastructures pensées pour la sécurité et l'épanouissement.",
@@ -804,18 +805,18 @@ export const TRANSLATIONS = {
       curriculumSubtitle: "Une formation complète et équilibrée.",
       curriculum: [
         { title: 'Langues & Littérature', items: ['Français intensif', 'Anglais Cambridge', 'Arabe littéraire', 'Bibliothèque active'] },
-        { title: 'Sciences & Logique', items: ['Mathématiques avancées', 'Sciences expérimentales', 'Informatique & Coding', 'Calcul Mental'] },
+        { title: 'Sciences & Logique', items: ['Mathématiques avancées', 'Sciences expérimentales', 'Informatique, Coding & Robotique (robots, impression 3D)', 'Calcul Mental'] },
         { title: 'Arts & Sports', items: ['Arts plastiques', 'Sports collectifs', 'Natation'] }
       ],
       dailyLifeTitle: "Une Journée Type",
       dailyLife: [
-        { time: '08:30', activity: 'Accueil & Rituels' },
-        { time: '09:00', activity: 'Séquences d\'apprentissage' },
-        { time: '10:30', activity: 'Récréation' },
-        { time: '11:00', activity: 'Langues étrangères' },
-        { time: '12:30', activity: 'Déjeuner & Détente' },
-        { time: '13:30', activity: 'Ateliers & Projets' },
-        { time: '16:30', activity: 'Étude dirigée / Départ' }
+        { time: '08:00', activity: 'Accueil & Rituels' },
+        { time: '08:30', activity: "Séquences d'apprentissage" },
+        { time: '10:00', activity: 'Récréation' },
+        { time: '10:30', activity: 'Langues étrangères' },
+        { time: '12:00', activity: 'Déjeuner & Détente' },
+        { time: '12:30', activity: 'Ateliers & Projets' },
+        { time: '15:30', activity: 'Étude dirigée / Départ' }
       ],
       spacesTitle: "Nos Espaces",
       spacesSubtitle: "Un environnement propice à la concentration et à la découverte.",
@@ -846,17 +847,17 @@ export const TRANSLATIONS = {
       curriculumTitle: "Le Programme",
       curriculumSubtitle: "Une préparation rigoureuse aux défis futurs.",
       curriculum: [
-        { title: 'Sciences & Technologie', items: ['Maths', 'PC (Physique-Chimie)', 'SVT', 'Informatique'] },
+        { title: 'Sciences & Technologie', items: ['Maths', 'PC (Physique-Chimie)', 'SVT', 'Informatique & Robotique (drones, impression 3D, robots)'] },
         { title: 'Langages & Humanités', items: ['Français', 'Anglais', 'Arabe', 'Histoire-Géo', 'Éducation Islamique'] },
         { title: 'Sport & Bien-être', items: ['Sport'] }
       ],
       dailyLifeTitle: "Une Journée Type",
       dailyLife: [
-        { time: '08:30', activity: 'Début des cours' },
-        { time: '10:30', activity: 'Pause & Échanges' },
-        { time: '12:30', activity: 'Déjeuner & Clubs' },
-        { time: '14:00', activity: 'Cours & Labos' },
-        { time: '16:30', activity: 'Étude / Départ' }
+        { time: '08:00', activity: 'Début des cours' },
+        { time: '10:00', activity: 'Pause & Échanges' },
+        { time: '12:00', activity: 'Déjeuner & Clubs' },
+        { time: '12:30', activity: 'Cours & Labos' },
+        { time: '15:30', activity: 'Étude / Départ' }
       ],
       spacesTitle: "Nos Espaces",
       spacesSubtitle: "Des équipements de pointe pour des apprentissages concrets.",
@@ -1437,7 +1438,7 @@ export const TRANSLATIONS = {
       a1: { title: "Competitive Sports", desc: "Football, Basketball, Swimming and Tennis with professional coaches." },
       a2: { title: "Visual Arts", desc: "Painting, sculpture and design to explore all forms of expression." },
       a3: { title: "Theater", desc: "Stage expression, choir and modern instrumental learning." },
-      a4: { title: "Robotics & Coding", desc: "Programming and engineering for future tech geniuses." },
+      a4: { title: "Robotics & Coding", desc: "Drones, 3D printing, robots and programming for future tech geniuses." },
       a5: { title: "Chess & Mind Games", desc: "Develop logic, concentration, and strategy with Rubik's cube and chess." },
       a6: { title: "Martial Arts", desc: "Taekwondo and Karate for discipline and physical development." },
       a7: { title: "Swimming & Pool", desc: "Initiation and improvement for health and physical well-being." },
@@ -1485,7 +1486,7 @@ export const TRANSLATIONS = {
       desc: "Everything you need to know about Georges Claude Private Academy to best prepare for your child's start of the school year.",
       q1: { q: "What are the registration procedures?", a: "Registration is done via our online platform or directly at the secretariat. A level test is required for new students." },
       q2: { q: "Do you offer a transport service?", a: "Yes, we have a fleet of modern buses covering all of El Jadida and its surroundings (Sidi Bouzid, Haouzia, etc.)." },
-      q3: { q: "What are the school hours?", a: "Classes start at 8:30 am and end at 4:30 pm, with extracurricular activities until 6:00 pm." },
+      q3: { q: "What are the school hours?", a: "Classes run Monday to Friday from 8:00 to 12:00 and from 12:30 to 15:30, with a 30-minute lunch break." },
       q4: { q: "Is the school accredited?", a: "Yes, Georges Claude Private Academy is accredited by the Ministry of National Education and follows a trilingual program of excellence." },
       cta: "A question?",
       ctaDesc: "Our team is here to answer you personally.",
@@ -1912,17 +1913,17 @@ export const TRANSLATIONS = {
       curriculumTitle: "The Curriculum",
       curriculumSubtitle: "High-level disciplinary expertise.",
       curriculum: [
-        { title: 'Science & Technology', items: ['Math', 'Physics-Chemistry', 'Life & Earth Sciences', 'Computer Science'] },
+        { title: 'Science & Technology', items: ['Math', 'Physics-Chemistry', 'Life & Earth Sciences', 'Computer Science & Robotics (drones, 3D printing, robots)'] },
         { title: 'Languages & Humanities', items: ['French', 'English', 'Arabic', 'History-Geography', 'Islamic Education'] },
         { title: 'Sports & Wellbeing', items: ['Physical Education'] }
       ],
       dailyLifeTitle: "Typical Day",
       dailyLife: [
         { time: '08:00', activity: 'Lectures' },
-        { time: '10:30', activity: 'Tutorials' },
-        { time: '12:30', activity: 'Lunch & Conferences' },
-        { time: '14:00', activity: 'Specialties & Projects' },
-        { time: '16:30', activity: 'End of day' }
+        { time: '10:00', activity: 'Tutorials' },
+        { time: '12:00', activity: 'Lunch' },
+        { time: '12:30', activity: 'Specialties & Projects' },
+        { time: '15:30', activity: 'End of day' }
       ],
       spacesTitle: "Our Spaces",
       spacesSubtitle: "A modern campus focused on the future.",
@@ -1959,13 +1960,14 @@ export const TRANSLATIONS = {
       ],
       dailyLifeTitle: "A Typical Day",
       dailyLife: [
-        { time: '08:30', activity: 'Welcome & Free Play' },
-        { time: '09:30', activity: 'Guided Workshops' },
-        { time: '10:30', activity: 'Recess & Snack' },
-        { time: '11:00', activity: 'Sports Activities' },
-        { time: '12:30', activity: 'Lunch' },
-        { time: '13:30', activity: 'Nap / Rest' },
-        { time: '16:00', activity: 'Snack & Departure' }
+        { time: '08:00', activity: 'Welcome & Free Play' },
+        { time: '08:45', activity: 'Guided Workshops' },
+        { time: '10:00', activity: 'Recess & Snack' },
+        { time: '10:30', activity: 'Sports & Discovery' },
+        { time: '12:00', activity: 'Lunch' },
+        { time: '12:30', activity: 'Nap / Rest' },
+        { time: '14:00', activity: 'Creative Workshops' },
+        { time: '15:30', activity: 'Snack & Departure' }
       ],
       spacesTitle: "Our Spaces",
       spacesSubtitle: "Infrastructure designed for safety and fulfillment.",
@@ -2001,13 +2003,13 @@ export const TRANSLATIONS = {
       ],
       dailyLifeTitle: "A Typical Day",
       dailyLife: [
-        { time: '08:30', activity: 'Welcome & Rituals' },
-        { time: '09:00', activity: 'Learning Sequences' },
-        { time: '10:30', activity: 'Recess' },
-        { time: '11:00', activity: 'Foreign Languages' },
-        { time: '12:30', activity: 'Lunch & Relaxation' },
-        { time: '13:30', activity: 'Workshops & Projects' },
-        { time: '16:30', activity: 'Guided Study / Departure' }
+        { time: '08:00', activity: 'Welcome & Rituals' },
+        { time: '08:30', activity: 'Learning Sequences' },
+        { time: '10:00', activity: 'Recess' },
+        { time: '10:30', activity: 'Foreign Languages' },
+        { time: '12:00', activity: 'Lunch & Relaxation' },
+        { time: '12:30', activity: 'Workshops & Projects' },
+        { time: '15:30', activity: 'Guided Study / Departure' }
       ],
       spacesTitle: "Our Spaces",
       spacesSubtitle: "An environment conducive to concentration and discovery.",
@@ -2038,17 +2040,17 @@ export const TRANSLATIONS = {
       curriculumTitle: "The Curriculum",
       curriculumSubtitle: "Rigorous preparation for future challenges.",
       curriculum: [
-        { title: 'Science & Technology', items: ['Math', 'Physics-Chemistry', 'Life & Earth Sciences', 'Computer Science'] },
+        { title: 'Science & Technology', items: ['Math', 'Physics-Chemistry', 'Life & Earth Sciences', 'Computer Science & Robotics (drones, 3D printing, robots)'] },
         { title: 'Languages & Humanities', items: ['French', 'English', 'Arabic', 'History-Geography', 'Islamic Education'] },
         { title: 'Sports & Wellbeing', items: ['Physical Education'] }
       ],
       dailyLifeTitle: "A Typical Day",
       dailyLife: [
-        { time: '08:30', activity: 'Start of classes' },
-        { time: '10:30', activity: 'Break & Exchange' },
-        { time: '12:30', activity: 'Lunch & Clubs' },
-        { time: '14:00', activity: 'Classes & Labs' },
-        { time: '16:30', activity: 'Study / Departure' }
+        { time: '08:00', activity: 'Start of classes' },
+        { time: '10:00', activity: 'Break & Exchanges' },
+        { time: '12:00', activity: 'Lunch & Clubs' },
+        { time: '12:30', activity: 'Classes & Labs' },
+        { time: '15:30', activity: 'Study / Departure' }
       ],
       spacesTitle: "Our Spaces",
       spacesSubtitle: "Cutting-edge equipment for concrete learning.",

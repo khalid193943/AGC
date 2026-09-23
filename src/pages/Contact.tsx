@@ -1,6 +1,7 @@
 import { useState, FormEvent } from 'react';
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
-import { Check, Loader2, Phone, Mail, MessageCircle, MapPin, Clock, ArrowUpRight } from 'lucide-react';
+import { Check, Loader2, Phone, Mail, MapPin, Clock, ArrowUpRight, Send } from 'lucide-react';
+import { SocialLinks, WhatsAppIcon } from '../components/ui/Social';
 import { db } from '../firebase';
 import { useLanguage } from '../contexts/LanguageContext';
 import { SITE, IMG } from '../content/site';
@@ -26,13 +27,13 @@ const Contact = () => {
 
   const channels = [
     { icon: Phone, label: t.ui.call, value: SITE.phone, href: SITE.phoneHref, note: fr ? 'Secrétariat, lun – ven' : 'Office, Mon – Fri' },
-    { icon: MessageCircle, label: 'WhatsApp', value: SITE.mobile, href: SITE.whatsappHref, note: fr ? 'Réponse rapide' : 'Quick reply' },
+    { icon: WhatsAppIcon, label: 'WhatsApp', value: SITE.mobile, href: SITE.whatsappHref, note: fr ? 'Réponse rapide' : 'Quick reply' },
     { icon: Mail, label: t.ui.writeUs, value: SITE.email, href: `mailto:${SITE.email}`, note: SITE.emailAdmissions },
   ];
 
   return (
     <main>
-      <Seo title={`${t.nav.contact} | Georges Claude Private Academy — Sidi Bouzid, El Jadida`} description={t.ui.contactDesc} path="/contact" image={IMG.campus} />
+      <Seo title={`${t.nav.contact} | Georges Claude Private Academy — Sidi Bouzid, El Jadida`} description={t.ui.contactDesc} path="/contact" image={IMG.campus} breadcrumbs={[{ name: t.nav.contact, path: '/contact' }]} />
       <PageHero chapter={t.nav.contact} title={t.copy.contactTitle} lead={t.ui.contactDesc} compact />
 
       {/* Canaux */}
@@ -61,14 +62,11 @@ const Contact = () => {
             <a href={SITE.mapsUrl} target="_blank" rel="noopener noreferrer" className="ulink font-semibold inline-flex items-center gap-1.5 mt-4"><MapPin size={15} /> {t.ui.openMaps} <ArrowUpRight size={14} /></a>
             <div className="mt-10 border-t border-ink/12 pt-6">
               <p className="t-meta flex items-center gap-2"><Clock size={14} /> {t.ui.hours}</p>
-              <p className="t-body mt-2">{SITE.hours[currentLang]}</p>
+              <ul className="mt-3 space-y-1.5">{SITE.schedule[currentLang].map(([h, l]) => <li key={h} className="flex justify-between gap-4 text-[15px] border-b border-ink/10 pb-1.5"><span className="font-semibold">{h}</span><span className="text-mute">{l}</span></li>)}</ul><p className="t-meta mt-2">{fr ? 'Du lundi au vendredi' : 'Monday to Friday'}</p>
             </div>
             <div className="mt-8 border-t border-ink/12 pt-6">
               <p className="t-meta">{t.ui.followUs}</p>
-              <div className="flex gap-4 mt-2">
-                <a href={SITE.social.instagram} target="_blank" rel="noopener noreferrer" className="ulink font-semibold">Instagram</a>
-                <a href={SITE.social.facebook} target="_blank" rel="noopener noreferrer" className="ulink font-semibold">Facebook</a>
-              </div>
+              <SocialLinks className="mt-3" />
             </div>
           </div>
           <Reveal className="lg:col-span-7 lg:col-start-6" delay={0.1}>
@@ -93,7 +91,7 @@ const Contact = () => {
                   <div className="field sm:col-span-2"><label htmlFor="c-msg">{t.ui.message} *</label><textarea id="c-msg" rows={5} required value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })} /></div>
                   <div className="sm:col-span-2 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                     <p className="t-meta">* {t.ui.requiredNote}</p>
-                    <Button type="submit" size="lg" disabled={state === 'sending'} icon="none">{state === 'sending' ? <Loader2 className="animate-spin" size={18} /> : t.ui.send}</Button>
+                    <Button type="submit" size="lg" disabled={state === 'sending'} icon="none">{state === 'sending' ? <Loader2 className="animate-spin" size={18} /> : <><Send size={16} /> {t.ui.send}</>}</Button>
                   </div>
                 </form>
               )}

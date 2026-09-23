@@ -1,11 +1,11 @@
 import { useEffect, useState, FormEvent } from 'react';
 import { collection, onSnapshot, addDoc, serverTimestamp } from 'firebase/firestore';
-import { Check, Loader2, Upload, Users, GraduationCap, Sparkles } from 'lucide-react';
+import { Check, Loader2, Upload, Users, GraduationCap, Sparkles, Send, Briefcase } from 'lucide-react';
 import { db } from '../firebase';
 import { useLanguage } from '../contexts/LanguageContext';
 import { IMG } from '../content/site';
 import { WordReveal, Reveal } from '../components/ui/motion';
-import { Seo, Chapter, Button } from '../components/ui';
+import { Seo, Chapter, Button, schema } from '../components/ui';
 import { PageHero } from '../components/sections';
 
 interface Job { id: string; title: string; category: 'teacher' | 'driver' | 'intern' | 'other'; description: string; requirements: string[]; active: boolean }
@@ -53,7 +53,7 @@ const Recruitment = () => {
 
   return (
     <main>
-      <Seo title={`${r.title} | ${r.subtitle} — Georges Claude Private Academy El Jadida`} description={r.heroDesc} path="/recrutement" image={IMG.team} />
+      <Seo title={`${r.title} | ${r.subtitle} — Georges Claude Private Academy El Jadida`} description={r.heroDesc} path="/recrutement" image={IMG.team} breadcrumbs={[{ name: t.nav.recruitment, path: '/recrutement' }]} jsonLd={schema.jobs(jobs.map((j) => ({ title: j.title, description: j.description })))} />
       <PageHero chapter={`${r.title} — ${r.subtitle}`} title={t.copy.recruitTitle} lead={r.heroDesc} image={IMG.team} imageAlt={fr ? 'L’équipe de l’académie' : 'The academy team'} compact />
 
       <section className="section bg-salt">
@@ -66,7 +66,7 @@ const Recruitment = () => {
               {jobs.length === 0 && <p className="t-body text-mute mb-4">{t.ui.jobsEmpty}</p>}
               {jobs.map((j) => (
                 <button key={j.id} onClick={() => { setSelected(j); setState('idle'); }} className={`w-full text-left card p-5 transition-all ${selected !== 'spontaneous' && selected?.id === j.id ? 'border-ink shadow-[0_20px_40px_-25px_rgba(6,25,58,0.3)]' : 'hover:border-ink/40'}`}>
-                  <p className="t-meta">{catLabel[j.category] || j.category}</p>
+                  <p className="t-meta inline-flex items-center gap-1.5"><Briefcase size={13} />{catLabel[j.category] || j.category}</p>
                   <p className="t-h4 mt-1">{j.title}</p>
                   {j.description && <p className="t-small text-mute mt-2 line-clamp-2">{j.description}</p>}
                   {j.requirements?.length > 0 && <ul className="mt-3 flex flex-wrap gap-1.5">{j.requirements.slice(0, 4).map((q) => <li key={q} className="text-xs rounded-full border border-ink/15 px-2.5 py-0.5">{q}</li>)}</ul>}
@@ -118,7 +118,7 @@ const Recruitment = () => {
                   <div className="field sm:col-span-2"><label htmlFor="r-msg">{r.message}</label><textarea id="r-msg" rows={4} value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })} /></div>
                   <div className="sm:col-span-2 flex items-center justify-between gap-4">
                     <p className="t-meta">* {t.ui.requiredNote}</p>
-                    <Button type="submit" size="lg" disabled={state === 'sending'} icon="none">{state === 'sending' ? <Loader2 className="animate-spin" size={18} /> : r.submit}</Button>
+                    <Button type="submit" size="lg" disabled={state === 'sending'} icon="none">{state === 'sending' ? <Loader2 className="animate-spin" size={18} /> : <><Send size={16} /> {r.submit}</>}</Button>
                   </div>
                 </form>
               )}

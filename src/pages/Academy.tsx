@@ -1,10 +1,10 @@
 import { useRef } from 'react';
 import { motion, useTransform, useReducedMotion } from 'motion/react';
-import { Leaf, Sun, Recycle, Droplets, Award } from 'lucide-react';
+import { Leaf, Sun, Recycle, Droplets, Award, Star, Scale, HeartHandshake, Lightbulb, ShieldCheck, Heart, Users, BookOpen, GraduationCap, Building2 } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 import { SITE, IMG } from '../content/site';
 import { WordReveal, Reveal, ClipReveal, useSmoothProgress, useTrackDistance } from '../components/ui/motion';
-import { Seo, Chapter, ArchImage, useMedia } from '../components/ui';
+import { Seo, Chapter } from '../components/ui';
 import { PageHero, CtaBand, StatGrid, ImageStrip } from '../components/sections';
 
 const Academy = () => {
@@ -14,12 +14,11 @@ const Academy = () => {
   const paragraphs: string[] = String(a.director.quote).split('\n\n');
   const values = [a.v1, a.v2, a.v3, a.v4, a.integrity, a.caring, a.community];
   const timeline: { year: string; title: string; desc: string }[] = a.history.items;
-  const isDesktop = useMedia('(min-width: 1024px)');
   const reduce = useReducedMotion();
   const tlRef = useRef<HTMLDivElement>(null);
   const progress = useSmoothProgress(tlRef);
   const trackRef = useRef<HTMLDivElement>(null);
-  const distance = useTrackDistance(trackRef, [isDesktop, reduce]);
+  const distance = useTrackDistance(trackRef, [reduce]);
   const x = useTransform(progress, [0.05, 0.95], [0, -distance]);
 
   const eco = [
@@ -31,28 +30,23 @@ const Academy = () => {
 
   return (
     <main>
-      <Seo title={`${a.title} | ${fr ? 'Histoire, valeurs et engagement' : 'History, values and commitment'} — El Jadida`} description={a.heritageText1} path="/academie" image={IMG.classroom} />
+      <Seo title={`${a.title} | ${fr ? 'Histoire, valeurs et engagement' : 'History, values and commitment'} — El Jadida`} description={a.heritageText1} path="/academie" image={IMG.classroom} breadcrumbs={[{ name: t.nav.academy, path: '/academie' }]} />
       <PageHero chapter={`${t.nav.academy} — ${a.heroSubtitle}`} title={t.copy.academyTitle} lead={t.copy.academyLead} image={IMG.classroom} imageAlt={fr ? 'Salle de classe de l’académie' : 'Academy classroom'} />
 
-      {/* Lettre du directeur — lecture éditoriale */}
+      {/* Lettre du directeur — la parole d'abord, le portrait en signature */}
       <section className="section bg-salt">
-        <div className="wrap">
-          <div className="grid lg:grid-cols-12 gap-12">
-            <div className="lg:col-span-4">
-              <div className="lg:sticky lg:top-28">
-                <ArchImage src={IMG.director} alt={SITE.director.name} className="aspect-[4/5] max-w-[360px]" />
-                <p className="t-h4 mt-5">{SITE.director.name}</p>
-                <p className="t-meta">{SITE.director.role[currentLang]}</p>
-                <img src={IMG.signature} alt="" className="h-12 mt-4 opacity-80 mix-blend-multiply" loading="lazy" referrerPolicy="no-referrer" />
-              </div>
+        <div className="wrap grid lg:grid-cols-12 gap-8">
+          <div className="lg:col-span-2"><Chapter>{a.directionTitle}</Chapter></div>
+          <div className="lg:col-span-10">
+            <p className="t-quote max-w-[30ch]"><WordReveal text={paragraphs[0]} stagger={0.02} /></p>
+            <div className="mt-10 t-body text-mute lg:columns-2 lg:gap-12 [&>p]:mb-5 [&>p]:break-inside-avoid max-w-[64ch] lg:max-w-none">
+              {paragraphs.slice(1).map((p, i) => <Reveal key={i} as="p" delay={0.05 * i} amount={0.5}>{p}</Reveal>)}
             </div>
-            <div className="lg:col-span-7 lg:col-start-6">
-              <Chapter className="mb-8">{a.directionTitle}</Chapter>
-              <p className="t-quote"><WordReveal text={paragraphs[0]} stagger={0.02} /></p>
-              <div className="t-body text-mute mt-10 space-y-5 max-w-[60ch]">
-                {paragraphs.slice(1).map((p, i) => <Reveal key={i} as="p" delay={0.05 * i} amount={0.5}>{p}</Reveal>)}
-              </div>
-            </div>
+            <Reveal delay={0.2} className="mt-10 pt-6 border-t border-ink/15 flex flex-wrap items-center gap-5">
+              <img src={IMG.director} alt={SITE.director.name} className="w-14 h-14 rounded-full object-cover ring-2 ring-salt shadow-md" loading="lazy" referrerPolicy="no-referrer" />
+              <span><span className="block t-h4">{SITE.director.name}</span><span className="block t-meta">{SITE.director.role[currentLang]}</span></span>
+              <img src={IMG.signature} alt="" className="h-12 w-auto opacity-70 mix-blend-multiply ml-auto" loading="lazy" referrerPolicy="no-referrer" />
+            </Reveal>
           </div>
         </div>
       </section>
@@ -65,6 +59,7 @@ const Academy = () => {
           <div className="grid md:grid-cols-3 gap-px bg-white/12 border border-white/12 rounded-[1.75rem] overflow-hidden mt-14">
             {a.whyCards.map((c: any, i: number) => (
               <div key={i} className="bg-ink p-8 md:p-10">
+                <span className="inline-flex w-11 h-11 rounded-full border border-white/20 text-saffron items-center justify-center mb-5">{(() => { const I = [BookOpen, GraduationCap, Building2][i] || Star; return <I size={20} />; })()}</span>
                 <h3 className="t-h3">{c.title}</h3>
                 <p className="t-body text-sea mt-5">{c.desc}</p>
               </div>
@@ -82,12 +77,11 @@ const Academy = () => {
               <Chapter className="mb-6">{a.valuesLabel}</Chapter>
               <h2 className="t-h2"><WordReveal text={a.missionTitle} /></h2>
               <Reveal delay={0.1}><p className="t-body text-mute mt-6 max-w-[36ch]">{a.presentationText2}</p></Reveal>
-              <div data-mascot-spot className="hidden lg:block h-60 mt-10" aria-hidden />
             </div>
             <ul className="lg:col-span-7 lg:col-start-6 divide-y divide-ink/12 border-y border-ink/12">
               {values.map((v: any, i: number) => (
-                <Reveal key={i} as="li" delay={0.04 * i} amount={0.5} className="py-6 grid sm:grid-cols-[1fr_1.4fr] gap-2 sm:gap-8 items-baseline">
-                  <span className="t-h3">{v.title}</span>
+                <Reveal key={i} as="li" delay={0.04 * i} amount={0.5} className="py-6 grid sm:grid-cols-[1fr_1.4fr] gap-2 sm:gap-8 items-center">
+                  <span className="flex items-center gap-4"><span className="w-10 h-10 rounded-full bg-ink text-saffron flex items-center justify-center shrink-0">{(() => { const I = [Star, Scale, HeartHandshake, Lightbulb, ShieldCheck, Heart, Users][i] || Star; return <I size={18} />; })()}</span><span className="t-h3">{v.title}</span></span>
                   <span className="t-body text-mute">{v.desc}</span>
                 </Reveal>
               ))}
@@ -97,17 +91,17 @@ const Academy = () => {
       </section>
 
       {/* Histoire — frise horizontale épinglée */}
-      <section ref={tlRef} className="bg-salt-2/60 relative" style={isDesktop && !reduce ? { height: '220vh' } : undefined}>
-        <div className={isDesktop && !reduce ? 'sticky top-0 h-screen flex flex-col justify-center overflow-hidden' : 'section'}>
-          <div className="wrap mb-10">
+      <section ref={tlRef} className="bg-salt-2/60 relative" style={!reduce ? { height: '220vh', paddingTop: 'var(--section)', paddingBottom: 'var(--section)' } : undefined}>
+        <div className={!reduce ? 'sticky top-0 h-[100svh] flex flex-col justify-center overflow-hidden' : 'section'}>
+          <div className="wrap mb-8 lg:mb-10">
             <Chapter className="mb-6">{a.historyLabel}</Chapter>
             <h2 className="t-h2"><WordReveal text={`${a.historyTitle1} ${a.historyTitle2.toLowerCase()}`} /></h2>
-            <Reveal delay={0.1}><p className="t-body text-mute mt-4 max-w-[56ch]">{a.heritageText2}</p></Reveal>
+            <Reveal delay={0.1} className="hidden md:block"><p className="t-body text-mute mt-4 max-w-[56ch]">{a.heritageText2}</p></Reveal>
           </div>
-          {isDesktop && !reduce ? (
+          {!reduce ? (
             <motion.div ref={trackRef} className="flex gap-8 pl-[var(--gutter)] will-change-transform" style={{ x }}>
               {timeline.map((it, i) => (
-                <div key={i} className="w-[460px] shrink-0 border-t border-ink/20 pt-6">
+                <div key={i} className="w-[76vw] sm:w-[400px] lg:w-[460px] shrink-0 border-t border-ink/20 pt-6">
                   <p className="t-num">{it.year}</p>
                   <p className="t-h3 mt-4">{it.title}</p>
                   <p className="t-body text-mute mt-2 max-w-[34ch]">{it.desc}</p>

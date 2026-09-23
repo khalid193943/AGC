@@ -1,11 +1,11 @@
 import { Link } from 'react-router-dom';
 import { ArrowUpRight } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
-import { IMG } from '../content/site';
+import { IMG, AFTER_BAC } from '../content/site';
 import { WordReveal, Reveal, ClipReveal } from '../components/ui/motion';
-import { Seo, Chapter, scrollToId } from '../components/ui';
+import { Seo, Chapter, scrollToId, schema } from '../components/ui';
 import { PageHero, CtaBand } from '../components/sections';
-import { CYCLES } from './home/Discover';
+import { CYCLES, CYCLE_STYLE } from './home/Discover';
 
 const Programs = () => {
   const { t, currentLang } = useLanguage();
@@ -16,19 +16,23 @@ const Programs = () => {
 
   return (
     <main>
-      <Seo title={`${t.nav.programs} | ${fr ? 'Maternelle, Primaire, Collège, Lycée' : 'Preschool, Primary, Middle, High School'} — ${fr ? 'École privée El Jadida' : 'Private school El Jadida'}`} description={t.programs.heroDesc} path="/programmes" image={IMG.cycles.primaire} />
+      <Seo title={`${t.nav.programs} | ${fr ? 'Maternelle, Primaire, Collège, Lycée' : 'Preschool, Primary, Middle, High School'} — ${fr ? 'École privée El Jadida' : 'Private school El Jadida'}`} description={t.programs.heroDesc} path="/programmes" image={IMG.cycles.primaire} breadcrumbs={[{ name: t.nav.programs, path: '/programmes' }]} jsonLd={cycles.map((c) => schema.course({ name: c.title, description: c.desc, path: `/programmes/${c.id}`, ages: c.ages, lang: currentLang }))} />
       <PageHero chapter={`${t.programs.curriculum} — ${t.copy.programsRail}`} title={t.copy.programsPageTitle} lead={t.programs.heroDesc} image={IMG.cycles.college} imageAlt={fr ? 'Élèves de l’académie' : 'Academy students'} />
 
-      {/* Le parcours en une ligne */}
+      {/* Le parcours : quatre capsules aux couleurs du logo */}
       <section className="bg-salt border-b border-ink/10">
-        <div className="wrap py-8 grid grid-cols-2 md:grid-cols-4 gap-4">
-          {cycles.map((c, i) => (
-            <a key={c.id} href={`#${c.id}`} onClick={scrollToId(c.id)} className="group flex items-baseline gap-3 border-l border-ink/15 pl-4 py-1">
-              <span className="text-mute text-sm">{c.ages}</span>
-              <span className="font-semibold group-hover:text-ink-3 transition-colors">{c.title}</span>
-              {i < 3 && <span className="hidden md:inline text-mute ml-auto" aria-hidden>→</span>}
-            </a>
-          ))}
+        <div className="wrap py-6 grid grid-cols-2 md:grid-cols-4 gap-3">
+          {cycles.map((c, i) => {
+            const st = CYCLE_STYLE[c.id];
+            return (
+              <Reveal key={c.id} delay={0.06 * i}>
+                <a href={`#${c.id}`} onClick={scrollToId(c.id)} className={`group flex items-center gap-3 rounded-full px-2 py-2 pr-5 ${st.card} ring-1 ring-ink/10 transition-transform duration-500 hover:-translate-y-0.5`}>
+                  <span className={`w-10 h-10 rounded-full flex items-center justify-center shrink-0 ${st.icon}`}><st.Icon size={18} /></span>
+                  <span className="min-w-0"><span className="block font-semibold leading-tight">{c.title}</span><span className="block text-xs opacity-75">{c.ages}</span></span>
+                </a>
+              </Reveal>
+            );
+          })}
         </div>
       </section>
 
@@ -48,10 +52,16 @@ const Programs = () => {
               <Reveal delay={0.15}><p className="t-body text-mute mt-4 max-w-[56ch]">{details[c.id]}</p></Reveal>
               <ul className="mt-8 grid sm:grid-cols-2 gap-x-6 gap-y-3 max-w-lg">
                 {c.features.map((f: string) => (
-                  <li key={f} className="flex gap-3 text-[15px]"><span className="mt-2 w-1.5 h-1.5 rounded-full bg-saffron shrink-0" />{f}</li>
+                  <li key={f} className="flex gap-3 text-[15px]"><span className={`mt-2 w-1.5 h-1.5 rounded-full shrink-0 ${{ maternelle: 'bg-logo-yellow', primaire: 'bg-logo-blue', college: 'bg-logo-red', lycee: 'bg-ink' }[c.id]}`} />{f}</li>
                 ))}
               </ul>
-              <Link to={`/programmes/${c.id}`} className="btn btn-ink mt-10">
+              {c.id === 'maternelle' && (
+                <p className="mt-8 t-small text-mute max-w-[60ch]"><span className="font-semibold text-ink">{fr ? 'Trois sections :' : 'Three sections:'}</span> {fr ? 'Petite Section (3–4 ans), Moyenne Section (4–5 ans), Grande Section (5–6 ans).' : 'Petite Section (3–4), Moyenne Section (4–5), Grande Section (5–6).'}</p>
+              )}
+              {c.id === 'lycee' && (
+                <p className="mt-8 t-small text-mute max-w-[60ch]"><span className="font-semibold text-ink">{AFTER_BAC[currentLang].chapter}</span> {AFTER_BAC[currentLang].families.map((f) => f.items.slice(0, 2).join(', ')).join(' · ')}…</p>
+              )}
+              <Link to={`/programmes/${c.id}`} className={`btn mt-10 ${{ maternelle: 'btn-saffron', primaire: 'btn-ink', college: 'bg-logo-red text-white hover:bg-[#c4163d]', lycee: 'btn-ink' }[c.id]}`}>
                 <span className="swap"><span>{t.programs.programDetailsBtn}</span><span aria-hidden>{t.programs.programDetailsBtn}</span></span>
                 <ArrowUpRight size={18} />
               </Link>

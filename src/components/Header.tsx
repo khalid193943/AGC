@@ -1,7 +1,8 @@
 import { useEffect, useState, useRef } from 'react';
 import { Link, NavLink, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence, useReducedMotion } from 'motion/react';
-import { ArrowUpRight } from 'lucide-react';
+import { ArrowUpRight, Home, Landmark, BookOpen, Sparkles, Newspaper, Handshake, Images, UserPlus, Mail, Briefcase, Phone, MapPin, Puzzle, Compass, GraduationCap } from 'lucide-react';
+import { SocialLinks } from './ui/Social';
 import { useLanguage } from '../contexts/LanguageContext';
 import { SITE, IMG } from '../content/site';
 import { EASE } from './ui/motion';
@@ -34,23 +35,23 @@ export const Header = () => {
   }, [open]);
 
   const primary = [
-    { label: t.nav.academy, to: '/academie' },
-    { label: t.nav.programs, to: '/programmes' },
-    { label: t.nav.life, to: '/vie-scolaire' },
-    { label: t.nav.newsEvents, to: '/actualites' },
-    { label: t.nav.partners, to: '/partenaires' },
+    { label: t.nav.academy, to: '/academie', Icon: Landmark },
+    { label: t.nav.programs, to: '/programmes', Icon: BookOpen },
+    { label: t.nav.life, to: '/vie-scolaire', Icon: Sparkles },
+    { label: t.nav.newsEvents, to: '/actualites', Icon: Newspaper },
+    { label: t.nav.partners, to: '/partenaires', Icon: Handshake },
   ];
   const secondary = [
-    { label: t.nav.gallery, to: '/galerie' },
-    { label: t.nav.admissions, to: '/inscription' },
-    { label: t.nav.contact, to: '/contact' },
-    { label: t.nav.recruitment, to: '/recrutement' },
+    { label: t.nav.gallery, to: '/galerie', Icon: Images },
+    { label: t.nav.admissions, to: '/inscription', Icon: UserPlus },
+    { label: t.nav.contact, to: '/contact', Icon: Mail },
+    { label: t.nav.recruitment, to: '/recrutement', Icon: Briefcase },
   ];
   const cycles = [
-    { label: t.programs.p1.title, to: '/programmes/maternelle' },
-    { label: t.programs.p2.title, to: '/programmes/primaire' },
-    { label: t.programs.p3.title, to: '/programmes/college' },
-    { label: t.programs.p4.title, to: '/programmes/lycee' },
+    { label: t.programs.p1.title, to: '/programmes/maternelle', Icon: Puzzle, cls: 'bg-logo-yellow text-ink' },
+    { label: t.programs.p2.title, to: '/programmes/primaire', Icon: BookOpen, cls: 'bg-logo-blue text-white ring-1 ring-white/30' },
+    { label: t.programs.p3.title, to: '/programmes/college', Icon: Compass, cls: 'bg-logo-red text-white' },
+    { label: t.programs.p4.title, to: '/programmes/lycee', Icon: GraduationCap, cls: 'bg-white text-ink' },
   ];
 
   const light = !scrolled && !open; // texte clair sur le hero
@@ -66,7 +67,7 @@ export const Header = () => {
           <div className="wrap flex items-center justify-between" style={{ height: 'var(--header-h)' }}>
             {/* Logo */}
             <Link to="/" className="flex items-center gap-3 shrink-0" aria-label={t.ui.backHome}>
-              <img src={IMG.logo} alt="" className="h-14 w-14 md:h-[68px] md:w-[68px] object-contain drop-shadow-[0_2px_8px_rgba(0,0,0,0.25)]" width={68} height={68} referrerPolicy="no-referrer" />
+              <span className={`flex items-center justify-center rounded-full p-1 transition-colors duration-500 ${light || open ? 'bg-white/10 backdrop-blur-md ring-1 ring-white/25' : 'bg-white ring-1 ring-ink/10 shadow-[0_6px_20px_-10px_rgba(6,25,58,0.35)]'}`}><img src={IMG.logo} alt="" className="h-12 w-12 md:h-[60px] md:w-[60px] object-contain" width={60} height={60} referrerPolicy="no-referrer" /></span>
               <span className={`hidden sm:block font-display font-semibold tracking-tight leading-none ${light || open ? 'text-salt' : 'text-ink'}`}>
                 <span className="block text-[17px] md:text-[19px]">Georges Claude</span>
                 <span className={`block text-[12px] font-medium mt-0.5 ${light || open ? 'text-salt/60' : 'text-mute'}`}>{t.nav.tagline}</span>
@@ -142,7 +143,7 @@ export const Header = () => {
               <div className="grid lg:grid-cols-12 gap-10 lg:gap-6 flex-1">
                 {/* Grands liens */}
                 <nav className="lg:col-span-7 flex flex-col" aria-label="Menu">
-                  {[{ label: t.nav.home, to: '/' }, ...primary, ...secondary].map((l, i) => (
+                  {[{ label: t.nav.home, to: '/', Icon: Home }, ...primary, ...secondary].map((l, i) => (
                     <motion.div
                       key={l.to}
                       initial={reduce ? false : { y: 40, opacity: 0 }}
@@ -155,6 +156,7 @@ export const Header = () => {
                           `group flex items-baseline gap-4 py-2 sm:py-2.5 border-b border-white/10 ${isActive ? 'text-saffron' : 'text-salt hover:text-saffron'} transition-colors`
                         }
                       >
+                        <l.Icon size={20} className="opacity-50 self-center shrink-0" strokeWidth={1.8} />
                         <span className="font-display font-medium text-[clamp(1.75rem,4.2vw,3.25rem)] leading-none tracking-tight">{l.label}</span>
                         <ArrowUpRight className="opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-500" size={22} />
                       </NavLink>
@@ -174,17 +176,17 @@ export const Header = () => {
                     <ul className="grid grid-cols-2 gap-2">
                       {cycles.map((c) => (
                         <li key={c.to}>
-                          <Link to={c.to} className="block rounded-2xl border border-white/12 px-4 py-3 text-[15px] font-medium hover:bg-white/8 hover:border-white/25 transition-colors">{c.label}</Link>
+                          <Link to={c.to} className="flex items-center gap-3 rounded-2xl border border-white/12 px-3 py-2.5 text-[15px] font-medium hover:bg-white/8 hover:border-white/25 transition-colors"><span className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 ${c.cls}`}><c.Icon size={15} /></span>{c.label}</Link>
                         </li>
                       ))}
                     </ul>
                   </div>
                   <div className="space-y-1.5 text-[15px]">
                     <p className="chapter saffron mb-4">{t.nav.contact}</p>
-                    <a href={SITE.phoneHref} className="block hover:text-saffron transition-colors">{SITE.phone}</a>
-                    <a href={SITE.mobileHref} className="block hover:text-saffron transition-colors">{SITE.mobile}</a>
-                    <a href={`mailto:${SITE.email}`} className="block hover:text-saffron transition-colors">{SITE.email}</a>
-                    <p className="text-sea-2 pt-2">{SITE.address.line1}<br />{SITE.address.line2}</p>
+                    <a href={SITE.phoneHref} className="flex items-center gap-3 hover:text-saffron transition-colors"><Phone size={15} className="text-saffron" />{SITE.phone}</a>
+                    <a href={SITE.mobileHref} className="flex items-center gap-3 hover:text-saffron transition-colors"><Phone size={15} className="text-saffron" />{SITE.mobile}</a>
+                    <a href={`mailto:${SITE.email}`} className="flex items-center gap-3 hover:text-saffron transition-colors"><Mail size={15} className="text-saffron" />{SITE.email}</a>
+                    <p className="flex items-start gap-3 text-sea-2 pt-2"><MapPin size={15} className="text-saffron mt-1 shrink-0" /><span>{SITE.address.line1}<br />{SITE.address.line2}</span></p>
                   </div>
                   <div className="flex items-center gap-4 mt-auto">
                     <div className="flex md:hidden items-center text-[13px] font-semibold rounded-full border border-white/25 p-0.5">
@@ -192,8 +194,7 @@ export const Header = () => {
                         <button key={l} onClick={() => setCurrentLang(l)} className={`px-3 py-1 rounded-full ${currentLang === l ? 'bg-white text-ink' : 'text-salt/70'}`}>{l}</button>
                       ))}
                     </div>
-                    <a href={SITE.social.instagram} target="_blank" rel="noopener noreferrer" className="ulink text-sm">Instagram</a>
-                    <a href={SITE.social.facebook} target="_blank" rel="noopener noreferrer" className="ulink text-sm">Facebook</a>
+                    <SocialLinks dark />
                   </div>
                 </motion.aside>
               </div>

@@ -210,3 +210,28 @@ export const useTrackDistance = (trackRef: React.RefObject<HTMLElement | null>, 
   }, deps);
   return distance;
 };
+
+/* ------------------------------------------------------------------ */
+/* useHorizontalPin — section épinglée dont la piste se déplace         */
+/* horizontalement au scroll. Mesure la piste en pixels : fonctionne    */
+/* à l'identique sur mobile et sur ordinateur.                          */
+/* ------------------------------------------------------------------ */
+export const useHorizontalPin = (sectionRef: React.RefObject<HTMLElement | null>, trackRef: React.RefObject<HTMLElement | null>) => {
+  const progress = useSmoothProgress(sectionRef);
+  const [shift, setShift] = useState(0);
+  useEffect(() => {
+    const measure = () => {
+      const track = trackRef.current;
+      if (!track) return;
+      const gutter = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--gutter')) || 24;
+      setShift(Math.max(0, track.scrollWidth - window.innerWidth + gutter));
+    };
+    measure();
+    const ro = new ResizeObserver(measure);
+    if (trackRef.current) ro.observe(trackRef.current);
+    window.addEventListener('resize', measure);
+    return () => { ro.disconnect(); window.removeEventListener('resize', measure); };
+  }, [trackRef]);
+  const x = useTransform(progress, [0, 1], [0, -shift]);
+  return { progress, x };
+};

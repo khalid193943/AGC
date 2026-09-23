@@ -4,6 +4,8 @@
  * par-dessus dans LanguageContext (ajouts + corrections de clés manquantes).
  */
 
+import campusHero from '../assets/campus-hero.jpg';
+
 const CDN = 'https://cdn.prod.website-files.com/682f40cedbb46cd6e15b45cb/';
 
 export const SITE = {
@@ -26,15 +28,18 @@ export const SITE = {
     facebook: 'https://www.facebook.com/AcademieGeorgesClaude',
     instagram: 'https://www.instagram.com/academiegeorgesclaude.officiel/',
   },
-  hours: { FR: 'Lun – Ven · 8h30 – 16h30 · activités jusqu’à 18h00', EN: 'Mon – Fri · 8:30 – 16:30 · clubs until 18:00' },
-  director: { name: 'Mr Hugo Ouaddate', role: { FR: 'Directeur Général', EN: 'General Director' } },
+  hours: { FR: 'Lun – Ven · 8h00 – 12h00 · pause déjeuner 30 min · 12h30 – 15h30', EN: 'Mon – Fri · 8:00 – 12:00 · 30-min lunch break · 12:30 – 15:30' },
+  schedule: { FR: [['8h00 – 12h00', 'Cours du matin'], ['12h00 – 12h30', 'Pause déjeuner'], ['12h30 – 15h30', 'Cours de l’après-midi']], EN: [['8:00 – 12:00', 'Morning classes'], ['12:00 – 12:30', 'Lunch break'], ['12:30 – 15:30', 'Afternoon classes']] },
+  director: { name: 'Hugo Ouaddate', role: { FR: 'Directeur Général', EN: 'General Director' } },
   video: 'https://res.cloudinary.com/ddvgp1zrz/video/upload/v1779369814/presentation_q1lmet.mp4',
   cambridgeLogo: 'https://res.cloudinary.com/ddvgp1zrz/image/upload/v1782686752/1042775c-cddc-48a8-89e7-59988c86eabd.png',
 };
 
 export const IMG = {
   logo: CDN + '6a064910d98c04735a2b0a6c_aipreview%20logo.png',
-  school: CDN + '69c1d237f890064a67e64342_school.jpg',
+  /** Façade de l’école (fichier local, recadré sans le logo) : hero de l’accueil et fond des en-têtes de page */
+  school: campusHero,
+  schoolCdn: CDN + '69c1d237f890064a67e64342_school.jpg',
   campus: CDN + '6a06427264fc554605941ad3_siteacceuil.jpg',
   classroom: CDN + '69de1b497dac963ec620e39c_Capture%20d%E2%80%99e%CC%81cran%202026-04-14%20a%CC%80%2011.45.22.png',
   kids: CDN + '6a06436b8e9647708e2d4b94_WhatsApp%20Image%202026-03-18%20at%2000.54.42%20(2)%20-%20Copie.jpeg',
@@ -98,8 +103,8 @@ export const EXTRA = {
       cyclesTitle: 'Les cycles',
     },
     copy: {
-      heroTitle: 'De 3 à 18 ans, une seule école.',
-      heroSub: 'Il entre en maternelle, il ressort bachelier et trilingue.',
+      heroTitle: 'Ici, votre enfant apprend à viser haut.',
+      heroSub: 'De 3 à 18 ans, une seule école à El Jadida.',
       identityTitle: 'Une école qui tient ses promesses.',
       identityAside: 'Quinze années sous le même toit, avec la même exigence et la même attention.',
       directorTitle: 'Le mot du directeur',
@@ -260,8 +265,8 @@ export const EXTRA = {
       cyclesTitle: 'The cycles',
     },
     copy: {
-      heroTitle: 'From 3 to 18, one school.',
-      heroSub: 'In at preschool, out with the baccalaureate and three languages.',
+      heroTitle: 'Here, your child learns to aim high.',
+      heroSub: 'From 3 to 18, one school in El Jadida.',
       identityTitle: 'A school that keeps its promises.',
       identityAside: 'Fifteen years under one roof, with the same standards and the same care.',
       directorTitle: 'A word from the director',
@@ -462,8 +467,8 @@ export const SPACES: Record<'sports' | 'labs' | 'library', SpaceInfo> = {
     slug: 'labs',
     title: { FR: 'Laboratoires de sciences', EN: 'Science laboratories' },
     intro: {
-      FR: 'Physique, chimie, SVT et robotique : des espaces équipés pour expérimenter, mesurer, se tromper et recommencer.',
-      EN: 'Physics, chemistry, life sciences and robotics: equipped spaces to experiment, measure, fail and try again.',
+      FR: 'Physique, chimie, SVT et robotique (drones, impression 3D, robots) : des espaces équipés pour expérimenter, mesurer, se tromper et recommencer.',
+      EN: 'Physics, chemistry, life sciences and robotics (drones, 3D printing, robots): equipped spaces to experiment, measure, fail and try again.',
     },
     image: IMG.lab,
     features: {
@@ -471,13 +476,13 @@ export const SPACES: Record<'sports' | 'labs' | 'library', SpaceInfo> = {
         ['Labo de physique', 'Bancs d’optique, kits d’électronique et capteurs numériques.'],
         ['Labo de chimie', 'Hottes aspirantes, verrerie de précision et réactifs sécurisés.'],
         ['Labo de SVT', 'Microscopes binoculaires et modèles anatomiques 3D.'],
-        ['Espace robotique', 'Imprimantes 3D et kits de programmation Arduino / LEGO.'],
+        ['Espace robotique', 'Drones, imprimantes 3D, robots programmables et kits Arduino / LEGO.'],
       ],
       EN: [
         ['Physics lab', 'Optical benches, electronics kits and digital sensors.'],
         ['Chemistry lab', 'Fume hoods, precision glassware and secured reagents.'],
         ['Life sciences lab', 'Binocular microscopes and 3D anatomical models.'],
-        ['Robotics space', '3D printers and Arduino / LEGO programming kits.'],
+        ['Robotics space', 'Drones, 3D printers, programmable robots and Arduino / LEGO kits.'],
       ],
     },
   },
@@ -507,3 +512,58 @@ export const SPACES: Record<'sports' | 'labs' | 'library', SpaceInfo> = {
 };
 
 export type SpaceSlug = keyof typeof SPACES;
+
+
+/** Poursuite d'études : les grandes filières marocaines auxquelles l'académie prépare ses bacheliers. */
+export const AFTER_BAC = {
+  FR: {
+    chapter: 'Et après le bac ?',
+    title: 'Préparés pour les grandes filières du Maroc.',
+    lead: 'Nos élèves arrivent en terminale avec des bases solides, trois langues et une méthode de travail. Dès la première, nous les préparons aux concours et aux dossiers d’admission des filières les plus sélectives du pays.',
+    note: 'Orientation personnalisée, préparation aux concours, entraînement aux entretiens et accompagnement post-bac.',
+    families: [
+      { name: 'Classes préparatoires (CPGE)', desc: 'Filières scientifiques, économiques et commerciales vers les grandes écoles.', items: ['MPSI / MP', 'PCSI / PSI', 'ECS / ECT', 'TSI'] },
+      { name: 'Écoles d’ingénieurs', desc: 'Les grandes écoles publiques d’ingénierie du Royaume.', items: ['EMI', 'ENSA', 'ENSAM', 'INPT', 'ENSIAS', 'EHTP', 'ENSEM', 'IAV Hassan II'] },
+      { name: 'Santé', desc: 'Facultés de médecine, pharmacie et médecine dentaire.', items: ['Médecine', 'Pharmacie', 'Médecine dentaire', 'UM6SS'] },
+      { name: 'Commerce & gestion', desc: 'Les écoles de management de référence.', items: ['ENCG', 'ISCAE', 'HEM', 'ESCA'] },
+      { name: 'Universités d’excellence', desc: 'Programmes universitaires sélectifs, en anglais ou en français.', items: ['UM6P', 'Al Akhawayn', 'UIR', 'ENA (Architecture)'] },
+    ],
+  },
+  EN: {
+    chapter: 'And after the baccalaureate?',
+    title: 'Prepared for Morocco’s top programmes.',
+    lead: 'Our students reach their final year with solid foundations, three languages and a working method. From the penultimate year, we prepare them for the entrance exams and admission files of the country’s most selective programmes.',
+    note: 'Personal guidance, exam preparation, interview training and post-baccalaureate support.',
+    families: [
+      { name: 'Preparatory classes (CPGE)', desc: 'Scientific, economic and business tracks towards the grandes écoles.', items: ['MPSI / MP', 'PCSI / PSI', 'ECS / ECT', 'TSI'] },
+      { name: 'Engineering schools', desc: 'The Kingdom’s leading public engineering schools.', items: ['EMI', 'ENSA', 'ENSAM', 'INPT', 'ENSIAS', 'EHTP', 'ENSEM', 'IAV Hassan II'] },
+      { name: 'Health', desc: 'Faculties of medicine, pharmacy and dentistry.', items: ['Medicine', 'Pharmacy', 'Dentistry', 'UM6SS'] },
+      { name: 'Business & management', desc: 'The reference management schools.', items: ['ENCG', 'ISCAE', 'HEM', 'ESCA'] },
+      { name: 'Universities of excellence', desc: 'Selective university programmes, in English or French.', items: ['UM6P', 'Al Akhawayn', 'UIR', 'ENA (Architecture)'] },
+    ],
+  },
+};
+
+/** Les trois sections de la maternelle. */
+export const MATERNELLE_SECTIONS = {
+  FR: {
+    chapter: 'Les trois sections',
+    title: 'Trois années pour bien commencer.',
+    lead: 'Chaque section a son rythme et ses objectifs. L’enfant progresse à son pas, dans la même école, avec des enseignantes qui le connaissent.',
+    items: [
+      { short: 'PS', name: 'Petite Section', ages: '3 – 4 ans', desc: 'La première rentrée : se séparer en douceur, découvrir la classe, les autres et le plaisir d’apprendre.', points: ['Accueil et rituels rassurants', 'Langage et vocabulaire au quotidien', 'Motricité, jeux et manipulation', 'Premières comptines en français et en anglais'] },
+      { short: 'MS', name: 'Moyenne Section', ages: '4 – 5 ans', desc: 'L’année de l’autonomie : parler, écouter, se concentrer, coopérer et commencer à tracer.', points: ['Graphisme et préparation à l’écriture', 'Premiers nombres et formes', 'Immersion en anglais et arabe', 'Éveil scientifique et artistique'] },
+      { short: 'GS', name: 'Grande Section', ages: '5 – 6 ans', desc: 'La passerelle vers le primaire : lire ses premiers mots, compter, raisonner et gagner en confiance.', points: ['Conscience phonologique et lecture', 'Écriture cursive et nombres jusqu’à 30', 'Trilinguisme structuré', 'Projets de classe et responsabilités'] },
+    ],
+  },
+  EN: {
+    chapter: 'The three sections',
+    title: 'Three years to start well.',
+    lead: 'Each section has its own rhythm and goals. Children progress at their own pace, in the same school, with teachers who know them.',
+    items: [
+      { short: 'PS', name: 'Petite Section', ages: '3 – 4', desc: 'The first school year: separating gently, discovering the classroom, others and the joy of learning.', points: ['Reassuring welcome and rituals', 'Everyday language and vocabulary', 'Motor skills, play and handling', 'First rhymes in French and English'] },
+      { short: 'MS', name: 'Moyenne Section', ages: '4 – 5', desc: 'The year of autonomy: speaking, listening, focusing, cooperating and starting to trace.', points: ['Pre-writing and graphic skills', 'First numbers and shapes', 'English and Arabic immersion', 'Science and art discovery'] },
+      { short: 'GS', name: 'Grande Section', ages: '5 – 6', desc: 'The bridge to primary school: reading first words, counting, reasoning and building confidence.', points: ['Phonological awareness and reading', 'Cursive writing and numbers to 30', 'Structured trilingualism', 'Class projects and responsibilities'] },
+    ],
+  },
+};

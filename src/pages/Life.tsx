@@ -4,7 +4,8 @@ import { useLanguage } from '../contexts/LanguageContext';
 import { IMG, SPACES } from '../content/site';
 import { WordReveal, Reveal, ClipReveal, Parallax } from '../components/ui/motion';
 import { Seo, Chapter, Marquee } from '../components/ui';
-import { PageHero, CtaBand, VideoSection } from '../components/sections';
+import { PageHero, CtaBand, VideoSection, ImageStrip } from '../components/sections';
+import { LifeTeaser } from './home/Discover';
 
 const Life = () => {
   const { t, currentLang } = useLanguage();
@@ -17,56 +18,27 @@ const Life = () => {
 
   return (
     <main>
-      <Seo title={`${t.nav.life} | ${fr ? 'Infrastructures, cantine, services' : 'Facilities, canteen, services'} — Georges Claude Private Academy`} description={c.heroSubtitle} path="/vie-scolaire" image={IMG.sport} />
+      <Seo title={`${t.nav.life} | ${fr ? 'Infrastructures, cantine, services' : 'Facilities, canteen, services'} — Georges Claude Private Academy`} description={c.heroSubtitle} path="/vie-scolaire" image={IMG.sport} breadcrumbs={[{ name: t.nav.life, path: '/vie-scolaire' }]} />
       <PageHero chapter={t.nav.life} title={t.copy.lifeTitleHero} lead={c.heroSubtitle} image={IMG.kids} imageAlt={fr ? 'Élèves dans la cour' : 'Students in the playground'} />
 
       <div className="bg-saffron text-ink py-4 border-b border-ink/10">
         <Marquee items={activities.map((a) => <span key={a} className="font-display font-medium text-2xl md:text-3xl whitespace-nowrap">{a}</span>)} duration={45} />
       </div>
 
-      {/* Espaces — trois fiches */}
-      <section className="section bg-salt">
-        <div className="wrap">
-          <div className="grid lg:grid-cols-12 gap-8 items-end mb-12">
-            <div className="lg:col-span-7">
-              <Chapter className="mb-6">{c.infraLabel}</Chapter>
-              <h2 className="t-h2 max-w-[14ch]"><WordReveal text={c.infraTitle} /></h2>
-            </div>
-            <Reveal className="lg:col-span-5" delay={0.1}><p className="t-lead text-mute max-w-[40ch]">{c.spacesTitle}</p></Reveal>
-          </div>
-          <div className="space-y-6">
-            {spaces.map((s, i) => (
-              <Reveal key={s.slug} delay={0.05}>
-                <Link to={`/espaces/${s.slug}`} className="group grid md:grid-cols-12 gap-6 md:gap-10 items-center card p-4 md:p-6 hover:shadow-[0_30px_60px_-30px_rgba(6,25,58,0.25)] transition-shadow">
-                  <div className={`md:col-span-5 ${i % 2 ? 'md:order-2' : ''}`}>
-                    <div className="img-frame img-zoom aspect-[16/10]"><img src={s.image} alt={s.title[currentLang]} loading="lazy" referrerPolicy="no-referrer" /></div>
-                  </div>
-                  <div className={`md:col-span-7 md:px-4 ${i % 2 ? 'md:order-1' : ''}`}>
-                    <h3 className="t-h3">{s.title[currentLang]}</h3>
-                    <p className="t-body text-mute mt-3 max-w-[50ch]">{s.intro[currentLang]}</p>
-                    <ul className="mt-5 flex flex-wrap gap-2">
-                      {s.features[currentLang].map(([f]) => <li key={f} className="text-[13px] font-medium rounded-full border border-ink/15 px-3 py-1">{f}</li>)}
-                    </ul>
-                    <span className="inline-flex items-center gap-1.5 mt-6 font-semibold ulink">{c.discoverSpace} <ArrowUpRight size={16} /></span>
-                  </div>
-                </Link>
-              </Reveal>
-            ))}
-          </div>
-        </div>
-      </section>
+      {/* Espaces — exploration du campus (même composant que l'accueil) */}
+      <LifeTeaser />
 
       <VideoSection title={c.videoTitle} desc={t.videoSection.subtitle} />
 
       {/* Cantine */}
       <section className="section bg-salt-2/60">
         <div className="wrap grid lg:grid-cols-12 gap-12 items-center">
-          <div className="lg:col-span-5">
+          <div className="lg:col-span-5 order-2 lg:order-1">
             <ClipReveal className="img-arch aspect-[4/5]" from="left">
               <img src={IMG.canteen} alt={fr ? 'Cantine de l’académie' : 'Academy canteen'} loading="lazy" referrerPolicy="no-referrer" className="w-full h-full object-cover" />
             </ClipReveal>
           </div>
-          <div className="lg:col-span-6 lg:col-start-7">
+          <div className="lg:col-span-6 lg:col-start-7 order-1 lg:order-2">
             <Chapter className="mb-6">{c.canteenLabel}</Chapter>
             <h2 className="t-h2 max-w-[14ch]"><WordReveal text={c.canteenTitle} /></h2>
             <Reveal delay={0.1}><p className="t-body text-mute mt-8 max-w-[58ch]">{c.canteenText}</p></Reveal>
@@ -113,13 +85,7 @@ const Life = () => {
             <h2 className="t-h2"><WordReveal text={t.copy.lifeMoments} /></h2>
             <Reveal delay={0.1}><Link to="/galerie" className="ulink font-semibold inline-flex items-center gap-1.5">{t.life.exploreGallery} <ArrowUpRight size={15} /></Link></Reveal>
           </div>
-          <div className="grid grid-cols-3 gap-4 items-end">
-            {[IMG.spaces[0], IMG.event, IMG.spaces[3]].map((src, i) => (
-              <Parallax key={i} amount={i === 1 ? 60 : 25} className={`img-frame ${i === 1 ? 'aspect-[3/4]' : 'aspect-square mb-12'}`}>
-                <img src={src} alt="" loading="lazy" referrerPolicy="no-referrer" className="w-full h-full object-cover scale-110" />
-              </Parallax>
-            ))}
-          </div>
+          <ImageStrip images={[IMG.spaces[0], IMG.event, IMG.spaces[3]]} alt={fr ? 'Vie de l’académie' : 'Academy life'} />
         </div>
       </section>
 

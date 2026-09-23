@@ -154,9 +154,9 @@ export const seedSchoolData = async () => {
     newBatch.set(configRef, {
       workingDays: [0, 1, 2, 3, 4], // Lundi au Vendredi
       timeSlots: [
-        { start: '08:30', end: '10:30' },
+        { start: '08:00', end: '10:00' },
         { start: '10:45', end: '12:30' },
-        { start: '13:30', end: '16:30' }
+        { start: '12:30', end: '15:30' }
       ],
       dayOverrides: {}
     });

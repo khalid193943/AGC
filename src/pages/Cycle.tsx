@@ -1,12 +1,13 @@
 import { useRef } from 'react';
 import { Link, useParams, Navigate } from 'react-router-dom';
 import { motion, useScroll, useTransform, useReducedMotion } from 'motion/react';
-import { ArrowUpRight, ArrowLeft, ArrowRight } from 'lucide-react';
+import { ArrowUpRight, ArrowLeft, ArrowRight, BookOpen, Palette, Globe, Clock } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
-import { IMG } from '../content/site';
+import { IMG, MATERNELLE_SECTIONS } from '../content/site';
 import { WordReveal, Reveal, Parallax } from '../components/ui/motion';
-import { Seo, Chapter } from '../components/ui';
-import { PageHero, CtaBand } from '../components/sections';
+import { Seo, Chapter, schema } from '../components/ui';
+import { PageHero, CtaBand, AfterBac } from '../components/sections';
+import { CYCLE_STYLE } from './home/Discover';
 
 const ORDER = ['maternelle', 'primaire', 'college', 'lycee'] as const;
 type CycleId = (typeof ORDER)[number];
@@ -28,11 +29,13 @@ const Cycle = () => {
   const badge = { maternelle: t.common.cycle1, primaire: t.common.cycle23, college: t.common.cycle4, lycee: t.lycee.cycleLabel }[cid];
   const marker = { maternelle: t.common.fulfillment, primaire: t.common.academicSuccess, college: t.common.middleSchoolCertificate, lycee: t.lycee.successLabel }[cid];
   const gallery = IMG.cycleGallery[cid];
+  const st = CYCLE_STYLE[cid];
+  const accent = { maternelle: 'bg-logo-yellow text-ink', primaire: 'bg-logo-blue text-white', college: 'bg-logo-red text-white', lycee: 'bg-ink text-white' }[cid];
   const spacesImgs = [IMG.spaces[0], IMG.library, IMG.spaces[1], IMG.spaces[2]];
 
   return (
     <main>
-      <Seo title={`${c.title} — ${c.subtitle} | Georges Claude Private Academy El Jadida`} description={c.heroDesc} path={`/programmes/${cid}`} image={IMG.cycles[cid]} />
+      <Seo title={`${c.title} — ${c.subtitle} | Georges Claude Private Academy El Jadida`} description={c.heroDesc} path={`/programmes/${cid}`} image={IMG.cycles[cid]} breadcrumbs={[{ name: t.nav.programs, path: '/programmes' }, { name: c.title, path: `/programmes/${cid}` }]} jsonLd={schema.course({ name: c.title, description: c.heroDesc, path: `/programmes/${cid}`, ages: t.ui.cycleAges[cid], lang: currentLang })} />
       <PageHero chapter={`${c.title} — ${badge} — ${t.ui.cycleFor} ${t.ui.cycleAges[cid]}`} title={t.copy.cycleTitles[cid]} lead={c.heroDesc} image={IMG.cycles[cid]} imageAlt={c.title}>
         <Link to="/inscription" className="btn btn-saffron">{c.enrollBtn}</Link>
         <Link to="/contact" className="btn btn-ghost-light">{c.admissionBtn}</Link>
@@ -48,9 +51,8 @@ const Cycle = () => {
             <Reveal delay={0.2}>
               <Chapter className="mb-4">{c.visionTitle}</Chapter>
               <p className="t-body text-mute">{c.visionText}</p>
-              <p className="mt-6 inline-flex items-center gap-2 rounded-full bg-saffron/25 px-4 py-2 text-sm font-semibold">{marker}</p>
+              <p className={`mt-6 inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold ${accent}`}><st.Icon size={16} /> {marker}</p>
             </Reveal>
-            <div data-mascot-spot className="hidden lg:block h-60 mt-8" aria-hidden />
           </div>
         </div>
       </section>
@@ -62,6 +64,7 @@ const Cycle = () => {
           <div className="grid md:grid-cols-2 gap-x-12 gap-y-10 mt-6">
             {c.pillars.map((p: any, i: number) => (
               <Reveal key={i} delay={0.06 * i} className="border-t border-white/15 pt-6">
+                <span className={`inline-flex w-10 h-10 rounded-full items-center justify-center mb-4 ${st.icon}`}><st.Icon size={18} /></span>
                 <h2 className="t-h3">{p.title}</h2>
                 <p className="t-body text-sea mt-3 max-w-[40ch]">{p.desc}</p>
               </Reveal>
@@ -69,6 +72,32 @@ const Cycle = () => {
           </div>
         </div>
       </section>
+
+      {cid === 'maternelle' && (() => { const m = MATERNELLE_SECTIONS[currentLang]; return (
+        <section className="section bg-logo-yellow text-ink overflow-hidden">
+          <div className="wrap">
+            <div className="grid lg:grid-cols-12 gap-8 items-end mb-12">
+              <div className="lg:col-span-7"><Chapter className="mb-6 !text-ink/70">{m.chapter}</Chapter><h2 className="t-h1 max-w-[12ch]"><WordReveal text={m.title} /></h2></div>
+              <Reveal className="lg:col-span-5" delay={0.15}><p className="t-body text-ink/80 max-w-[44ch]">{m.lead}</p></Reveal>
+            </div>
+            <div className="grid md:grid-cols-3 gap-4">
+              {m.items.map((it, i) => (
+                <Reveal key={it.short} delay={0.08 * i} className="rounded-[1.75rem] bg-ink text-salt p-7 flex flex-col">
+                  <div className="flex items-center justify-between"><span className="font-display font-semibold text-4xl text-saffron">{it.short}</span><span className="rounded-full border border-white/20 px-3 py-1 text-sm">{it.ages}</span></div>
+                  <h3 className="t-h3 mt-4">{it.name}</h3>
+                  <p className="t-body text-sea mt-3">{it.desc}</p>
+                  <ul className="mt-5 space-y-2">
+                    {it.points.map((pt) => <li key={pt} className="flex gap-3 text-[15px]"><span className="mt-2 w-1.5 h-1.5 rounded-full bg-saffron shrink-0" />{pt}</li>)}
+                  </ul>
+                  {i < 2 && <span className="hidden md:block absolute" aria-hidden />}
+                </Reveal>
+              ))}
+            </div>
+            <p className="mt-8 text-sm text-ink/70">{fr ? 'Petite Section → Moyenne Section → Grande Section → CP, sans changer d’école.' : 'PS → MS → GS → Grade 1, without changing school.'}</p>
+          </div>
+        </section>
+      ); })()}
+      {cid === 'lycee' && <AfterBac />}
 
       {/* Programme */}
       <section className="section bg-salt">
@@ -83,6 +112,7 @@ const Cycle = () => {
           <div className="grid md:grid-cols-3 gap-5">
             {c.curriculum.map((col: any, i: number) => (
               <Reveal key={i} delay={0.08 * i} className="card p-7">
+                <span className={`inline-flex w-10 h-10 rounded-full items-center justify-center mb-4 ${st.icon}`}>{(() => { const I = [BookOpen, Palette, Globe][i] || BookOpen; return <I size={18} />; })()}</span>
                 <h3 className="t-h4">{col.title}</h3>
                 <ul className="mt-5 divide-y divide-ink/10">
                   {col.items.map((it: string) => <li key={it} className="py-2.5 text-[15px]">{it}</li>)}
@@ -117,7 +147,7 @@ const Cycle = () => {
               {c.dailyLife.map((d: any, i: number) => (
                 <Reveal key={i} as="li" amount={0.6} className="relative">
                   <span className="absolute -left-10 top-1.5 w-[17px] h-[17px] rounded-full bg-salt border border-ink/25 flex items-center justify-center"><span className="w-1.5 h-1.5 rounded-full bg-ink" /></span>
-                  <p className="font-display text-mute text-sm">{d.time}</p>
+                  <p className="font-display text-mute text-sm inline-flex items-center gap-1.5"><Clock size={13} />{d.time}</p>
                   <p className="t-h3 mt-1">{d.activity}</p>
                 </Reveal>
               ))}
