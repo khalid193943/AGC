@@ -119,13 +119,13 @@ export const ClipReveal = ({ children, className = '', delay = 0, from = 'bottom
   const ref = useRef<HTMLDivElement>(null);
   const seen = useInView(ref, { once: true, amount: 0.25 });
   const start =
-    from === 'bottom' ? 'inset(100% 0 0 0 round 24px)' : from === 'top' ? 'inset(0 0 100% 0 round 24px)' : from === 'left' ? 'inset(0 100% 0 0 round 24px)' : 'inset(0 0 0 100% round 24px)';
+    from === 'bottom' ? 'inset(100% 0 0 0)' : from === 'top' ? 'inset(0 0 100% 0)' : from === 'left' ? 'inset(0 100% 0 0)' : 'inset(0 0 0 100%)';
   return (
     <div ref={ref} className={className.includes('aspect') ? '' : undefined}>
       <motion.div
         className={className}
         initial={reduce ? false : { clipPath: start }}
-        animate={reduce || seen ? { clipPath: 'inset(0% 0 0 0 round 24px)' } : undefined}
+        animate={reduce || seen ? { clipPath: 'inset(0% 0 0 0)' } : undefined}
         transition={{ duration: 1.3, delay, ease: EASE }}
         style={{ willChange: 'clip-path' }}
       >

@@ -89,7 +89,7 @@ const Article = () => {
               </div>
             )}
             {article.tags?.length > 0 && (
-              <ul className="flex flex-wrap gap-2 mt-10">{article.tags.map((tag: string) => <li key={tag} className="text-[13px] font-medium rounded-full border border-ink/15 px-3 py-1">{tag}</li>)}</ul>
+              <ul className="flex flex-wrap gap-2 mt-10">{article.tags.map((tag: string) => <li key={tag} className="text-[13px] font-medium rounded-none border border-ink/15 px-3 py-1">{tag}</li>)}</ul>
             )}
             <div className="mt-10 pt-6 border-t border-ink/12 flex items-center gap-4">
               <button onClick={share} className="btn btn-ghost">{copied ? <><Check size={16} /> {t.ui.copied}</> : <><Share2 size={16} /> {t.ui.share}</>}</button>

@@ -37,7 +37,7 @@
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-in-out-quart: cubic-bezier(0.76, 0, 0.24, 1);
 
-  --radius-arch: 999px 999px 28px 28px;
+  --radius-arch: 999px 999px 0 0;
 }
 
 @layer base {
@@ -59,7 +59,7 @@
   h1, h2, h3, h4 { @apply font-display; text-wrap: balance; letter-spacing: -0.025em; }
   p { text-wrap: pretty; }
 
-  :focus-visible { outline: 2px solid var(--color-saffron); outline-offset: 3px; border-radius: 4px; }
+  :focus-visible { outline: 2px solid var(--color-saffron); outline-offset: 3px; }
   button, a { -webkit-tap-highlight-color: transparent; }
   img { display: block; max-width: 100%; color: transparent; font-size: 0; }
   video { max-width: 100%; }
@@ -95,7 +95,7 @@
   .chapter.saffron { color: var(--color-saffron); }
 
   /* Boutons */
-  .btn { position: relative; display: inline-flex; align-items: center; justify-content: center; gap: 0.6rem; height: 3.25rem; padding-inline: 1.6rem; border-radius: 999px; font-family: var(--font-sans); font-weight: 600; font-size: 0.9375rem; letter-spacing: -0.005em; overflow: hidden; isolation: isolate; transition: transform 0.5s var(--ease-out-expo), background-color 0.35s, color 0.35s, border-color 0.35s; white-space: nowrap; }
+  .btn { position: relative; display: inline-flex; align-items: center; justify-content: center; gap: 0.6rem; height: 3.25rem; padding-inline: 1.6rem; border-radius: 0; font-family: var(--font-sans); font-weight: 600; font-size: 0.9375rem; letter-spacing: -0.005em; overflow: hidden; isolation: isolate; transition: transform 0.5s var(--ease-out-expo), background-color 0.35s, color 0.35s, border-color 0.35s; white-space: nowrap; }
   .btn:active { transform: scale(0.97); }
   .btn-ink { background: var(--color-ink); color: var(--color-salt); }
   .btn-ink:hover { background: var(--color-ink-2); }
@@ -122,22 +122,22 @@
   .ulink:hover::after { transform: scaleX(1); transform-origin: left; }
 
   /* Images */
-  .img-frame { position: relative; overflow: hidden; border-radius: 1.5rem; background: var(--color-sea); }
+  .img-frame { position: relative; overflow: hidden; border-radius: 0; background: var(--color-sea); }
   .img-arch { position: relative; overflow: hidden; border-radius: var(--radius-arch); background: var(--color-sea); }
   .img-frame img, .img-arch img { width: 100%; height: 100%; object-fit: cover; }
   .img-zoom img { transition: transform 1.2s var(--ease-out-expo); }
   .img-zoom:hover img { transform: scale(1.04); }
 
   /* Cartes */
-  .card { background: transparent; border: 1px solid var(--color-line); border-radius: 1.5rem; }
+  .card { background: transparent; border: 1px solid var(--color-line); border-radius: 0; }
   .on-dark .card { border-color: var(--color-line-light); color: var(--color-salt); }
   .on-dark .card .t-meta, .on-dark .card .text-mute { color: var(--color-sea-2); }
-  .card-dark { background: rgba(255,255,255,0.05); border: 1px solid var(--color-line-light); border-radius: 1.5rem; }
+  .card-dark { background: rgba(255,255,255,0.05); border: 1px solid var(--color-line-light); border-radius: 0; }
 
   /* Champs */
   .field { display: flex; flex-direction: column; gap: 0.5rem; }
   .field label { font-family: var(--font-sans); font-size: 0.875rem; font-weight: 600; color: var(--color-ink); }
-  .field input, .field select, .field textarea { width: 100%; background: #fff; border: 1px solid var(--color-line); border-radius: 0.9rem; padding: 0.95rem 1.1rem; font-family: var(--font-sans); font-size: 1rem; color: var(--color-ink); transition: border-color 0.3s, box-shadow 0.3s; }
+  .field input, .field select, .field textarea { width: 100%; background: #fff; border: 1px solid var(--color-line); border-radius: 0; padding: 0.95rem 1.1rem; font-family: var(--font-sans); font-size: 1rem; color: var(--color-ink); transition: border-color 0.3s, box-shadow 0.3s; }
   .field input:focus, .field select:focus, .field textarea:focus { outline: none; border-color: var(--color-ink); box-shadow: 0 0 0 4px rgba(6,25,58,0.08); }
   .field input::placeholder, .field textarea::placeholder { color: #9AA3B2; }
   .on-dark .field label { color: var(--color-salt); }

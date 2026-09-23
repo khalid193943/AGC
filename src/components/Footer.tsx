@@ -70,7 +70,7 @@ export const Footer = () => {
 
       {/* Carte + coordonnées */}
       <div className="wrap relative z-10">
-        <div className="grid lg:grid-cols-12 gap-8 rounded-[2rem] overflow-hidden border border-white/12 bg-white/4">
+        <div className="grid lg:grid-cols-12 gap-8 rounded-none overflow-hidden border border-white/12 bg-white/4">
           <div className="lg:col-span-5 p-8 md:p-10 flex flex-col gap-8">
             <div>
               <p className="t-meta mb-2 flex items-center gap-2"><MapPin size={14} className="text-saffron" />{t.ui.address}</p>
@@ -142,7 +142,7 @@ export const Footer = () => {
             <p className="text-sm text-sea-2 mb-4">{t.footer.newsDesc}</p>
             <form onSubmit={subscribe} className="flex flex-col gap-2">
               <label className="sr-only" htmlFor="nl-email">{t.footer.emailPlaceholder}</label>
-              <input id="nl-email" type="email" required value={email} onChange={(e) => setEmail(e.target.value)} placeholder={t.footer.emailPlaceholder} className="h-11 rounded-full bg-white/6 border border-white/15 px-4 text-sm placeholder:text-sea-2/70 focus:border-saffron focus:outline-none" />
+              <input id="nl-email" type="email" required value={email} onChange={(e) => setEmail(e.target.value)} placeholder={t.footer.emailPlaceholder} className="h-11 rounded-none bg-white/6 border border-white/15 px-4 text-sm placeholder:text-sea-2/70 focus:border-saffron focus:outline-none" />
               <button className="btn btn-ghost-light !h-11 text-sm" disabled={state !== 'idle'}>
                 {state === 'done' ? <><Check size={16} /> OK</> : state === 'sending' ? t.ui.sending : <><Send size={15} /> {t.footer.subscribe}</>}
               </button>

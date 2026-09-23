@@ -38,13 +38,13 @@ export const PageHero = ({
     <section ref={ref} className="relative bg-ink text-salt on-dark overflow-hidden grain">
       {/* Façade de l'école en arrière-plan, fondue dans l'encre */}
       <motion.div className="absolute inset-0" style={reduce ? undefined : { y: bgY }} aria-hidden>
-        <img src={IMG.school} alt="" className="w-full h-[120%] object-cover object-center opacity-40" loading="eager" decoding="async" />
-        <div className="absolute inset-0 bg-gradient-to-r from-ink via-ink/85 to-ink/35" />
-        <div className="absolute inset-0 bg-gradient-to-t from-ink via-transparent to-ink/60" />
+        <img src={IMG.school} alt="" className="w-full h-[120%] object-cover object-[center_30%] opacity-60" loading="eager" decoding="async" />
+        <div className="absolute inset-0 bg-gradient-to-r from-ink via-ink/75 to-ink/20" />
+        <div className="absolute inset-0 bg-gradient-to-t from-ink via-transparent to-ink/50" />
       </motion.div>
       <div className="wrap relative z-10" style={{ paddingTop: 'calc(var(--header-h) + clamp(3rem, 8vw, 7rem))', paddingBottom: compact ? 'clamp(3rem, 6vw, 5rem)' : 'clamp(4rem, 8vw, 7rem)' }}>
         <div className="grid lg:grid-cols-12 gap-10 items-end">
-          <motion.div className={image ? 'lg:col-span-7' : 'lg:col-span-10'} style={reduce ? undefined : { y, opacity }}>
+          <motion.div className={image ? 'lg:col-span-7' : 'lg:col-span-10'} style={reduce ? undefined : { y }}>
             <Chapter saffron className="mb-6">{chapter}</Chapter>
             <h1 className="t-display">
               <WordReveal text={title} inView={false} delay={0.1} />
@@ -181,7 +181,7 @@ export const StatGrid = ({ dark = false }: { dark?: boolean }) => {
     { n: 1, suffix: currentLang === 'FR' ? 'ère' : 'st', label: t.ui.ecoFirst, sub: t.ui.ecoFirstDesc, Icon: Leaf },
   ];
   return (
-    <div className={`grid grid-cols-2 lg:grid-cols-4 gap-px ${dark ? 'bg-white/12' : 'bg-ink/12'} rounded-[1.75rem] overflow-hidden border ${dark ? 'border-white/12' : 'border-ink/12'}`}>
+    <div className={`grid grid-cols-2 lg:grid-cols-4 gap-px ${dark ? 'bg-white/12' : 'bg-ink/12'} rounded-none overflow-hidden border ${dark ? 'border-white/12' : 'border-ink/12'}`}>
       {stats.map((s, i) => (
         <div key={i} className={`p-7 md:p-9 ${dark ? 'bg-ink' : 'bg-salt'}`}>
           <s.Icon size={18} className="text-saffron mb-4" />
@@ -230,7 +230,7 @@ export const AfterBac = ({ compact = false }: { compact?: boolean }) => {
           <Reveal className="lg:col-span-7" delay={0.1}>
             <p className="t-body text-sea max-w-[60ch]">{d.lead}</p>
             <div className="mt-6 flex flex-wrap gap-2">
-              {d.families.map((f, i) => { const I = icons[i]; return <span key={f.name} className="inline-flex items-center gap-2 rounded-full border border-white/20 px-3 py-1.5 text-sm"><I size={14} className="text-saffron" />{f.name}</span>; })}
+              {d.families.map((f, i) => { const I = icons[i]; return <span key={f.name} className="inline-flex items-center gap-2 rounded-none border border-white/20 px-3 py-1.5 text-sm"><I size={14} className="text-saffron" />{f.name}</span>; })}
             </div>
             <Link to="/programmes/lycee" className="ulink font-semibold inline-flex items-center gap-1.5 mt-6"><Compass size={15} />{currentLang === 'FR' ? 'Le parcours du lycée' : 'The high-school path'}</Link>
           </Reveal>
@@ -260,7 +260,7 @@ export const AfterBac = ({ compact = false }: { compact?: boolean }) => {
                 <h3 className="t-h4">{f.name}</h3>
                 <p className="t-small text-sea-2 mt-2">{f.desc}</p>
                 <ul className="mt-4 flex flex-wrap gap-1.5">
-                  {f.items.map((it) => <li key={it} className="text-[12px] font-medium rounded-full border border-white/20 px-2.5 py-1">{it}</li>)}
+                  {f.items.map((it) => <li key={it} className="text-[12px] font-medium rounded-none border border-white/20 px-2.5 py-1">{it}</li>)}
                 </ul>
               </Reveal>
             );

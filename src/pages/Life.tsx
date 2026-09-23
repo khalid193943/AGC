@@ -63,7 +63,7 @@ const Life = () => {
         <div className="wrap">
           <Chapter saffron className="mb-6">{c.servicesLabel}</Chapter>
           <h2 className="t-h2 max-w-[14ch]"><WordReveal text={c.servicesTitle} /></h2>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-px bg-white/12 border border-white/12 rounded-[1.75rem] overflow-hidden mt-12">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-px bg-white/12 border border-white/12 rounded-none overflow-hidden mt-12">
             {c.services.map((s: any, i: number) => {
               const Ico = serviceIcons[i];
               return (

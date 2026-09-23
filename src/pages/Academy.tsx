@@ -56,7 +56,7 @@ const Academy = () => {
         <div className="wrap">
           <Chapter saffron className="mb-6">{a.pillarsLabel}</Chapter>
           <h2 className="t-h2 max-w-[14ch]"><WordReveal text={a.whyTitle} /></h2>
-          <div className="grid md:grid-cols-3 gap-px bg-white/12 border border-white/12 rounded-[1.75rem] overflow-hidden mt-14">
+          <div className="grid md:grid-cols-3 gap-px bg-white/12 border border-white/12 rounded-none overflow-hidden mt-14">
             {a.whyCards.map((c: any, i: number) => (
               <div key={i} className="bg-ink p-8 md:p-10">
                 <span className="inline-flex w-11 h-11 rounded-full border border-white/20 text-saffron items-center justify-center mb-5">{(() => { const I = [BookOpen, GraduationCap, Building2][i] || Star; return <I size={20} />; })()}</span>

@@ -27,7 +27,7 @@ const Partners = () => {
         <div className="wrap grid lg:grid-cols-12 gap-12 items-center">
           <Reveal className="lg:col-span-5" style={{ perspective: '1200px' }}>
             <TiltCard>
-              <div className="rounded-[2rem] bg-white border border-ink/10 p-12 md:p-16 flex items-center justify-center shadow-[0_40px_80px_-40px_rgba(6,25,58,0.35)]">
+              <div className="rounded-none bg-white border border-ink/10 p-12 md:p-16 flex items-center justify-center shadow-[0_40px_80px_-40px_rgba(6,25,58,0.35)]">
                 <img src={SITE.cambridgeLogo} alt="Cambridge Assessment International Education" className="w-full h-auto" loading="lazy" referrerPolicy="no-referrer" />
               </div>
             </TiltCard>
@@ -52,7 +52,7 @@ const Partners = () => {
           <Chapter saffron className="mb-6">{t.ui.partnersIntro}</Chapter>
           <h2 className="t-h2 max-w-[14ch]"><WordReveal text={fr ? 'Un réseau en croissance.' : 'A growing network.'} /></h2>
           <Reveal delay={0.1}><p className="t-body text-sea mt-6 max-w-[58ch]">{fr ? 'Nous travaillons continuellement à étendre notre réseau de partenaires académiques, institutionnels et sportifs pour enrichir l’expérience de nos élèves.' : 'We continuously work to extend our network of academic, institutional and sports partners to enrich our students’ experience.'}</p></Reveal>
-          <div className="grid md:grid-cols-3 gap-px bg-white/12 border border-white/12 rounded-[1.75rem] overflow-hidden mt-12">
+          <div className="grid md:grid-cols-3 gap-px bg-white/12 border border-white/12 rounded-none overflow-hidden mt-12">
             {network.map(([h, d], i) => (
               <div key={i} className="bg-ink p-8 md:p-10">
                 <span className="block w-2 h-2 rounded-full bg-saffron mb-6" />

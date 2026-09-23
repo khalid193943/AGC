@@ -51,7 +51,7 @@ const Cycle = () => {
             <Reveal delay={0.2}>
               <Chapter className="mb-4">{c.visionTitle}</Chapter>
               <p className="t-body text-mute">{c.visionText}</p>
-              <p className={`mt-6 inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold ${accent}`}><st.Icon size={16} /> {marker}</p>
+              <p className={`mt-6 inline-flex items-center gap-2 rounded-none px-4 py-2 text-sm font-semibold ${accent}`}><st.Icon size={16} /> {marker}</p>
             </Reveal>
           </div>
         </div>
@@ -82,8 +82,8 @@ const Cycle = () => {
             </div>
             <div className="grid md:grid-cols-3 gap-4">
               {m.items.map((it, i) => (
-                <Reveal key={it.short} delay={0.08 * i} className="rounded-[1.75rem] bg-ink text-salt p-7 flex flex-col">
-                  <div className="flex items-center justify-between"><span className="font-display font-semibold text-4xl text-saffron">{it.short}</span><span className="rounded-full border border-white/20 px-3 py-1 text-sm">{it.ages}</span></div>
+                <Reveal key={it.short} delay={0.08 * i} className="rounded-none bg-ink text-salt p-7 flex flex-col">
+                  <div className="flex items-center justify-between"><span className="font-display font-semibold text-4xl text-saffron">{it.short}</span><span className="rounded-none border border-white/20 px-3 py-1 text-sm">{it.ages}</span></div>
                   <h3 className="t-h3 mt-4">{it.name}</h3>
                   <p className="t-body text-sea mt-3">{it.desc}</p>
                   <ul className="mt-5 space-y-2">

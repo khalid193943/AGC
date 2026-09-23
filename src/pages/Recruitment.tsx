@@ -69,10 +69,10 @@ const Recruitment = () => {
                   <p className="t-meta inline-flex items-center gap-1.5"><Briefcase size={13} />{catLabel[j.category] || j.category}</p>
                   <p className="t-h4 mt-1">{j.title}</p>
                   {j.description && <p className="t-small text-mute mt-2 line-clamp-2">{j.description}</p>}
-                  {j.requirements?.length > 0 && <ul className="mt-3 flex flex-wrap gap-1.5">{j.requirements.slice(0, 4).map((q) => <li key={q} className="text-xs rounded-full border border-ink/15 px-2.5 py-0.5">{q}</li>)}</ul>}
+                  {j.requirements?.length > 0 && <ul className="mt-3 flex flex-wrap gap-1.5">{j.requirements.slice(0, 4).map((q) => <li key={q} className="text-xs rounded-none border border-ink/15 px-2.5 py-0.5">{q}</li>)}</ul>}
                 </button>
               ))}
-              <button onClick={() => { setSelected('spontaneous'); setState('idle'); }} className={`w-full text-left rounded-[1.5rem] p-5 border transition-all ${selected === 'spontaneous' ? 'bg-ink text-salt border-ink' : 'bg-saffron/20 border-saffron/40 hover:border-ink/40'}`}>
+              <button onClick={() => { setSelected('spontaneous'); setState('idle'); }} className={`w-full text-left rounded-none p-5 border transition-all ${selected === 'spontaneous' ? 'bg-ink text-salt border-ink' : 'bg-saffron/20 border-saffron/40 hover:border-ink/40'}`}>
                 <p className="t-h4">{t.ui.spontaneous}</p>
                 <p className={`t-small mt-1 ${selected === 'spontaneous' ? 'text-sea' : 'text-mute'}`}>{r.noPositions}</p>
               </button>
@@ -113,8 +113,8 @@ const Recruitment = () => {
                   <div className="field"><label htmlFor="r-email">{r.email} *</label><input id="r-email" type="email" required value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} autoComplete="email" /></div>
                   <div className="field"><label htmlFor="r-phone">{r.phone} *</label><input id="r-phone" type="tel" required value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} autoComplete="tel" /></div>
                   {needSubject && <div className="field sm:col-span-2"><label htmlFor="r-subj">{t.ui.subjectTaught}</label><input id="r-subj" value={form.subject} onChange={(e) => setForm({ ...form, subject: e.target.value })} /></div>}
-                  <div className="field"><label htmlFor="r-cv">{t.ui.cvLabel} *</label><label htmlFor="r-cv" className="flex items-center gap-3 cursor-pointer rounded-xl border border-dashed border-ink/25 px-4 py-3 text-sm hover:border-ink"><Upload size={16} /> {form.cv?.name || (fr ? 'Choisir un fichier' : 'Choose a file')}</label><input id="r-cv" type="file" accept=".pdf,.doc,.docx" required className="sr-only" onChange={(e) => setForm({ ...form, cv: e.target.files?.[0] || null })} /></div>
-                  <div className="field"><label htmlFor="r-cl">{t.ui.clLabel}</label><label htmlFor="r-cl" className="flex items-center gap-3 cursor-pointer rounded-xl border border-dashed border-ink/25 px-4 py-3 text-sm hover:border-ink"><Upload size={16} /> {form.coverLetter?.name || (fr ? 'Choisir un fichier' : 'Choose a file')}</label><input id="r-cl" type="file" accept=".pdf,.doc,.docx" className="sr-only" onChange={(e) => setForm({ ...form, coverLetter: e.target.files?.[0] || null })} /></div>
+                  <div className="field"><label htmlFor="r-cv">{t.ui.cvLabel} *</label><label htmlFor="r-cv" className="flex items-center gap-3 cursor-pointer rounded-none border border-dashed border-ink/25 px-4 py-3 text-sm hover:border-ink"><Upload size={16} /> {form.cv?.name || (fr ? 'Choisir un fichier' : 'Choose a file')}</label><input id="r-cv" type="file" accept=".pdf,.doc,.docx" required className="sr-only" onChange={(e) => setForm({ ...form, cv: e.target.files?.[0] || null })} /></div>
+                  <div className="field"><label htmlFor="r-cl">{t.ui.clLabel}</label><label htmlFor="r-cl" className="flex items-center gap-3 cursor-pointer rounded-none border border-dashed border-ink/25 px-4 py-3 text-sm hover:border-ink"><Upload size={16} /> {form.coverLetter?.name || (fr ? 'Choisir un fichier' : 'Choose a file')}</label><input id="r-cl" type="file" accept=".pdf,.doc,.docx" className="sr-only" onChange={(e) => setForm({ ...form, coverLetter: e.target.files?.[0] || null })} /></div>
                   <div className="field sm:col-span-2"><label htmlFor="r-msg">{r.message}</label><textarea id="r-msg" rows={4} value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })} /></div>
                   <div className="sm:col-span-2 flex items-center justify-between gap-4">
                     <p className="t-meta">* {t.ui.requiredNote}</p>

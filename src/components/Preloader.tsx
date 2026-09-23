@@ -10,7 +10,7 @@ import { EASE } from './ui/motion';
  * puis le rideau se lève (clip-path) et révèle le hero.
  */
 const KEY = 'agc-loaded';
-const DURATION = 1.5; // secondes avant la levée du rideau
+const DURATION = 2.6; // secondes avant la levée du rideau
 
 export const preloaderDelay = () => {
   try { return sessionStorage.getItem(KEY) ? 0 : DURATION + 0.35; } catch { return 0; }

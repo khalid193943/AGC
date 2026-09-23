@@ -103,7 +103,7 @@ export const EXTRA = {
       cyclesTitle: 'Les cycles',
     },
     copy: {
-      heroTitle: 'Ici, votre enfant apprend à viser haut.',
+      heroTitle: 'Une école d’excellence, de la maternelle au baccalauréat.',
       heroSub: 'De 3 à 18 ans, une seule école à El Jadida.',
       identityTitle: 'Une école qui tient ses promesses.',
       identityAside: 'Quinze années sous le même toit, avec la même exigence et la même attention.',
@@ -265,7 +265,7 @@ export const EXTRA = {
       cyclesTitle: 'The cycles',
     },
     copy: {
-      heroTitle: 'Here, your child learns to aim high.',
+      heroTitle: 'A school of excellence, from preschool to the baccalaureate.',
       heroSub: 'From 3 to 18, one school in El Jadida.',
       identityTitle: 'A school that keeps its promises.',
       identityAside: 'Fifteen years under one roof, with the same standards and the same care.',

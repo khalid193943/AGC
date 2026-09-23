@@ -89,8 +89,8 @@ export const Journal = () => {
                 <div className="absolute inset-0 bg-gradient-to-t from-ink via-ink/40 to-transparent" />
                 <div className="absolute inset-x-0 bottom-0 p-7 md:p-10 text-salt">
                   <p className="t-meta !text-sea flex flex-wrap items-center gap-3">
-                    <span className="rounded-full bg-saffron text-ink px-3 py-1 text-xs font-semibold">{featured.category || t.newsPage.latestNews}</span>
-                    {isRecent(featured.date) && <span className="rounded-full bg-salt text-ink px-3 py-1 text-xs font-semibold">{currentLang === 'FR' ? 'Nouveau' : 'New'}</span>}
+                    <span className="rounded-none bg-saffron text-ink px-3 py-1 text-xs font-semibold">{featured.category || t.newsPage.latestNews}</span>
+                    {isRecent(featured.date) && <span className="rounded-none bg-salt text-ink px-3 py-1 text-xs font-semibold">{currentLang === 'FR' ? 'Nouveau' : 'New'}</span>}
                     <span>{fmtDate(featured.date, currentLang)} · {readingTime(featured.content)} min</span>
                   </p>
                   <h3 className="t-h2 mt-4 max-w-[16ch] group-hover:text-saffron-2 transition-colors">{featured.title}</h3>
@@ -100,13 +100,13 @@ export const Journal = () => {
             </Reveal>
             {/* À suivre : panneau encre */}
             <Reveal className="lg:col-span-5" delay={0.1}>
-              <div className="bg-ink text-salt on-dark rounded-[1.5rem] p-6 md:p-8 h-full flex flex-col">
+              <div className="bg-ink text-salt on-dark rounded-none p-6 md:p-8 h-full flex flex-col">
                 <p className="chapter saffron mb-4">{t.newsPage.latestNews}</p>
                 <ul className="divide-y divide-white/10 flex-1">
                   {rest.map((n) => (
                     <li key={n.id}>
                       <Link to={`/actualites/${n.id}`} className="group flex gap-5 py-5 items-center">
-                        <div className="img-frame img-zoom w-20 aspect-square shrink-0 !rounded-xl"><img src={n.image} alt="" loading="lazy" referrerPolicy="no-referrer" /></div>
+                        <div className="img-frame img-zoom w-20 aspect-square shrink-0 !rounded-none"><img src={n.image} alt="" loading="lazy" referrerPolicy="no-referrer" /></div>
                         <div className="min-w-0">
                           <p className="t-meta">{n.category}{n.date ? ` — ${fmtDate(n.date, currentLang)}` : ''} · {readingTime(n.content)} min{isRecent(n.date) && <span className="text-saffron font-semibold"> · {currentLang === 'FR' ? 'Nouveau' : 'New'}</span>}</p>
                           <p className="t-h4 mt-1 group-hover:text-saffron transition-colors">{n.title}</p>
@@ -160,7 +160,7 @@ export const Practical = () => {
         </div>
 
         {/* Questions fréquentes */}
-        <Reveal delay={0.1} className="mt-6 rounded-[2rem] bg-salt-2/70 p-6 md:p-10 lg:p-14">
+        <Reveal delay={0.1} className="mt-6 rounded-none bg-salt-2/70 p-6 md:p-10 lg:p-14">
           <div className="grid lg:grid-cols-12 gap-10">
             <div className="lg:col-span-4">
               <p className="t-h3">{t.faq.title}</p>

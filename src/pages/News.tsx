@@ -108,8 +108,8 @@ const News = () => {
                   <img src={featured.image} alt={featured.title} className="absolute inset-0 w-full h-full object-cover" loading="eager" referrerPolicy="no-referrer" />
                   <div className="absolute inset-0 bg-gradient-to-t from-ink via-ink/40 to-transparent" />
                   <div className="absolute top-5 left-5 flex gap-2">
-                    <span className="rounded-full bg-saffron text-ink px-3 py-1 text-xs font-semibold">{fr ? 'À la une' : 'Headline'}</span>
-                    {isRecent(featured.date) && <span className="rounded-full bg-salt text-ink px-3 py-1 text-xs font-semibold">{fr ? 'Nouveau' : 'New'}</span>}
+                    <span className="rounded-none bg-saffron text-ink px-3 py-1 text-xs font-semibold">{fr ? 'À la une' : 'Headline'}</span>
+                    {isRecent(featured.date) && <span className="rounded-none bg-salt text-ink px-3 py-1 text-xs font-semibold">{fr ? 'Nouveau' : 'New'}</span>}
                   </div>
                   <div className="absolute inset-x-0 bottom-0 p-7 md:p-10 text-salt">
                     <p className="text-sea text-sm flex flex-wrap gap-x-3">{featured.category && <span className="font-semibold text-salt">{featured.category}</span>}<span>{fmtDate(featured.date, currentLang)}</span><span>· {readingTime(featured.content)} min</span></p>
@@ -130,7 +130,7 @@ const News = () => {
                           <p className="t-meta flex flex-wrap gap-x-2">{n.category && <span className="text-ink font-semibold">{n.category}</span>}<span>{fmtDate(n.date, currentLang)}</span><span>· {readingTime(n.content)} min</span>{isRecent(n.date) && <span className="text-saffron font-semibold">{fr ? 'Nouveau' : 'New'}</span>}</p>
                           <p className="t-h4 mt-1 group-hover:text-ink-3 transition-colors">{n.title}</p>
                         </div>
-                        <div className="img-frame img-zoom w-20 aspect-square shrink-0 !rounded-xl"><img src={n.image} alt="" loading="lazy" referrerPolicy="no-referrer" /></div>
+                        <div className="img-frame img-zoom w-20 aspect-square shrink-0 !rounded-none"><img src={n.image} alt="" loading="lazy" referrerPolicy="no-referrer" /></div>
                       </Link>
                     </Reveal>
                   ))}
@@ -158,7 +158,7 @@ const News = () => {
                 <Reveal key={e.id} delay={0.06 * i}>
                   <article className="card-dark p-5 h-full flex flex-col">
                     <div className="flex items-start gap-4">
-                      <div className="w-16 shrink-0 rounded-2xl bg-salt text-ink overflow-hidden text-center">
+                      <div className="w-16 shrink-0 rounded-none bg-salt text-ink overflow-hidden text-center">
                         <span className="block bg-logo-red text-white text-[11px] font-semibold py-1 uppercase tracking-wide">{monthOf(e._d)}</span>
                         <span className="block font-display font-semibold text-3xl py-2 leading-none">{dayOf(e._d)}</span>
                       </div>
@@ -191,7 +191,7 @@ const News = () => {
             {categories.length > 1 && (
               <div className="flex flex-wrap gap-2">
                 {['all', ...categories].map((k) => (
-                  <button key={k} onClick={() => setCat(k)} className={`rounded-full px-4 py-1.5 text-sm font-medium border transition-colors ${cat === k ? 'bg-ink text-salt border-ink' : 'border-ink/15 hover:border-ink'}`}>{k === 'all' ? (fr ? 'Tout' : 'All') : k}</button>
+                  <button key={k} onClick={() => setCat(k)} className={`rounded-none px-4 py-1.5 text-sm font-medium border transition-colors ${cat === k ? 'bg-ink text-salt border-ink' : 'border-ink/15 hover:border-ink'}`}>{k === 'all' ? (fr ? 'Tout' : 'All') : k}</button>
                 ))}
               </div>
             )}
@@ -206,7 +206,7 @@ const News = () => {
                       <Link to={`/actualites/${n.id}`} className="group block">
                         <div className="img-frame img-zoom aspect-[4/3] relative">
                           <img src={n.image} alt={n.title} loading="lazy" referrerPolicy="no-referrer" />
-                          {isRecent(n.date) && <span className="absolute top-3 left-3 rounded-full bg-saffron text-ink px-2.5 py-0.5 text-[11px] font-semibold">{fr ? 'Nouveau' : 'New'}</span>}
+                          {isRecent(n.date) && <span className="absolute top-3 left-3 rounded-none bg-saffron text-ink px-2.5 py-0.5 text-[11px] font-semibold">{fr ? 'Nouveau' : 'New'}</span>}
                         </div>
                         <p className="t-meta mt-4 flex flex-wrap gap-x-2">{n.category && <span className="text-ink font-semibold">{n.category}</span>}<span>{fmtDate(n.date, currentLang)}</span><span>· {readingTime(n.content)} min</span></p>
                         <h3 className="t-h4 mt-1 group-hover:text-ink-3 transition-colors">{n.title}</h3>
@@ -255,7 +255,7 @@ const News = () => {
           <Reveal className="lg:col-span-5 lg:col-start-8" delay={0.15}>
             <form onSubmit={subscribe} className="flex flex-col sm:flex-row gap-2">
               <label className="sr-only" htmlFor="j-email">{t.footer.emailPlaceholder}</label>
-              <input id="j-email" type="email" required value={email} onChange={(e) => setEmail(e.target.value)} placeholder={t.footer.emailPlaceholder} className="flex-1 h-12 rounded-full bg-white/70 border border-ink/15 px-5 text-ink placeholder:text-ink/50 focus:outline-none focus:border-ink" />
+              <input id="j-email" type="email" required value={email} onChange={(e) => setEmail(e.target.value)} placeholder={t.footer.emailPlaceholder} className="flex-1 h-12 rounded-none bg-white/70 border border-ink/15 px-5 text-ink placeholder:text-ink/50 focus:outline-none focus:border-ink" />
               <button className="btn btn-ink !h-12" disabled={sub !== 'idle'}>{sub === 'done' ? <><Check size={16} /> {fr ? 'Inscrit' : 'Subscribed'}</> : sub === 'sending' ? t.ui.sending : t.footer.subscribe}</button>
             </form>
             <SocialLinks variant="label" className="mt-5 gap-6" />
@@ -267,7 +267,7 @@ const News = () => {
       <AnimatePresence>
         {event && (
           <motion.div className="fixed inset-0 z-[70] bg-ink/85 backdrop-blur-sm flex items-end sm:items-center justify-center p-0 sm:p-6" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setEvent(null)} role="dialog" aria-modal="true" aria-label={t.ui.eventDetails}>
-            <motion.div className="bg-salt text-ink w-full max-w-3xl rounded-t-[2rem] sm:rounded-[2rem] overflow-hidden max-h-[92vh] overflow-y-auto" initial={{ y: 40, opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ y: 40, opacity: 0 }} transition={{ duration: 0.5, ease: EASE }} onClick={(e) => e.stopPropagation()}>
+            <motion.div className="bg-salt text-ink w-full max-w-3xl rounded-none sm:rounded-none overflow-hidden max-h-[92vh] overflow-y-auto" initial={{ y: 40, opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ y: 40, opacity: 0 }} transition={{ duration: 0.5, ease: EASE }} onClick={(e) => e.stopPropagation()}>
               <div className="relative aspect-[16/9]">
                 <img src={event.image} alt={event.title} className="w-full h-full object-cover" referrerPolicy="no-referrer" />
                 <button onClick={() => setEvent(null)} className="absolute top-4 right-4 w-10 h-10 rounded-full bg-white/85 text-ink flex items-center justify-center" aria-label={t.nav.close}><X size={18} /></button>

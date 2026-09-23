@@ -46,7 +46,7 @@ const Enrollment = () => {
         <div className="wrap">
           <Chapter className="mb-6">{t.admissionsPage.journey}</Chapter>
           <h2 className="t-h2 max-w-[14ch]"><WordReveal text={t.ui.stepsTitle} /></h2>
-          <ol className="grid md:grid-cols-4 gap-px bg-ink/12 border border-ink/12 rounded-[1.75rem] overflow-hidden mt-12">
+          <ol className="grid md:grid-cols-4 gap-px bg-ink/12 border border-ink/12 rounded-none overflow-hidden mt-12">
             {e.steps.map((s: any, i: number) => {
               const Ico = [FileText, Handshake, ClipboardCheck, BadgeCheck][i] || BadgeCheck;
               return (

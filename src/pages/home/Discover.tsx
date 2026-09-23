@@ -32,13 +32,13 @@ const CycleCard = ({ c, t, index, progress, active }: { c: any; t: any; index: n
   const isActive = active === undefined || active === index;
   return (
     <motion.div
-      className={`group relative shrink-0 w-[82vw] sm:w-[400px] lg:w-[clamp(360px,29vw,440px)] rounded-t-full rounded-b-[1.75rem] overflow-hidden ${st.card} shadow-[0_50px_90px_-45px_rgba(6,25,58,0.55)] ring-1 ring-ink/10`}
+      className={`group relative shrink-0 w-[86vw] sm:w-[440px] lg:w-[clamp(420px,34vw,540px)] rounded-t-full rounded-b-none overflow-hidden ${st.card} shadow-[0_50px_90px_-45px_rgba(6,25,58,0.55)] ring-1 ring-ink/10`}
       animate={reduce ? undefined : { scale: isActive ? 1 : 0.94, opacity: isActive ? 1 : 0.7, y: isActive ? 0 : 14 }}
       transition={{ duration: 0.8, ease: EASE }}
     >
       <Link to={`/programmes/${c.id}`} className="block">
         {/* Photo dans l'arche */}
-        <div className="relative h-[30svh] lg:h-[clamp(170px,25vh,320px)] overflow-hidden bg-black/10">
+        <div className="relative h-[32svh] lg:h-[clamp(200px,31vh,420px)] overflow-hidden bg-black/10">
           <motion.img
             src={c.image}
             alt={`${c.title} — ${SITE.name}`}
@@ -50,20 +50,20 @@ const CycleCard = ({ c, t, index, progress, active }: { c: any; t: any; index: n
           />
                   </div>
         {/* Médaillon à la jonction */}
-                <div className="relative px-6 pt-9 pb-5">
-          <span className={`absolute left-6 -top-7 w-14 h-14 rounded-full flex items-center justify-center ${st.icon} border-4 ${st.ring} shadow-lg transition-transform duration-700 group-hover:rotate-12 group-hover:scale-110`}><st.Icon size={22} /></span>
+                <div className="relative px-7 pt-10 pb-7">
+          <span className={`absolute left-7 -top-8 w-16 h-16 rounded-full flex items-center justify-center ${st.icon} border-4 ${st.ring} shadow-lg transition-transform duration-700 group-hover:rotate-12 group-hover:scale-110`}><st.Icon size={22} /></span>
           <div className="flex items-baseline justify-between gap-3">
-            <h3 className="t-h3">{c.title}</h3>
-            <span className="text-sm opacity-75 whitespace-nowrap">{c.ages}</span>
+            <h3 className="font-display font-medium text-[clamp(1.75rem,2.4vw,2.5rem)] leading-none tracking-tight">{c.title}</h3>
+            <span className="text-[15px] opacity-75 whitespace-nowrap">{c.ages}</span>
           </div>
-          <p className="t-small opacity-90 mt-2 line-clamp-2 [@media(max-height:820px)]:hidden">{c.desc}</p>
-          <ul className="mt-4 flex flex-wrap gap-1.5">
+          <p className="t-body opacity-90 mt-3 line-clamp-2 [@media(max-height:820px)]:hidden">{c.desc}</p>
+          <ul className="mt-5 flex flex-wrap gap-2">
             {c.features.slice(0, 3).map((f: string, i: number) => (
-              <li key={f} className={`text-[11.5px] font-medium rounded-full border px-2.5 py-1 ${st.chip} ${i === 2 ? '[@media(max-height:820px)]:hidden' : ''}`}>{f}</li>
+              <li key={f} className={`text-[13px] font-medium rounded-none border px-3 py-1.5 ${st.chip} ${i === 2 ? '[@media(max-height:820px)]:hidden' : ''}`}>{f}</li>
             ))}
-            {c.features.length > 3 && <li className={`text-[11.5px] font-medium rounded-full border px-2.5 py-1 ${st.chip}`}>+{c.features.length - 3}</li>}
+            {c.features.length > 3 && <li className={`text-[13px] font-medium rounded-none border px-3 py-1.5 ${st.chip}`}>+{c.features.length - 3}</li>}
           </ul>
-          <span className={`mt-5 inline-flex items-center gap-1.5 font-semibold ${st.link}`}>
+          <span className={`mt-6 inline-flex items-center gap-1.5 font-semibold text-[15px] ${st.link}`}>
             <span className="swap"><span>{t.programs.programDetailsBtn}</span><span aria-hidden>{t.programs.programDetailsBtn}</span></span>
             <ArrowUpRight size={16} className="transition-transform duration-500 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
           </span>
@@ -114,7 +114,7 @@ export const Programs = () => {
   }
 
   return (
-    <section ref={ref} className="relative bg-salt" style={{ height: '320vh', paddingTop: 'var(--section)', paddingBottom: 'var(--section)' }}>
+    <section ref={ref} className="relative bg-salt" style={{ height: '360vh', paddingTop: 'var(--section)', paddingBottom: 'var(--section)' }}>
       <div className="sticky top-0 h-[100svh] flex flex-col justify-center overflow-hidden">
         <div className="pb-3 lg:pb-4">{header}</div>
         <motion.div ref={trackRef} className="flex gap-6 lg:gap-10 pl-[var(--gutter)] lg:pl-[max(var(--gutter),12vw)] py-3 will-change-transform" style={{ x }}>
@@ -220,7 +220,7 @@ export const Openness = () => {
               {orbits.map((o, i) => (
                 <div key={i} className={`absolute left-1/2 top-1/2 ${o.r} aspect-square orbit`} style={{ animationDuration: `${o.dur}s`, animationDelay: `${o.delay}s` }} aria-hidden>
                   <span className="absolute left-1/2 top-0 orbit-counter" style={{ animationDuration: `${o.dur}s`, animationDelay: `${o.delay}s` }}>
-                    <span className="flex items-center gap-2 rounded-full bg-ink border border-white/20 pl-1 pr-3 py-1 shadow-[0_10px_30px_-10px_rgba(0,0,0,0.6)]">
+                    <span className="flex items-center gap-2 rounded-none bg-ink border border-white/20 pl-1 pr-3 py-1 shadow-[0_10px_30px_-10px_rgba(0,0,0,0.6)]">
                       <span className="w-7 h-7 rounded-full bg-saffron text-ink text-[11px] font-bold flex items-center justify-center">{o.label}</span>
                       <span className="text-sm font-medium text-salt">{o.name}</span>
                     </span>
@@ -230,7 +230,7 @@ export const Openness = () => {
               {/* Carte Cambridge */}
               <div className="absolute inset-[22%] flex items-center justify-center">
                 <TiltCard>
-                  <div className="rounded-[2rem] bg-white p-8 md:p-10 shadow-[0_60px_120px_-40px_rgba(0,0,0,0.7)] ring-1 ring-white/20">
+                  <div className="rounded-none bg-white p-8 md:p-10 shadow-[0_60px_120px_-40px_rgba(0,0,0,0.7)] ring-1 ring-white/20">
                     <img src={SITE.cambridgeLogo} alt="Cambridge Assessment International Education" className="w-full h-auto" loading="lazy" referrerPolicy="no-referrer" />
                   </div>
                 </TiltCard>
@@ -450,13 +450,13 @@ const CampusItem = ({ item, index, onActive }: { item: any; index: number; onAct
   return (
     <li ref={ref} className="min-h-[52svh] lg:min-h-[70vh] flex items-center">
       <motion.div initial={false} animate={{ opacity: inView ? 1 : 0.28, x: inView ? 0 : -8 }} transition={{ duration: 0.6, ease: EASE }} className="w-full">
-        <p className="text-sm text-mute mb-4">{String(index + 1).padStart(2, '0')}</p>
+        <p className="text-sm text-saffron mb-4">{String(index + 1).padStart(2, '0')}</p>
         <h3 className="t-h2">{item.title}</h3>
-        <p className="t-body text-mute mt-4 max-w-[40ch]">{item.desc}</p>
+        <p className="t-body text-sea mt-4 max-w-[40ch]">{item.desc}</p>
         <div className="mt-6 flex items-end gap-8">
-          <div><p className="t-num text-ink">{item.stat}</p><p className="t-small text-mute mt-1">{item.statLabel}</p></div>
+          <div><p className="t-num text-saffron">{item.stat}</p><p className="t-small text-sea-2 mt-1">{item.statLabel}</p></div>
         </div>
-        <Link to={item.to} className="inline-flex items-center gap-1.5 mt-6 font-semibold ulink">{item.cta} <ArrowUpRight size={16} /></Link>
+        <Link to={item.to} className="inline-flex items-center gap-1.5 mt-6 font-semibold ulink text-salt">{item.cta} <ArrowUpRight size={16} /></Link>
       </motion.div>
     </li>
   );
@@ -477,58 +477,57 @@ export const LifeTeaser = () => {
   const onActive = useCallback((i: number) => setActive(i), []);
   const reduce = useReducedMotion();
   return (
-    <section className="bg-[#EEF0EB]">
-      <div className="wrap pt-[var(--section)]">
+    <section className="bg-ink text-salt on-dark grain relative">
+      {/* En-tête */}
+      <div className="wrap pt-[var(--section)] pb-10 lg:pb-14">
         <div className="grid lg:grid-cols-12 gap-6 items-end">
           <div className="lg:col-span-7">
-            <Chapter className="mb-6">{t.nav.life}</Chapter>
+            <Chapter saffron className="mb-6">{t.nav.life}</Chapter>
             <h2 className="t-h1 max-w-[12ch]"><WordReveal text={t.copy.lifeTitle} /></h2>
           </div>
           <Reveal className="lg:col-span-4 lg:col-start-9" delay={0.15}>
-            <p className="t-body text-mute max-w-[40ch]">{t.ui.lifeTeaserDesc}</p>
-            <Link to="/vie-scolaire" className="ulink font-semibold inline-block mt-4">{t.life.discoverMore}</Link>
+            <p className="t-body text-sea max-w-[40ch]">{t.ui.lifeTeaserDesc}</p>
+            <Link to="/vie-scolaire" className="ulink font-semibold inline-block mt-4 text-salt">{t.life.discoverMore}</Link>
           </Reveal>
         </div>
       </div>
 
-      <div className="wrap pb-[var(--section)]">
-        <div className="lg:grid lg:grid-cols-12 lg:gap-10">
-          {/* Image fixe */}
-          <div className="sticky top-0 lg:top-24 z-20 lg:z-auto lg:col-span-7 lg:order-2 lg:h-[calc(100vh-7rem)] bg-[#EEF0EB] lg:bg-transparent pt-3 pb-3 lg:p-0 -mx-[var(--gutter)] px-[var(--gutter)] lg:mx-0 lg:px-0">
-            <div className="relative overflow-hidden rounded-[1.5rem] lg:rounded-[2rem] h-[38svh] lg:h-full bg-sea shadow-[0_40px_80px_-40px_rgba(6,25,58,0.45)]">
-              <AnimatePresence mode="sync" initial={false}>
-                <motion.img
-                  key={active}
-                  src={items[active].image}
-                  alt={items[active].title}
-                  className="absolute inset-0 w-full h-full object-cover"
-                  initial={reduce ? { opacity: 0 } : { opacity: 0, scale: 1.08 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ opacity: { duration: 0.7, ease: EASE }, scale: { duration: 6, ease: 'linear' } }}
-                  loading="lazy"
-                  decoding="async"
-                  referrerPolicy="no-referrer"
-                />
-              </AnimatePresence>
-              <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-ink/70 to-transparent" />
-              {/* Légende + progression */}
-              <div className="absolute inset-x-0 bottom-0 p-5 lg:p-7 flex items-end justify-between gap-4 text-salt">
-                <div>
-                  <p className="text-sea text-sm">{String(active + 1).padStart(2, '0')} / {String(items.length).padStart(2, '0')}</p>
-                  <p className="t-h4 mt-1">{items[active].title}</p>
-                </div>
-                <ol className="flex gap-1.5" aria-hidden>
-                  {items.map((_, i) => <li key={i} className={`h-1 rounded-full transition-all duration-500 ${i === active ? 'w-8 bg-saffron' : 'w-3 bg-white/40'}`} />)}
-                </ol>
+      {/* Moitié texte / moitié image, pleine largeur */}
+      <div className="lg:grid lg:grid-cols-2">
+        {/* Image : pleine hauteur, collée à l'écran, change avec le lieu actif */}
+        <div className="sticky top-0 lg:top-0 z-20 lg:order-2 h-[42svh] lg:h-screen bg-ink">
+          <div className="relative h-full w-full overflow-hidden">
+            <AnimatePresence mode="sync" initial={false}>
+              <motion.img
+                key={active}
+                src={items[active].image}
+                alt={items[active].title}
+                className="absolute inset-0 w-full h-full object-cover"
+                initial={reduce ? { opacity: 0 } : { opacity: 0, scale: 1.08 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ opacity: { duration: 0.7, ease: EASE }, scale: { duration: 6, ease: 'linear' } }}
+                loading="lazy"
+                decoding="async"
+                referrerPolicy="no-referrer"
+              />
+            </AnimatePresence>
+            <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-ink/80 to-transparent" />
+            <div className="absolute inset-x-0 bottom-0 p-5 lg:p-8 flex items-end justify-between gap-4">
+              <div>
+                <p className="text-sea text-sm">{String(active + 1).padStart(2, '0')} / {String(items.length).padStart(2, '0')}</p>
+                <p className="t-h4 mt-1">{items[active].title}</p>
               </div>
+              <ol className="flex gap-1.5" aria-hidden>
+                {items.map((_, i) => <li key={i} className={`h-1 transition-all duration-500 ${i === active ? 'w-8 bg-saffron' : 'w-3 bg-white/40'}`} />)}
+              </ol>
             </div>
           </div>
-          {/* Liste des lieux */}
-          <ol className="lg:col-span-5 lg:order-1 mt-6 lg:mt-0">
-            {items.map((it, i) => <CampusItem key={i} item={it} index={i} onActive={onActive} />)}
-          </ol>
         </div>
+        {/* Texte : la liste des lieux, sur la moitié gauche */}
+        <ol className="lg:order-1 px-[var(--gutter)] lg:pr-16 lg:pl-[var(--gutter)] pb-[var(--section)]">
+          {items.map((it, i) => <CampusItem key={i} item={it} index={i} onActive={onActive} />)}
+        </ol>
       </div>
     </section>
   );

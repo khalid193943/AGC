@@ -44,7 +44,7 @@ const Gallery = () => {
           <div className="wrap py-3 flex items-center gap-2 overflow-x-auto no-scrollbar">
             <span className="t-meta shrink-0 mr-2">{c.filterBy}</span>
             {['all', ...categories].map((k) => (
-              <button key={k} onClick={() => setCat(k)} className={`shrink-0 rounded-full px-4 py-1.5 text-sm font-medium border transition-colors ${cat === k ? 'bg-ink text-salt border-ink' : 'border-ink/15 hover:border-ink'}`}>{k === 'all' ? c.categories.all : k}</button>
+              <button key={k} onClick={() => setCat(k)} className={`shrink-0 rounded-none px-4 py-1.5 text-sm font-medium border transition-colors ${cat === k ? 'bg-ink text-salt border-ink' : 'border-ink/15 hover:border-ink'}`}>{k === 'all' ? c.categories.all : k}</button>
             ))}
           </div>
         </div>
@@ -83,7 +83,7 @@ const Gallery = () => {
             <button onClick={(e) => { e.stopPropagation(); prev(); }} className="absolute left-3 md:left-6 w-11 h-11 rounded-full bg-white/10 text-white flex items-center justify-center" aria-label="Précédent"><ChevronLeft size={20} /></button>
             <button onClick={(e) => { e.stopPropagation(); next(); }} className="absolute right-3 md:right-6 w-11 h-11 rounded-full bg-white/10 text-white flex items-center justify-center" aria-label="Suivant"><ChevronRight size={20} /></button>
             <motion.figure key={open} className="max-w-6xl w-full" initial={{ opacity: 0, scale: 0.97 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5, ease: EASE }} onClick={(e) => e.stopPropagation()}>
-              {list[open].type === 'video' ? <video src={list[open].url} controls autoPlay className="w-full max-h-[78vh] object-contain rounded-2xl" /> : <img src={list[open].url} alt={list[open].title || ''} className="w-full max-h-[78vh] object-contain rounded-2xl" referrerPolicy="no-referrer" />}
+              {list[open].type === 'video' ? <video src={list[open].url} controls autoPlay className="w-full max-h-[78vh] object-contain rounded-none" /> : <img src={list[open].url} alt={list[open].title || ''} className="w-full max-h-[78vh] object-contain rounded-none" referrerPolicy="no-referrer" />}
               <figcaption className="text-salt mt-4 flex justify-between text-sm"><span>{list[open].title}</span><span className="text-sea">{open + 1} / {list.length}</span></figcaption>
             </motion.figure>
           </motion.div>

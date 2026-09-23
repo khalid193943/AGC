@@ -9,6 +9,7 @@ import { Header } from './components/Header';
 import { Footer } from './components/Footer';
 import { ErrorBoundary } from './components/ErrorBoundary';
 import { Preloader, RouteProgress } from './components/Preloader';
+import { BackToTop } from './components/BackToTop';
 import { IMG } from './content/site';
 
 // Build d'aperçu autonome : navigation par #/ (voir vite.preview.config.ts)
@@ -116,6 +117,7 @@ function AppContent() {
         <AppRoutes />
       </div>
       {!isAdmin && <Footer />}
+      {!isAdmin && <BackToTop />}
     </div>
   );
 }

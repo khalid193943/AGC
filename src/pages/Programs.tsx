@@ -26,7 +26,7 @@ const Programs = () => {
             const st = CYCLE_STYLE[c.id];
             return (
               <Reveal key={c.id} delay={0.06 * i}>
-                <a href={`#${c.id}`} onClick={scrollToId(c.id)} className={`group flex items-center gap-3 rounded-full px-2 py-2 pr-5 ${st.card} ring-1 ring-ink/10 transition-transform duration-500 hover:-translate-y-0.5`}>
+                <a href={`#${c.id}`} onClick={scrollToId(c.id)} className={`group flex items-center gap-3 rounded-none px-2 py-2 pr-5 ${st.card} ring-1 ring-ink/10 transition-transform duration-500 hover:-translate-y-0.5`}>
                   <span className={`w-10 h-10 rounded-full flex items-center justify-center shrink-0 ${st.icon}`}><st.Icon size={18} /></span>
                   <span className="min-w-0"><span className="block font-semibold leading-tight">{c.title}</span><span className="block text-xs opacity-75">{c.ages}</span></span>
                 </a>

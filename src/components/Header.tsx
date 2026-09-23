@@ -101,7 +101,7 @@ export const Header = () => {
                   <button
                     key={l}
                     onClick={() => setCurrentLang(l)}
-                    className={`px-2.5 py-1 rounded-full transition-colors ${currentLang === l ? (light || open ? 'bg-white text-ink' : 'bg-ink text-salt') : ''}`}
+                    className={`px-2.5 py-1 rounded-none transition-colors ${currentLang === l ? (light || open ? 'bg-white text-ink' : 'bg-ink text-salt') : ''}`}
                     aria-pressed={currentLang === l}
                   >
                     {l}
@@ -113,7 +113,7 @@ export const Header = () => {
               </Link>
               <button
                 onClick={() => setOpen((v) => !v)}
-                className={`group flex items-center gap-2.5 h-10 pl-3.5 pr-2 rounded-full border transition-colors ${light || open ? 'border-white/25 text-salt' : 'border-ink/15 text-ink'}`}
+                className={`group flex items-center gap-2.5 h-10 pl-3.5 pr-2 rounded-none border transition-colors ${light || open ? 'border-white/25 text-salt' : 'border-ink/15 text-ink'}`}
                 aria-expanded={open}
                 aria-controls="site-menu"
               >
@@ -176,7 +176,7 @@ export const Header = () => {
                     <ul className="grid grid-cols-2 gap-2">
                       {cycles.map((c) => (
                         <li key={c.to}>
-                          <Link to={c.to} className="flex items-center gap-3 rounded-2xl border border-white/12 px-3 py-2.5 text-[15px] font-medium hover:bg-white/8 hover:border-white/25 transition-colors"><span className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 ${c.cls}`}><c.Icon size={15} /></span>{c.label}</Link>
+                          <Link to={c.to} className="flex items-center gap-3 rounded-none border border-white/12 px-3 py-2.5 text-[15px] font-medium hover:bg-white/8 hover:border-white/25 transition-colors"><span className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 ${c.cls}`}><c.Icon size={15} /></span>{c.label}</Link>
                         </li>
                       ))}
                     </ul>
@@ -191,7 +191,7 @@ export const Header = () => {
                   <div className="flex items-center gap-4 mt-auto">
                     <div className="flex md:hidden items-center text-[13px] font-semibold rounded-full border border-white/25 p-0.5">
                       {(['FR', 'EN'] as const).map((l) => (
-                        <button key={l} onClick={() => setCurrentLang(l)} className={`px-3 py-1 rounded-full ${currentLang === l ? 'bg-white text-ink' : 'text-salt/70'}`}>{l}</button>
+                        <button key={l} onClick={() => setCurrentLang(l)} className={`px-3 py-1 rounded-none ${currentLang === l ? 'bg-white text-ink' : 'text-salt/70'}`}>{l}</button>
                       ))}
                     </div>
                     <SocialLinks dark />
