@@ -21,6 +21,16 @@ const DATA: Record<string, any[]> = {
     category: ['Vie scolaire', 'Événements', 'Vie scolaire', 'Sport', 'Espaces', 'Espaces', 'Vie scolaire', 'Activités'][i],
     createdAt: { seconds: 1789000000 - i * 86400 },
   })),
+  messages: [
+    { id: 'm1', name: 'Amina Benali', email: 'amina@example.com', phone: '0661000000', message: 'Niveau: primaire. Bonjour, je souhaite inscrire ma fille en CE2.', type: 'admissions', status: 'new', createdAt: { seconds: 1789000000 } },
+    { id: 'm2', name: 'Youssef El Idrissi', email: 'youssef@example.com', phone: '0662000000', message: '[Visite du campus] Est-il possible de visiter un samedi ?', type: 'contact', status: 'new', createdAt: { seconds: 1788900000 } },
+    { id: 'm3', name: 'Newsletter', email: 'parent@example.com', phone: '', type: 'newsletter', status: 'new', createdAt: { seconds: 1788800000 } },
+    { id: 'm4', name: 'Sara Amrani', email: 'sara@example.com', phone: '0663000000', message: 'Niveau: maternelle. Demande de rappel.', type: 'admissions', status: 'answered', createdAt: { seconds: 1788700000 } },
+  ],
+  applications: [
+    { id: 'a1', firstName: 'Khadija', lastName: 'Rami', email: 'k.rami@example.com', phone: '0664000000', jobId: 'job-1', jobTitle: 'Professeur·e de mathématiques — collège', subject: 'Mathématiques', message: 'Candidature pour le poste.', status: 'new', createdAt: { seconds: 1788950000 } },
+  ],
+  admin_users: [ { id: 'u1', username: 'secretariat', email: 'secretariat@agc.ma', password: '••••', role: 'editor' } ],
   jobs: [
     { id: 'job-1', title: 'Professeur·e de mathématiques — collège', category: 'teacher', active: true, description: 'Poste d’exemple affiché dans l’aperçu.', requirements: ['Licence ou master', 'Expérience appréciée'] },
   ],
@@ -38,10 +48,15 @@ export const orderBy = (..._a: any[]) => null;
 export const limit = (..._a: any[]) => null;
 export const where = (..._a: any[]) => null;
 export const serverTimestamp = () => ({ seconds: Math.floor(Date.now() / 1000) });
-export const onSnapshot = (c: any, next: (s: any) => void) => { setTimeout(() => next(snap(c.name)), 150); return () => {}; };
+export const onSnapshot = (c: any, next: (s: any) => void) => { const fire = () => next(snap(c.name)); setTimeout(fire, 150); listeners.push(fire); return () => { const i = listeners.indexOf(fire); if (i >= 0) listeners.splice(i, 1); }; };
 export const getDocs = async (c: any) => snap(c.name);
 export const getDoc = async (d: any) => {
   const r = (DATA[d.name] || []).find((x) => x.id === d.id);
   return { id: d.id, exists: () => !!r, data: () => r };
 };
-export const addDoc = async (..._a: any[]) => { await new Promise((r) => setTimeout(r, 700)); return { id: 'apercu' }; };
+export const addDoc = async (c: any, data: any) => { await new Promise((r) => setTimeout(r, 400)); const id = 'new-' + Date.now(); (DATA[c.name] ||= []).unshift({ id, ...data, createdAt: { seconds: Math.floor(Date.now() / 1000) } }); listeners.forEach((l) => l()); return { id }; };
+
+export const updateDoc = async (d: any, data: any) => { const r = (DATA[d.name] || []).find((x) => x.id === d.id); if (r) Object.assign(r, data); listeners.forEach((l) => l()); };
+export const deleteDoc = async (d: any) => { DATA[d.name] = (DATA[d.name] || []).filter((x) => x.id !== d.id); listeners.forEach((l) => l()); };
+export const setDoc = async () => {};
+const listeners: (() => void)[] = [];

@@ -49,7 +49,7 @@ export default defineConfig({
       { find: /^firebase\/firestore$/, replacement: path.resolve(__dirname, 'preview/firestore-mock.ts') },
       { find: /^(\.{1,2}\/)+firebase$/, replacement: path.resolve(__dirname, 'preview/db-mock.ts') },
       { find: /^@vercel\/analytics\/react$/, replacement: path.resolve(__dirname, 'preview/vercel-stub.tsx') },
-      { find: /^\.\/pages\/admin\/Admin(Login|Dashboard)$/, replacement: path.resolve(__dirname, 'preview/AdminStub.tsx') },
+      ...(process.env.ADMIN_DEMO ? [{ find: /^firebase\/auth$/, replacement: path.resolve(__dirname, 'preview/auth-mock.ts') }, { find: /^firebase\/storage$/, replacement: path.resolve(__dirname, 'preview/storage-mock.ts') }] : [{ find: /^\.\/admin\/AdminApp$/, replacement: path.resolve(__dirname, 'preview/AdminStub.tsx') }]),
     ],
   },
   build: { outDir: '/home/claude/preview-dist', emptyOutDir: true, assetsInlineLimit: 100000000, chunkSizeWarningLimit: 5000 },

@@ -40,8 +40,3 @@
 Il utilise la navigation `#/`, des données d'exemple (`preview/firestore-mock.ts`), des formulaires simulés et des aplats à la place des photos si le CDN est inaccessible.
 Le build de production (`npm run build`) n'est pas concerné.
 
-## Mascotte « Monsieur Claude » (`src/components/Mascot.tsx`)
-Professeur illustré (SVG original, couleurs de l'école). Sort du logo à l'arrivée, salue, puis rejoint au scroll une zone libre
-choisie au hasard parmi les éléments `data-mascot-spot` visibles (jamais sur du texte ou une image). Desktop uniquement,
-désactivée avec `prefers-reduced-motion`, masquée quand le menu est ouvert. Phrases dans `PHRASES` (FR/EN), zones ajustables
-en ajoutant/retirant des `<div data-mascot-spot data-say="…">`. Pour la retirer : supprimer `<Mascot />` dans `App.tsx`.
