@@ -53,6 +53,7 @@ Interface refaite (`src/admin/`) : tableau de bord avec compteurs et activité e
 ## Points à valider par l'école avant publication
 - Chiffres affichés en grand : piscine semi-olympique, 15 000 ouvrages, 4 laboratoires, +500 élèves, « 5+ années » vs frise historique depuis 2010.
 - Noms de l'équipe de direction (page Académie).
+- Légende du hero : « Georges Claude, physicien et inventeur français (1870 – 1960) » suppose que l'école porte le nom de l'inventeur du tube néon ; à confirmer (texte dans `src/pages/home/Hero.tsx`).
 - Section « Et après le bac ? » : les établissements listés (`src/content/site.ts` → `AFTER_BAC`) sont présentés comme des filières préparées, pas comme des admissions effectives ; ajouter des chiffres réels si l'école en dispose.
 - Sécurité : les identifiants historiques (`src/admin/auth.ts`, `src/firebase.ts`) et les mots de passe en clair dans `admin_users` restent en place pour la compatibilité ; basculer vers Firebase Authentication dès que possible (voir section Administration).
 
