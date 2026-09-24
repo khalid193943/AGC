@@ -1,49 +1,61 @@
 import { useEffect, useState, FormEvent } from 'react';
 import { Link } from 'react-router-dom';
 import { collection, query, orderBy, limit, onSnapshot, addDoc, serverTimestamp } from 'firebase/firestore';
-import { Check, Bus, Clock, ShieldCheck, ArrowUpRight, Loader2, Quote, Search, CalendarCheck, FileCheck, Send } from 'lucide-react';
+import { Check, Bus, Clock, ShieldCheck, ArrowUpRight, Loader2, Search, CalendarCheck, FileCheck, Send, ArrowLeft, ArrowRight } from 'lucide-react';
+import { motion, AnimatePresence, useReducedMotion } from 'motion/react';
 import { db } from '../../firebase';
 import { useLanguage } from '../../contexts/LanguageContext';
 import { SITE, IMG } from '../../content/site';
 import { FAQ } from '../../content/faq';
-import { WordReveal, Reveal } from '../../components/ui/motion';
+import { WordReveal, Reveal, EASE } from '../../components/ui/motion';
 import { Button, Chapter, Marquee, Accordion, fmtDate, readingTime, isRecent } from '../../components/ui';
-import { StatGrid } from '../../components/sections';
+import { SectionHead } from '../../components/sections';
 
 /* ------------------------------------------------------------------ */
-/* Preuves — résultats + témoignages                                    */
+/* Avis des parents — un témoignage à la fois, en grand                */
 /* ------------------------------------------------------------------ */
-export const Proof = () => {
-  const { t } = useLanguage();
-  const testimonials: { name: string; role: string; text: string }[] = t.home.testimonials;
-  const half = Math.ceil(testimonials.length / 2);
-  const card = (tm: any, i: number) => (
-    <figure key={i} className="w-[320px] sm:w-[380px] card p-6 shrink-0">
-      <Quote size={18} className="text-saffron mb-3" />
-      <blockquote className="font-serif text-[17px] leading-relaxed text-ink">« {tm.text} »</blockquote>
-      <figcaption className="mt-5 flex items-center gap-3">
-        <span className="w-9 h-9 rounded-full bg-ink text-salt flex items-center justify-center font-display font-semibold text-sm">{tm.name.replace(/^(M\.|Mme\.?|Mr\.?)\s*/, '')[0]}</span>
-        <span><span className="block font-semibold text-sm">{tm.name}</span><span className="block t-meta">{tm.role}</span></span>
-      </figcaption>
-    </figure>
-  );
+export const Reviews = () => {
+  const { t, currentLang } = useLanguage();
+  const fr = currentLang === 'FR';
+  const list: { name: string; role: string; text: string }[] = t.home.testimonials;
+  const [i, setI] = useState(0);
+  const [paused, setPaused] = useState(false);
+  const reduce = useReducedMotion();
+  useEffect(() => {
+    if (paused || reduce) return;
+    const id = window.setInterval(() => setI((x) => (x + 1) % list.length), 6500);
+    return () => window.clearInterval(id);
+  }, [paused, reduce, list.length]);
+  const cur = list[i];
+  const initial = (n: string) => n.replace(/^(M\.|Mme\.?|Mr\.?)\s*/, '')[0];
   return (
-    <section className="section bg-salt overflow-hidden">
+    <section className="section bg-salt-2/70 relative overflow-hidden" onMouseEnter={() => setPaused(true)} onMouseLeave={() => setPaused(false)}>
       <div className="wrap">
-        <div className="grid lg:grid-cols-12 gap-8 items-end mb-12">
-          <div className="lg:col-span-7">
-            <Chapter className="mb-6">{t.ui.results} — {t.ui.resultsYear}</Chapter>
-            <h2 className="t-h2 max-w-[14ch]"><WordReveal text={t.copy.proofTitle} /></h2>
+        <SectionHead chapter={fr ? 'Avis des parents' : 'Parents’ reviews'} title={fr ? 'Ce que disent les familles.' : 'What families say.'} />
+        <div className="mt-14 mx-auto max-w-[900px] text-center">
+          <span className="block mx-auto font-serif text-saffron text-6xl leading-none select-none" aria-hidden>“</span>
+          <div className="relative min-h-[8rem] mt-4">
+            <AnimatePresence mode="wait">
+              <motion.blockquote key={i} className="font-serif text-ink text-[clamp(1.3rem,2vw,2rem)] leading-[1.35]" initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} transition={{ duration: 0.6, ease: EASE }}>
+                {cur.text}
+              </motion.blockquote>
+            </AnimatePresence>
           </div>
-          <Reveal className="lg:col-span-5" delay={0.15}>
-            <p className="t-body text-mute max-w-[44ch]">{t.testimonials.desc} {t.ui.mentionsLine}</p>
-          </Reveal>
+          <AnimatePresence mode="wait">
+            <motion.div key={'a' + i} className="mt-8 flex items-center justify-center gap-3" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.4 }}>
+              <span className="w-10 h-10 rounded-full bg-ink text-saffron flex items-center justify-center font-display font-semibold">{initial(cur.name)}</span>
+              <span className="text-left"><span className="block font-semibold text-sm">{cur.name}</span><span className="block t-meta">{cur.role}</span></span>
+            </motion.div>
+          </AnimatePresence>
+          {/* Navigation */}
+          <div className="mt-10 flex items-center justify-center gap-6">
+            <button onClick={() => setI((i - 1 + list.length) % list.length)} className="w-11 h-11 rounded-full border border-ink/15 flex items-center justify-center hover:bg-ink hover:text-salt transition-colors" aria-label={fr ? 'Avis précédent' : 'Previous review'}><ArrowLeft size={16} /></button>
+            <ol className="flex items-center gap-2" aria-hidden>
+              {list.map((_, k) => <li key={k}><button onClick={() => setI(k)} className={`block h-1 transition-all duration-500 ${k === i ? 'w-8 bg-ink' : 'w-3 bg-ink/25'}`} /></li>)}
+            </ol>
+            <button onClick={() => setI((i + 1) % list.length)} className="w-11 h-11 rounded-full border border-ink/15 flex items-center justify-center hover:bg-ink hover:text-salt transition-colors" aria-label={fr ? 'Avis suivant' : 'Next review'}><ArrowRight size={16} /></button>
+          </div>
         </div>
-        <Reveal><StatGrid /></Reveal>
-      </div>
-      <div className="mt-16 space-y-5">
-        <Marquee items={testimonials.slice(0, half).map(card)} duration={70} separator={false} className="[&_.marquee]:gap-5" />
-        <Marquee items={testimonials.slice(half).map(card)} duration={80} reverse separator={false} className="[&_.marquee]:gap-5" />
       </div>
     </section>
   );
@@ -65,15 +77,7 @@ export const Journal = () => {
   return (
     <section className="section bg-salt-2/60 overflow-hidden">
       <div className="wrap">
-        <div className="grid lg:grid-cols-12 gap-6 items-end mb-12">
-          <div className="lg:col-span-7">
-            <Chapter className="mb-6">{t.nav.newsEvents}</Chapter>
-            <h2 className="t-h2 max-w-[14ch]"><WordReveal text={t.copy.journalTitle} /></h2>
-          </div>
-          <Reveal delay={0.15} className="lg:col-span-4 lg:col-start-9">
-            <p className="t-body text-mute max-w-[40ch]">{t.copy.journalDesc}</p>
-          </Reveal>
-        </div>
+        <SectionHead chapter={t.nav.newsEvents} title={t.copy.journalTitle} lead={t.copy.journalDesc} className="mb-12" />
         {news.length === 0 ? (
           <div className="card p-10 text-center text-mute">{t.ui.journalEmpty}</div>
         ) : (
@@ -131,50 +135,14 @@ export const Journal = () => {
 /* ------------------------------------------------------------------ */
 export const Practical = () => {
   const { t, currentLang } = useLanguage();
-  const faqs = FAQ[currentLang].filter((f) => f.home);
   const fr = currentLang === 'FR';
-  const tiles = [
-    { icon: Clock, k: t.ui.hours, v: <span className="block space-y-0.5">{SITE.schedule[currentLang].map(([h, l]) => <span key={h} className="flex justify-between gap-3"><strong className="font-semibold text-ink">{h}</strong><span>{l}</span></span>)}<span className="block pt-1 text-xs">{fr ? 'Du lundi au vendredi' : 'Monday to Friday'}</span></span> },
-    { icon: Bus, k: fr ? 'Transport scolaire' : 'School transport', v: fr ? 'Bus couvrant El Jadida, Sidi Bouzid, Haouzia et les environs.' : 'Buses covering El Jadida, Sidi Bouzid, Haouzia and surroundings.' },
-    { icon: ShieldCheck, k: fr ? 'École homologuée' : 'Accredited school', v: fr ? 'Ministère de l’Éducation Nationale · programme Cambridge' : 'Ministry of National Education · Cambridge programme' },
-  ];
+  const faqs = FAQ[currentLang].slice(0, 6);
   return (
     <section className="section bg-salt">
-      <div className="wrap">
-        <div className="grid lg:grid-cols-12 gap-6 items-end mb-12">
-          <div className="lg:col-span-7">
-            <Chapter className="mb-6">{t.faq.label}</Chapter>
-            <h2 className="t-h2 max-w-[14ch]"><WordReveal text={t.copy.practicalTitle} /></h2>
-          </div>
-          <Reveal delay={0.15} className="lg:col-span-4 lg:col-start-9"><p className="t-body text-mute max-w-[38ch]">{t.copy.practicalDesc}</p></Reveal>
-        </div>
-
-        {/* Trois repères */}
-        <div className="grid md:grid-cols-3 gap-4">
-          {tiles.map((r, i) => (
-            <Reveal key={i} delay={0.08 * i} className="card p-6 md:p-7 flex flex-col gap-5">
-              <span className="w-11 h-11 rounded-full bg-ink text-salt flex items-center justify-center"><r.icon size={18} /></span>
-              <span><span className="block t-h4">{r.k}</span><span className="block t-small text-mute mt-1.5">{r.v}</span></span>
-            </Reveal>
-          ))}
-        </div>
-
-        {/* Questions fréquentes */}
-        <Reveal delay={0.1} className="mt-6 rounded-none bg-salt-2/70 p-6 md:p-10 lg:p-14">
-          <div className="grid lg:grid-cols-12 gap-10">
-            <div className="lg:col-span-4">
-              <p className="t-h3">{t.faq.title}</p>
-              <p className="t-body text-mute mt-3 max-w-[30ch]">{t.ui.moreQuestionsDesc}</p>
-              <Link to="/inscription#faq" className="ulink font-semibold inline-block mt-4">{fr ? 'Toutes les questions' : 'All questions'}</Link>
-              <div className="flex flex-wrap gap-2 mt-8">
-                <a href={SITE.phoneHref} className="btn btn-ghost">{t.ui.call}</a>
-                <a href={SITE.whatsappHref} target="_blank" rel="noopener noreferrer" className="btn btn-ghost">{t.ui.whatsapp}</a>
-                <Link to="/contact" className="btn btn-ink">{t.ui.writeUs}</Link>
-              </div>
-            </div>
-            <div className="lg:col-span-8"><Accordion items={faqs} /></div>
-          </div>
-        </Reveal>
+      <div className="wrap-narrow">
+        <SectionHead chapter={t.faq.label} title={fr ? 'Questions fréquentes.' : 'Frequently asked questions.'} className="mb-12" />
+        <Accordion items={faqs} />
+        <p className="t-small text-mute mt-8">{t.ui.moreQuestionsDesc} <Link to="/contact" className="ulink font-semibold text-ink">{t.ui.writeUs}</Link></p>
       </div>
     </section>
   );
@@ -252,6 +220,29 @@ export const Action = () => {
             </div>
           </Reveal>
         </div>
+      </div>
+    </section>
+  );
+};
+
+/* ------------------------------------------------------------------ */
+/* Admissions — courte section sombre, directe                         */
+/* ------------------------------------------------------------------ */
+export const AdmissionCta = () => {
+  const { t, currentLang } = useLanguage();
+  const fr = currentLang === 'FR';
+  return (
+    <section className="bg-ink text-salt on-dark grain relative overflow-hidden">
+      <div className="wrap py-16 lg:py-20 flex flex-col lg:flex-row lg:items-center justify-between gap-8">
+        <div>
+          <Chapter saffron className="mb-4">{t.nav.admissions} {SITE.year}</Chapter>
+          <h2 className="t-h2"><WordReveal text={t.copy.actionTitle} /></h2>
+          <Reveal delay={0.1}><p className="t-body text-sea mt-3 max-w-[52ch]">{fr ? 'Dossier en ligne, entretien avec la direction, test de niveau. Réponse sous 48 heures.' : 'Online file, interview with the management, placement test. Answer within 48 hours.'}</p></Reveal>
+        </div>
+        <Reveal delay={0.15} className="flex flex-wrap gap-3 shrink-0">
+          <Button to="/inscription" variant="saffron" size="lg">{t.ui.enroll}</Button>
+          <Button to="/contact" variant="ghost-light" size="lg" icon="none">{t.nav.contact}</Button>
+        </Reveal>
       </div>
     </section>
   );

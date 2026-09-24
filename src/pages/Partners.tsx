@@ -4,7 +4,7 @@ import { useLanguage } from '../contexts/LanguageContext';
 import { SITE, IMG } from '../content/site';
 import { WordReveal, Reveal } from '../components/ui/motion';
 import { Seo, Chapter } from '../components/ui';
-import { PageHero, CtaBand } from '../components/sections';
+import { PageHero, CtaBand, SectionHead } from '../components/sections';
 import { TiltCard } from './home/Discover';
 
 const Partners = () => {
@@ -24,34 +24,24 @@ const Partners = () => {
 
       {/* Cambridge */}
       <section className="section bg-salt">
-        <div className="wrap grid lg:grid-cols-12 gap-12 items-center">
-          <Reveal className="lg:col-span-5" style={{ perspective: '1200px' }}>
-            <TiltCard>
-              <div className="rounded-none bg-white border border-ink/10 p-12 md:p-16 flex items-center justify-center shadow-[0_40px_80px_-40px_rgba(6,25,58,0.35)]">
-                <img src={SITE.cambridgeLogo} alt="Cambridge Assessment International Education" className="w-full h-auto" loading="lazy" referrerPolicy="no-referrer" />
-              </div>
-            </TiltCard>
-          </Reveal>
-          <div className="lg:col-span-6 lg:col-start-7">
-            <Chapter className="mb-6">Cambridge Assessment International Education</Chapter>
-            <h2 className="t-h2 max-w-[16ch]"><WordReveal text={t.copy.cambridgeStandard} /></h2>
-            <Reveal delay={0.1}><p className="t-body text-mute mt-8 max-w-[58ch]">
-              {fr ? 'L’Académie intègre progressivement le programme Cambridge pour offrir une éducation répondant aux standards mondiaux. L’approche Cambridge développe non seulement une maîtrise exceptionnelle de la langue anglaise, mais cultive également la pensée critique, la créativité et la résolution de problèmes complexes — des compétences essentielles pour exceller dans un monde globalisé.' : 'The Academy is progressively integrating the Cambridge programme to offer an education that meets global standards. The Cambridge approach not only develops exceptional mastery of English but also cultivates critical thinking, creativity and complex problem-solving — essential skills to excel in a globalised world.'}
-            </p></Reveal>
-            <ul className="mt-8 space-y-3">
-              {points.map((p, i) => <Reveal key={i} as="li" delay={0.05 * i} className="flex gap-3 t-body"><Check size={18} className="text-leaf shrink-0 mt-1.5" />{p}</Reveal>)}
+        <div className="wrap">
+          <SectionHead chapter="Cambridge Assessment International Education" title={t.copy.cambridgeStandard} lead={fr ? 'L’Académie intègre progressivement le programme Cambridge pour offrir une éducation répondant aux standards mondiaux. L’approche Cambridge développe une maîtrise exceptionnelle de l’anglais et cultive la pensée critique, la créativité et la résolution de problèmes.' : 'The Academy is progressively integrating the Cambridge programme to offer an education that meets global standards. The Cambridge approach develops exceptional mastery of English and cultivates critical thinking, creativity and problem-solving.'} />
+          <div className="mt-12 grid lg:grid-cols-12 gap-10 items-center">
+            <Reveal className="lg:col-span-4" style={{ perspective: '1200px' }}>
+              <TiltCard><div className="bg-white border border-ink/10 p-10 md:p-12 flex items-center justify-center shadow-[0_40px_80px_-40px_rgba(6,25,58,0.35)]"><img src={SITE.cambridgeLogo} alt="Cambridge Assessment International Education" className="w-full h-auto" loading="lazy" referrerPolicy="no-referrer" /></div></TiltCard>
+            </Reveal>
+            <ul className="lg:col-span-7 lg:col-start-6 divide-y divide-ink/12 border-y border-ink/12">
+              {points.map((p, i) => <Reveal key={i} as="li" delay={0.05 * i} className="flex gap-3 py-4 t-body"><Check size={18} className="text-leaf shrink-0 mt-1.5" />{p}</Reveal>)}
             </ul>
-            <Link to="/programmes" className="btn btn-ink mt-10"><span className="swap"><span>{t.ui.seePrograms}</span><span aria-hidden>{t.ui.seePrograms}</span></span><ArrowUpRight size={18} /></Link>
           </div>
+          <Link to="/programmes" className="btn btn-ink mt-10"><span className="swap"><span>{t.ui.seePrograms}</span><span aria-hidden>{t.ui.seePrograms}</span></span><ArrowUpRight size={18} /></Link>
         </div>
       </section>
 
       {/* Réseau */}
       <section className="section bg-ink text-salt on-dark grain relative overflow-hidden">
         <div className="wrap">
-          <Chapter saffron className="mb-6">{t.ui.partnersIntro}</Chapter>
-          <h2 className="t-h2 max-w-[14ch]"><WordReveal text={fr ? 'Un réseau en croissance.' : 'A growing network.'} /></h2>
-          <Reveal delay={0.1}><p className="t-body text-sea mt-6 max-w-[58ch]">{fr ? 'Nous travaillons continuellement à étendre notre réseau de partenaires académiques, institutionnels et sportifs pour enrichir l’expérience de nos élèves.' : 'We continuously work to extend our network of academic, institutional and sports partners to enrich our students’ experience.'}</p></Reveal>
+          <SectionHead dark chapter={t.ui.partnersIntro} title={fr ? 'Un réseau en croissance.' : 'A growing network.'} lead={fr ? 'Nous travaillons continuellement à étendre notre réseau de partenaires académiques, institutionnels et sportifs pour enrichir l’expérience de nos élèves.' : 'We continuously work to extend our network of academic, institutional and sports partners to enrich our students’ experience.'} />
           <div className="grid md:grid-cols-3 gap-px bg-white/12 border border-white/12 rounded-none overflow-hidden mt-12">
             {network.map(([h, d], i) => (
               <div key={i} className="bg-ink p-8 md:p-10">

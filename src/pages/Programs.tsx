@@ -17,7 +17,7 @@ const Programs = () => {
   return (
     <main>
       <Seo title={`${t.nav.programs} | ${fr ? 'Maternelle, Primaire, Collège, Lycée' : 'Preschool, Primary, Middle, High School'} — ${fr ? 'École privée El Jadida' : 'Private school El Jadida'}`} description={t.programs.heroDesc} path="/programmes" image={IMG.cycles.primaire} breadcrumbs={[{ name: t.nav.programs, path: '/programmes' }]} jsonLd={cycles.map((c) => schema.course({ name: c.title, description: c.desc, path: `/programmes/${c.id}`, ages: c.ages, lang: currentLang }))} />
-      <PageHero chapter={`${t.programs.curriculum} — ${t.copy.programsRail}`} title={t.copy.programsPageTitle} lead={t.programs.heroDesc} image={IMG.cycles.college} imageAlt={fr ? 'Élèves de l’académie' : 'Academy students'} />
+      <PageHero chapter={`${t.programs.curriculum} — ${t.copy.programsRail}`} title={t.copy.programsPageTitle} lead={t.programs.heroDesc} />
 
       {/* Le parcours : quatre capsules aux couleurs du logo */}
       <section className="bg-salt border-b border-ink/10">
@@ -28,7 +28,7 @@ const Programs = () => {
               <Reveal key={c.id} delay={0.06 * i}>
                 <a href={`#${c.id}`} onClick={scrollToId(c.id)} className={`group flex items-center gap-3 rounded-none px-2 py-2 pr-5 ${st.card} ring-1 ring-ink/10 transition-transform duration-500 hover:-translate-y-0.5`}>
                   <span className={`w-10 h-10 rounded-full flex items-center justify-center shrink-0 ${st.icon}`}><st.Icon size={18} /></span>
-                  <span className="min-w-0"><span className="block font-semibold leading-tight">{c.title}</span><span className="block text-xs opacity-75">{c.ages}</span></span>
+                  <span className="min-w-0"><span className="block font-semibold leading-tight truncate">{c.title}</span><span className="block text-xs opacity-75">{c.ages}</span></span>
                 </a>
               </Reveal>
             );

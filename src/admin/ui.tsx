@@ -73,7 +73,7 @@ export const Btn = ({ children, onClick, variant = 'ink', size = 'md', type = 'b
   const v = { ink: 'bg-ink text-salt hover:bg-ink-2', saffron: 'bg-saffron text-ink hover:bg-saffron-2', ghost: 'border border-ink/15 text-ink hover:border-ink', danger: 'border border-logo-red/30 text-logo-red hover:bg-logo-red hover:text-white' }[variant];
   const s = size === 'sm' ? 'h-9 px-3 text-[13px]' : 'h-11 px-4 text-sm';
   const cls = `inline-flex items-center justify-center gap-2 rounded-full font-semibold transition-all disabled:opacity-50 disabled:cursor-not-allowed ${v} ${s} ${className}`;
-  if (href) return <a href={href} download={download} className={cls}>{children}</a>;
+  if (href) return <a href={href} download={download} target={href.startsWith('http') ? '_blank' : undefined} rel={href.startsWith('http') ? 'noopener noreferrer' : undefined} className={cls}>{children}</a>;
   return <button type={type} onClick={onClick} disabled={disabled} className={cls}>{children}</button>;
 };
 

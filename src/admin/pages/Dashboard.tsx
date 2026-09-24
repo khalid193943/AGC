@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { Newspaper, CalendarDays, Images, Inbox, UserPlus, Mail, Briefcase, ArrowUpRight, Plus } from 'lucide-react';
+import { Newspaper, CalendarDays, Images, Inbox, UserPlus, Mail, Briefcase, ArrowUpRight, Plus, CalendarRange } from 'lucide-react';
 import { Session } from '../auth';
 import { useCollection, fmt, fmtTime } from '../data';
 import { Stat, Panel, PageTitle, Badge } from '../ui';
@@ -33,10 +33,11 @@ export default function Dashboard({ session }: { session: Session }) {
         <Link to="/admin/newsletter"><Stat label="Abonnés newsletter" value={newsletter.length} icon={<Mail size={20} />} tone="leaf" /></Link>
         <Link to="/admin/recrutement"><Stat label="Candidatures nouvelles" value={apps.filter(isNew).length} sub={`${apps.length} au total`} icon={<Briefcase size={20} />} tone="red" /></Link>
       </div>
-      <div className="grid sm:grid-cols-3 gap-3 mt-3">
+      <div className="grid sm:grid-cols-2 xl:grid-cols-4 gap-3 mt-3">
         <Link to="/admin/actualites"><Stat label="Actualités publiées" value={news.length} icon={<Newspaper size={20} />} /></Link>
         <Link to="/admin/evenements"><Stat label="Événements à venir" value={upcoming.length} icon={<CalendarDays size={20} />} /></Link>
         <Link to="/admin/galerie"><Stat label="Photos et vidéos" value={moments.length} icon={<Images size={20} />} /></Link>
+        <Link to="/admin/planning"><Stat label="Planning" value="Emplois du temps" sub="Classes, enseignants, salles" icon={<CalendarRange size={20} />} tone="saffron" /></Link>
       </div>
 
       <div className="grid lg:grid-cols-12 gap-4 mt-6">

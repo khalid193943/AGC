@@ -1,18 +1,19 @@
 import { Link } from 'react-router-dom';
 import { useRef, useState, useEffect } from 'react';
 import { motion, useReducedMotion, useScroll, useTransform, useSpring } from 'motion/react';
-import { Award, Leaf, ShieldCheck, Languages, Eye, Target, Sun, Users, CalendarDays, Sparkles, GraduationCap, Globe } from 'lucide-react';
+import { Languages, Eye, Target, Sun, Users, CalendarDays, Sparkles, GraduationCap, Globe, Newspaper } from 'lucide-react';
+import { collection, query, orderBy, limit, onSnapshot } from 'firebase/firestore';
+import { db } from '../../firebase';
 import { useLanguage } from '../../contexts/LanguageContext';
 import { SITE, IMG } from '../../content/site';
-import { WordReveal, Reveal, ClipReveal, Parallax, EASE } from '../../components/ui/motion';
-import { Button, Marquee, ScrollHint } from '../../components/ui';
+import { WordReveal, Reveal, LineMask, EASE } from '../../components/ui/motion';
+import { Button, Marquee, ScrollHint, fmtDate } from '../../components/ui';
 import { preloaderDelay } from '../../components/Preloader';
-import { Crest } from '../../components/ui/Crest';
 
 /* Position du portrait de Georges Claude dans la photo (en % de l'image originale) */
-const PORTRAIT = { x: 57.6, y: 17.6 };
-const ZOOM = 3.6;            // grossissement final
-const TARGET = { x: 0.5, y: 0.44 }; // où placer le visage à l'écran (fraction de la largeur / hauteur)
+const PORTRAIT = { x: 51.8, y: 46.5 }; // visage du portrait, en % de la photo
+const ZOOM = 5.2;            // grossissement final
+const TARGET = { x: 0.5, y: 0.42 }; // où placer le visage à l'écran (fraction de la largeur / hauteur)
 
 /** Mesure la géométrie de l'image affichée en "cover" et calcule la plongée exacte vers le portrait. */
 const usePortraitZoom = (img: React.RefObject<HTMLImageElement | null>) => {
@@ -21,7 +22,8 @@ const usePortraitZoom = (img: React.RefObject<HTMLImageElement | null>) => {
     const measure = () => {
       const el = img.current; if (!el) return;
       const W = el.clientWidth, H = el.clientHeight, nw = el.naturalWidth || 2048, nh = el.naturalHeight || 1536;
-      const s0 = Math.max(W / nw, H / nh); const rw = nw * s0, rh = nh * s0; const offx = (W - rw) / 2, offy = (H - rh) / 2;
+      // La photo couvre l'écran, calée en bas : c'est le ciel qui est rogné, jamais le bâtiment
+      const s0 = Math.max(W / nw, H / nh); const rw = nw * s0, rh = nh * s0; const offx = (W - rw) / 2, offy = H - rh;
       const px = offx + (PORTRAIT.x / 100) * rw, py = offy + (PORTRAIT.y / 100) * rh; // portrait dans l'élément
       let tx = W * TARGET.x - px, ty = H * TARGET.y - py; // translation pour amener le portrait à la cible
       // Garantir que l'image agrandie couvre encore tout l'écran (aucun bord visible)
@@ -40,6 +42,11 @@ const usePortraitZoom = (img: React.RefObject<HTMLImageElement | null>) => {
 
 export const Hero = () => {
   const { t, currentLang } = useLanguage();
+  const [news, setNews] = useState<any[]>([]);
+  useEffect(() => {
+    const unsub = onSnapshot(query(collection(db, 'news'), orderBy('date', 'desc'), limit(6)), (snap) => setNews(snap.docs.map((d) => ({ id: d.id, ...d.data() }))), () => setNews([]));
+    return () => unsub();
+  }, []);
   const reduce = useReducedMotion();
   const d = preloaderDelay(); // 0 si l'écran d'ouverture a déjà été vu dans la session
   const fr = currentLang === 'FR';
@@ -59,8 +66,8 @@ export const Hero = () => {
   const captionY = useTransform(p, [0.62, 0.85], [24, 0]);
 
   const facts = fr
-    ? ['École homologuée par le Ministère de l’Éducation Nationale', 'Maternelle · Primaire · Collège · Lycée', 'Programme Cambridge', 'Enseignement trilingue FR · EN · AR', '25 élèves maximum par classe', 'Transport scolaire El Jadida & environs', 'Cantine sur place, produits frais', 'Inscriptions 2026-2027 ouvertes']
-    : ['School accredited by the Ministry of National Education', 'Preschool · Primary · Middle · High School', 'Cambridge programme', 'Trilingual teaching FR · EN · AR', '25 students maximum per class', 'School transport El Jadida & surroundings', 'On-site canteen, fresh produce', 'Enrolment 2026-2027 open'];
+    ? ['Inscriptions 2026-2027 ouvertes', 'Journées portes ouvertes sur rendez-vous', 'École privée homologuée · Sidi Bouzid, El Jadida', 'Maternelle · Primaire · Collège · Lycée', 'Programme Cambridge', `${SITE.phone}`]
+    : ['Enrolment 2026-2027 open', 'Open days by appointment', 'Accredited private school · Sidi Bouzid, El Jadida', 'Preschool · Primary · Middle · High School', 'Cambridge programme', `${SITE.phone}`];
   const chips = [
     { Icon: GraduationCap, text: fr ? 'De 3 à 18 ans' : 'Ages 3 to 18' },
     { Icon: Languages, text: fr ? 'Trilingue FR · EN · AR' : 'Trilingual FR · EN · AR' },
@@ -77,13 +84,13 @@ export const Hero = () => {
               ref={imgRef}
               src={IMG.school}
               alt={fr ? 'La façade de Georges Claude Private Academy à Sidi Bouzid, El Jadida' : 'The facade of Georges Claude Private Academy in Sidi Bouzid, El Jadida'}
-              className="absolute inset-0 w-full h-full object-cover will-change-transform"
+              className="absolute inset-0 w-full h-full object-cover object-[center_bottom] will-change-transform"
               style={reduce ? undefined : { scale, x, y, transformOrigin: `${geo.ox}px ${geo.oy}px` }}
               fetchPriority="high"
               decoding="async"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-ink via-ink/35 to-transparent" />
-            <div className="absolute inset-0 bg-gradient-to-r from-ink/80 via-ink/25 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-ink/90 via-ink/20 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-r from-ink/75 via-ink/15 to-transparent" />
             <motion.div className="absolute inset-0 bg-ink" style={{ opacity: veil }} />
           </motion.div>
 
@@ -91,41 +98,34 @@ export const Hero = () => {
           <motion.div className="wrap relative z-10 h-full flex flex-col justify-end pb-10 md:pb-14" style={reduce ? undefined : { opacity: contentOpacity, y: contentY }}>
             <div style={{ paddingTop: 'calc(var(--header-h) + 2rem)' }} />
             <div className="grid lg:grid-cols-12 gap-8 items-end">
-              <div className="lg:col-span-8">
-                <motion.p className="text-sea text-[15px] md:text-base mb-6 flex flex-wrap items-center gap-x-3 gap-y-1" initial={reduce ? false : { opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1, delay: d + 0.6, ease: EASE }}>
-                  <span>{fr ? 'École privée homologuée' : 'Accredited private school'}</span>
-                  <span className="w-1 h-1 rounded-full bg-saffron" aria-hidden />
-                  <span>Sidi Bouzid · El Jadida</span>
-                  <span className="w-1 h-1 rounded-full bg-saffron" aria-hidden />
-                  <span className="text-saffron-2 font-semibold">{fr ? 'Inscriptions 2026-2027 ouvertes' : 'Enrolment 2026-2027 open'}</span>
-                </motion.p>
-                <h1 className="t-hero max-w-[16ch]">
-                  <WordReveal text={t.copy.heroTitle} inView={false} delay={d + 0.45} stagger={0.05} />
+              <div className="lg:col-span-9">
+                <h1 className="t-hero max-w-[18ch]">
+                  {(() => {
+                    const [place, ...rest] = String(t.copy.heroTitle).split(/,\s*/);
+                    const l2 = rest.length > 1 ? rest.slice(0, -1).join(', ') + ',' : rest[0] || '';
+                    const l3 = rest.length > 1 ? rest[rest.length - 1] : '';
+                    return (
+                      <>
+                        <LineMask inView={false} delay={d + 0.4}><span className="font-serif italic font-normal text-saffron-2 text-[0.72em] tracking-normal">{place},</span></LineMask>
+                        <LineMask inView={false} delay={d + 0.55}>{l2}</LineMask>
+                        {l3 && <LineMask inView={false} delay={d + 0.7}>{l3}</LineMask>}
+                      </>
+                    );
+                  })()}
                 </h1>
-                <motion.div className="mt-6" initial={reduce ? false : { opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1, delay: d + 1.2, ease: EASE }}>
-                  <p className="font-serif italic text-saffron-2 text-[clamp(1.15rem,1.7vw,1.5rem)] leading-snug">{SITE.motto[currentLang]}</p>
-                  <ul className="mt-4 flex flex-wrap gap-2">
+                <motion.div className="mt-6 [@media(max-height:700px)]:mt-3" initial={reduce ? false : { opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1, delay: d + 1.2, ease: EASE }}>
+                  <p className="font-serif italic text-saffron-2 text-[clamp(1.05rem,1.3vw,1.3rem)] leading-snug">{SITE.motto[currentLang]}</p>
+                  <ul className="hidden">
                     {chips.map((f) => <li key={f.text} className="inline-flex items-center gap-2 rounded-none border border-white/25 bg-white/8 backdrop-blur-sm px-3.5 py-1.5 text-[14px] font-medium text-salt"><f.Icon size={15} className="text-saffron" />{f.text}</li>)}
                   </ul>
                 </motion.div>
-                <motion.div className="mt-8 flex flex-wrap items-center gap-3" initial={reduce ? false : { opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1, delay: d + 1.4, ease: EASE }}>
-                  <Button to="/inscription" variant="saffron" size="lg">{t.ui.enroll}</Button>
-                  <Button to="/academie" variant="ghost-light" size="lg" icon="none">{t.ui.discoverAcademy}</Button>
+                <motion.div className="mt-8 [@media(max-height:700px)]:mt-4 flex flex-wrap items-center gap-3" initial={reduce ? false : { opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1, delay: d + 1.4, ease: EASE }}>
+                  <Button to="/inscription" variant="saffron">{t.ui.enroll}</Button>
+                  <Button to="/academie" variant="ghost-light" icon="none">{t.ui.discoverAcademy}</Button>
                 </motion.div>
               </div>
-              <motion.div className="lg:col-span-4 flex flex-col sm:flex-row lg:flex-col gap-3 lg:items-end" initial={reduce ? false : { opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1.2, delay: d + 1.3, ease: EASE }}>
-                <motion.div className="hidden lg:block mb-2 mr-1" animate={reduce ? undefined : { y: [0, -8, 0] }} transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}><Crest size={140} /></motion.div>
-                <div className="card-dark backdrop-blur-md px-4 py-3 sm:px-5 sm:py-4 flex items-center gap-3 sm:gap-4 flex-1 lg:flex-none lg:min-w-[230px]">
-                  <span className="w-10 h-10 rounded-full bg-saffron text-ink flex items-center justify-center shrink-0"><Award size={18} /></span>
-                  <span><span className="block font-display font-semibold text-2xl leading-none">100%</span><span className="block text-sea text-[13px] mt-1 leading-tight">{t.ui.success100} · Bac & BEM 2025-26</span></span>
-                </div>
-                <div className="card-dark backdrop-blur-md px-4 py-3 sm:px-5 sm:py-4 flex items-center gap-3 sm:gap-4 flex-1 lg:flex-none lg:min-w-[230px]">
-                  <span className="w-10 h-10 rounded-full bg-leaf text-salt flex items-center justify-center shrink-0"><Leaf size={18} /></span>
-                  <span><span className="block font-display font-semibold text-2xl leading-none">Ruban Vert</span><span className="block text-sea text-[13px] mt-1 leading-tight">{t.ui.ecoFirstDesc}</span></span>
-                </div>
-              </motion.div>
             </div>
-            <motion.div className="mt-8 hidden md:flex" initial={reduce ? false : { opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: d + 1.8, duration: 1 }}><ScrollHint label={t.ui.scroll} /></motion.div>
+            <motion.div className="mt-8 hidden md:flex [@media(max-height:800px)]:!hidden" initial={reduce ? false : { opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: d + 1.8, duration: 1 }}><ScrollHint label={t.ui.scroll} /></motion.div>
           </motion.div>
 
           {/* Légende du portrait : apparaît en fin de plongée */}
@@ -141,9 +141,21 @@ export const Hero = () => {
         </div>
       </section>
 
-      {/* Ruban de repères */}
-      <div className="bg-saffron text-ink py-3 border-y border-ink/10">
-        <Marquee items={facts.map((f) => <span key={f} className="text-sm font-semibold whitespace-nowrap">{f}</span>)} duration={55} />
+      {/* Fil d'actualités — jaune, avec l'étiquette « Actualités » et les derniers titres */}
+      <div className="bg-saffron text-ink border-y border-ink/10">
+        <div className="flex items-stretch">
+          <Link to="/actualites" className="shrink-0 flex items-center gap-2.5 bg-ink text-salt px-5 md:px-7 py-4 font-semibold text-sm hover:bg-ink-2 transition-colors">
+            <Newspaper size={16} className="text-saffron" /><span className="hidden sm:inline">{fr ? 'Actualités' : 'News'}</span><span className="hidden md:inline text-sea-2 font-medium">· {fr ? 'à la une' : 'headlines'}</span>
+          </Link>
+          <div className="min-w-0 flex-1 py-4">
+            <Marquee duration={news.length ? 60 : 50} items={(news.length ? news : []).map((n) => (
+              <Link key={n.id} to={`/actualites/${n.id}`} className="inline-flex items-center gap-3 whitespace-nowrap hover:underline">
+                <span className="text-[13px] font-semibold text-ink/60">{fmtDate(n.date, currentLang)}</span>
+                <span className="text-[15px] font-semibold">{n.title}</span>
+              </Link>
+            )).concat(facts.map((f) => <span key={f} className="text-[15px] font-semibold whitespace-nowrap">{f}</span>))} />
+          </div>
+        </div>
       </div>
     </>
   );
@@ -155,6 +167,7 @@ export const Hero = () => {
 export const Identity = () => {
   const { t, currentLang } = useLanguage();
   const fr = currentLang === 'FR';
+  const reduce = useReducedMotion();
   const numbers = [
     { n: '5+', l: t.academy.yearsExperience, Icon: CalendarDays },
     { n: '+500', l: fr ? 'élèves inscrits' : 'students enrolled', Icon: Users },
@@ -162,51 +175,30 @@ export const Identity = () => {
     { n: '25', l: fr ? 'élèves maximum par classe' : 'students maximum per class', Icon: Sparkles },
   ];
   return (
-    <section className="section bg-salt overflow-hidden">
+    <section className="section bg-salt">
       <div className="wrap">
-        <div className="grid lg:grid-cols-12 gap-x-6 gap-y-12 items-start">
-          {/* Titre */}
-          <div className="lg:col-span-8">
+        <div className="grid lg:grid-cols-12 gap-10 items-center">
+          <div className="lg:col-span-7">
             <p className="chapter mb-6">{t.welcome.presentation}</p>
-            <h2 className="t-h1 max-w-[18ch]"><WordReveal text={t.copy.identityTitle} stagger={0.035} /></h2>
+            <h2 className="t-h1 max-w-[16ch]"><WordReveal text={t.copy.identityTitle} stagger={0.035} /></h2>
+            <Reveal delay={0.15}><p className="t-lead text-mute mt-8 max-w-[52ch]">{t.welcome.text}</p></Reveal>
+            <Reveal delay={0.25} className="mt-8"><Link to="/academie" className="btn btn-ink">{t.ui.discoverAcademy}</Link></Reveal>
           </div>
-          <Reveal className="lg:col-span-4 lg:pt-16" delay={0.3}>
-            <p className="font-serif italic t-lead text-mute max-w-[26ch]">{t.copy.identityAside}</p>
+          {/* Le blason, en grand */}
+          <Reveal className="lg:col-span-5 flex justify-center lg:justify-end" delay={0.2}>
+            <motion.img
+              src={IMG.logo}
+              alt="Blason de Georges Claude Private Academy"
+              className="w-[min(70vw,340px)] lg:w-[min(32vw,460px)] h-auto object-contain drop-shadow-[0_40px_60px_rgba(6,25,58,0.25)]"
+              loading="lazy"
+              decoding="async"
+              referrerPolicy="no-referrer"
+              animate={reduce ? undefined : { y: [0, -12, 0] }}
+              transition={{ duration: 7, repeat: Infinity, ease: 'easeInOut' }}
+            />
           </Reveal>
-
-          {/* Texte + preuves */}
-          <div className="lg:col-span-5 lg:pt-6">
-            <Reveal delay={0.1}><p className="t-lead">{t.welcome.text}</p></Reveal>
-            <div className="mt-10 space-y-6">
-              {[[t.welcome.feature1, t.welcome.feature1Desc, ShieldCheck], [t.welcome.feature2, t.welcome.feature2Desc, Languages]].map(([h, d, Ico]: any, i) => (
-                <Reveal key={i} delay={0.15 + i * 0.08} className="flex gap-5 border-t border-ink/15 pt-5">
-                  <span className="w-10 h-10 rounded-full bg-ink text-saffron flex items-center justify-center shrink-0"><Ico size={18} /></span>
-                  <span><span className="block t-h4">{h}</span><span className="block t-body text-mute mt-1 max-w-[40ch]">{d}</span></span>
-                </Reveal>
-              ))}
-            </div>
-            <Reveal delay={0.3} className="mt-10"><Link to="/academie" className="btn btn-ink">{t.ui.discoverAcademy}</Link></Reveal>
-          </div>
-
-          {/* Composition d'images */}
-          <div className="lg:col-span-6 lg:col-start-7 relative">
-            <ClipReveal className="img-arch aspect-[4/5] lg:w-[78%]" from="bottom">
-              <Parallax amount={40} className="h-full"><img src={IMG.campus} alt={fr ? 'Le campus de l’académie à Sidi Bouzid' : 'The academy campus in Sidi Bouzid'} loading="lazy" decoding="async" referrerPolicy="no-referrer" className="w-full h-full object-cover scale-110" /></Parallax>
-            </ClipReveal>
-            <Reveal delay={0.4} className="hidden lg:block absolute right-0 bottom-[14%] w-[40%]">
-              <div className="img-frame aspect-square shadow-[0_40px_80px_-30px_rgba(6,25,58,0.45)] border-[6px] border-salt">
-                <img src={IMG.kids} alt="" loading="lazy" decoding="async" referrerPolicy="no-referrer" />
-              </div>
-            </Reveal>
-            <Reveal delay={0.5} className="absolute -left-2 lg:left-[8%] -bottom-4 lg:-bottom-6 bg-ink text-salt rounded-none px-5 py-4 shadow-[0_30px_60px_-30px_rgba(6,25,58,0.6)]">
-              <span className="block font-display font-semibold text-2xl leading-none">Cambridge</span>
-              <span className="block text-sea text-[13px] mt-1">{t.ui.cambridgeDesc}</span>
-            </Reveal>
-          </div>
         </div>
-
-        {/* Chiffres */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-8 mt-20 lg:mt-24 pt-8 border-t border-ink/15">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-10 mt-20 pt-10 border-t border-ink/15">
           {numbers.map((x, i) => (
             <Reveal key={i} delay={i * 0.06} amount={0.6}>
               <x.Icon size={18} className="text-saffron mb-3" />
@@ -227,32 +219,24 @@ export const Director = () => {
   const { t, currentLang } = useLanguage();
   const quote: string = t.home.director.quote;
   const [first, ...rest] = quote.split('. ');
-  const body = rest.join('. ');
+  const paras = rest.join('. ').split(/(?<=\.)\s+(?=[A-ZÀÉÈÊ])/).reduce<string[][]>((acc, x, i) => { const k = Math.floor(i / 2); (acc[k] ||= []).push(x); return acc; }, []).map((p) => p.join(' '));
   return (
-    <section className="section bg-salt-2/60">
-      <div className="wrap">
-        <div className="grid lg:grid-cols-12 gap-8">
-          <div className="lg:col-span-2">
-            <p className="chapter">{t.copy.directorTitle}</p>
-          </div>
-          <div className="lg:col-span-10">
-            <p className="t-quote max-w-[30ch]">
-              <WordReveal text={first + '.'} stagger={0.02} />
-            </p>
-            <Reveal delay={0.15} className="mt-10 t-body text-mute max-w-[64ch] lg:max-w-none lg:columns-2 lg:gap-12 [&>p]:mb-5 [&>p]:break-inside-avoid">
-              {body.split(/(?<=\.)\s+(?=[A-ZÀÉÈÊ])/).reduce<string[][]>((acc, s, i) => { const k = Math.floor(i / 2); (acc[k] ||= []).push(s); return acc; }, []).map((para, i) => (
-                <p key={i}>{para.join(' ')}</p>
-              ))}
-            </Reveal>
-            {/* Signature : petit portrait, nom, fonction */}
-            <Reveal delay={0.2} className="mt-10 pt-6 border-t border-ink/15 flex flex-wrap items-center gap-5">
-              <img src={IMG.director} alt={SITE.director.name} className="w-14 h-14 rounded-full object-cover ring-2 ring-salt shadow-md" loading="lazy" referrerPolicy="no-referrer" />
-              <span><span className="block t-h4">{SITE.director.name}</span><span className="block t-meta">{SITE.director.role[currentLang]}</span></span>
-              <img src={IMG.signature} alt="" className="h-12 w-auto opacity-70 mix-blend-multiply ml-auto" loading="lazy" referrerPolicy="no-referrer" />
-              <Link to="/academie" className="ulink font-semibold text-sm w-full sm:w-auto sm:ml-4">{t.ui.discoverAcademy}</Link>
-            </Reveal>
-          </div>
+    <section className="section bg-ink text-salt on-dark grain relative overflow-hidden">
+      <div className="wrap-narrow text-center">
+        <p className="chapter saffron justify-center mb-8">{t.copy.directorTitle}</p>
+        <span className="block mx-auto mb-8 font-serif text-saffron text-6xl leading-none select-none" aria-hidden>“</span>
+        <p className="t-quote text-salt">
+          <WordReveal text={first + '.'} stagger={0.02} />
+        </p>
+        <div className="mt-10 mx-auto max-w-[64ch] text-sea/90 text-left space-y-4 font-serif text-[15px] md:text-[16px] leading-[1.7]">
+          {paras.map((x, i) => <Reveal key={i} as="p" delay={0.05 * i} amount={0.5}>{x}</Reveal>)}
         </div>
+        <Reveal delay={0.2} className="mt-12 pt-8 border-t border-white/12 flex flex-col items-center gap-4">
+          <span className="relative inline-block p-1.5 rounded-full border border-saffron/60"><img src={IMG.director} alt={SITE.director.name} className="w-28 h-28 md:w-32 md:h-32 rounded-full object-cover ring-2 ring-saffron shadow-[0_20px_40px_-15px_rgba(0,0,0,0.6)]" loading="lazy" referrerPolicy="no-referrer" /></span>
+          <span><span className="block t-h4">{SITE.director.name}</span><span className="block t-meta">{SITE.director.role[currentLang]}</span></span>
+          <img src={IMG.signature} alt="" className="h-12 w-auto opacity-90 invert" loading="lazy" referrerPolicy="no-referrer" />
+          <Link to="/academie" className="ulink font-semibold text-sm text-saffron mt-2">{t.ui.discoverAcademy}</Link>
+        </Reveal>
       </div>
     </section>
   );
@@ -264,27 +248,28 @@ export const Director = () => {
 export const Vision = () => {
   const { t } = useLanguage();
   const cards = [
-    { title: t.vision.visionTitle, text: t.vision.visionText, bg: 'bg-ink text-salt on-dark', Icon: Eye, ic: 'bg-saffron text-ink' },
-    { title: t.vision.objectiveTitle, text: t.vision.objectiveText, bg: 'bg-ink-3 text-salt on-dark', Icon: Target, ic: 'bg-saffron text-ink' },
-    { title: t.vision.dailyLifeTitle, text: t.vision.dailyLifeText, bg: 'bg-saffron text-ink', Icon: Sun, ic: 'bg-ink text-saffron' },
+    { title: t.vision.visionTitle, text: t.vision.visionText, Icon: Eye },
+    { title: t.vision.objectiveTitle, text: t.vision.objectiveText, Icon: Target },
+    { title: t.vision.dailyLifeTitle, text: t.vision.dailyLifeText, Icon: Sun },
   ];
   return (
-    <section className="section bg-salt">
-      <div className="wrap">
-        <div className="grid lg:grid-cols-12 gap-10">
-          <div className="lg:col-span-4 lg:sticky lg:top-28 self-start">
-            <p className="chapter mb-6">{t.vision.label}</p>
-            <h2 className="t-h2"><WordReveal text={t.copy.visionTitle} /></h2>
-          </div>
-          <div className="lg:col-span-7 lg:col-start-6 space-y-6">
-            {cards.map((c, i) => (
-              <div key={i} className={`${c.bg} rounded-none p-7 md:p-12 sticky shadow-[0_30px_60px_-30px_rgba(6,25,58,0.35)]`} style={{ top: `calc(var(--header-h) + 1rem + ${i * 1.5}rem)` }}>
-                <span className={`inline-flex w-12 h-12 rounded-full items-center justify-center mb-6 ${c.ic}`}><c.Icon size={22} /></span>
-                <h3 className="t-h3 mb-6">{c.title}</h3>
-                <p className="t-lead opacity-90 max-w-[40ch]">{c.text}</p>
-              </div>
-            ))}
-          </div>
+    <section className="section bg-salt-2/70 relative overflow-hidden">
+      {/* Filigrane du blason */}
+      <img src={IMG.logo} alt="" aria-hidden className="absolute -right-[8%] -bottom-[14%] w-[38vw] max-w-[560px] opacity-[0.05] pointer-events-none select-none" loading="lazy" referrerPolicy="no-referrer" />
+      <div className="wrap relative">
+        <div className="max-w-[820px]">
+          <p className="chapter mb-5">{t.vision.label}</p>
+          <h2 className="t-h2"><WordReveal text={t.copy.visionTitle} /></h2>
+        </div>
+        <div className="grid md:grid-cols-3 gap-10 md:gap-0 md:divide-x md:divide-ink/12 mt-16">
+          {cards.map((c, i) => (
+            <Reveal key={i} delay={0.1 * i} className="md:px-10 first:md:pl-0 last:md:pr-0">
+              <span className="block h-px w-12 bg-saffron mb-8" aria-hidden />
+              <span className="inline-flex w-12 h-12 rounded-full items-center justify-center border border-saffron/60 text-saffron mb-6"><c.Icon size={20} strokeWidth={1.6} /></span>
+              <h3 className="font-serif italic text-ink text-[clamp(1.5rem,2.1vw,2rem)] leading-tight">{c.title}</h3>
+              <p className="t-body text-mute mt-4 max-w-[36ch]">{c.text}</p>
+            </Reveal>
+          ))}
         </div>
       </div>
     </section>

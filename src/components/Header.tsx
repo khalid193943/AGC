@@ -63,14 +63,14 @@ export const Header = () => {
         animate={{ y: hidden ? -100 : 0 }}
         transition={{ duration: 0.6, ease: EASE }}
       >
-        <div className={`transition-[background-color,backdrop-filter,box-shadow] duration-500 ${scrolled && !open ? 'bg-salt/85 backdrop-blur-xl shadow-[0_1px_0_rgba(6,25,58,0.08)]' : 'bg-transparent'}`}>
-          <div className="wrap flex items-center justify-between" style={{ height: 'var(--header-h)' }}>
+        <div className={`transition-[background-color,backdrop-filter,box-shadow] duration-500 ${scrolled && !open ? 'bg-white/92 backdrop-blur-xl shadow-[0_1px_0_rgba(6,25,58,0.08)]' : 'bg-transparent'}`}>
+          <div className="wrap flex items-center justify-between transition-[height] duration-500" style={{ height: scrolled && !open ? '58px' : 'var(--header-h)' }}>
             {/* Logo */}
             <Link to="/" className="flex items-center gap-3 shrink-0" aria-label={t.ui.backHome}>
-              <span className={`flex items-center justify-center rounded-full p-1 transition-colors duration-500 ${light || open ? 'bg-white/10 backdrop-blur-md ring-1 ring-white/25' : 'bg-white ring-1 ring-ink/10 shadow-[0_6px_20px_-10px_rgba(6,25,58,0.35)]'}`}><img src={IMG.logo} alt="" className="h-12 w-12 md:h-[60px] md:w-[60px] object-contain" width={60} height={60} referrerPolicy="no-referrer" /></span>
+              <span className={`flex items-center justify-center rounded-full p-1 transition-colors duration-500 ${light || open ? 'bg-white/10 backdrop-blur-md ring-1 ring-white/25' : ''}`}><img src={IMG.logo} alt="" className={`object-contain transition-all duration-500 ${scrolled && !open ? 'h-9 w-9' : 'h-12 w-12 md:h-[60px] md:w-[60px]'}`} width={60} height={60} referrerPolicy="no-referrer" /></span>
               <span className={`hidden sm:block font-display font-semibold tracking-tight leading-none ${light || open ? 'text-salt' : 'text-ink'}`}>
-                <span className="block text-[17px] md:text-[19px]">Georges Claude</span>
-                <span className={`block text-[12px] font-medium mt-0.5 ${light || open ? 'text-salt/60' : 'text-mute'}`}>{t.nav.tagline}</span>
+                <span className={`block transition-all duration-500 ${scrolled && !open ? 'text-[15px]' : 'text-[17px] md:text-[19px]'}`}>Georges Claude</span>
+                <span className={`block text-[12px] font-medium mt-0.5 ${light || open ? 'text-salt/60' : 'text-mute'} ${scrolled && !open ? 'hidden' : ''}`}>{t.nav.tagline}</span>
               </span>
             </Link>
 
@@ -108,12 +108,12 @@ export const Header = () => {
                   </button>
                 ))}
               </div>
-              <Link to="/inscription" className={`btn hidden sm:inline-flex !h-10 !px-4 text-sm ${light ? 'btn-saffron' : 'btn-ink'} ${open ? 'opacity-0 pointer-events-none' : ''}`}>
+              <Link to="/inscription" className={`btn hidden sm:inline-flex !px-4 text-sm ${scrolled && !open ? '!h-9' : '!h-10'} ${light ? 'btn-saffron' : 'btn-ink'} ${open ? 'opacity-0 pointer-events-none' : ''}`}>
                 <span className="swap"><span>{t.ui.enrollShort}</span><span aria-hidden>{t.ui.enrollShort}</span></span>
               </Link>
               <button
                 onClick={() => setOpen((v) => !v)}
-                className={`group flex items-center gap-2.5 h-10 pl-3.5 pr-2 rounded-none border transition-colors ${light || open ? 'border-white/25 text-salt' : 'border-ink/15 text-ink'}`}
+                className={`group flex items-center gap-2.5 pl-3.5 pr-2 rounded-none border transition-colors ${scrolled && !open ? 'h-9' : 'h-10'} ${light || open ? 'border-white/25 text-salt' : 'border-ink/15 text-ink'}`}
                 aria-expanded={open}
                 aria-controls="site-menu"
               >
@@ -157,7 +157,7 @@ export const Header = () => {
                         }
                       >
                         <l.Icon size={20} className="opacity-50 self-center shrink-0" strokeWidth={1.8} />
-                        <span className="font-display font-medium text-[clamp(1.75rem,4.2vw,3.25rem)] leading-none tracking-tight">{l.label}</span>
+                        <span className="font-display font-medium text-[clamp(1.5rem,3vw,2.4rem)] leading-none tracking-tight">{l.label}</span>
                         <ArrowUpRight className="opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-500" size={22} />
                       </NavLink>
                     </motion.div>

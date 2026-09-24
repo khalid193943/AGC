@@ -8,7 +8,7 @@ import { useLanguage } from '../contexts/LanguageContext';
 import { IMG, SITE } from '../content/site';
 import { WordReveal, Reveal, EASE } from '../components/ui/motion';
 import { Seo, Chapter, Marquee, fmtDate, toDate, readingTime, isRecent, icsUrl } from '../components/ui';
-import { PageHero } from '../components/sections';
+import { PageHero, SectionHead } from '../components/sections';
 import { SocialLinks } from '../components/ui/Social';
 
 /**
@@ -98,45 +98,25 @@ const News = () => {
         </div>
       )}
 
-      {/* À la une + cette semaine */}
+      {/* Dernières actualités — grille simple, trois colonnes */}
       <section className="section bg-salt">
         <div className="wrap">
-          {loading ? <p className="text-mute">{t.ui.loading}…</p> : !featured ? <p className="text-mute">{t.ui.journalEmpty}</p> : (
-            <div className="grid lg:grid-cols-12 gap-8">
-              <Reveal className="lg:col-span-7">
-                <Link to={`/actualites/${featured.id}`} className="group relative block img-frame img-zoom aspect-[4/3] lg:aspect-auto lg:h-full lg:min-h-[600px]">
-                  <img src={featured.image} alt={featured.title} className="absolute inset-0 w-full h-full object-cover" loading="eager" referrerPolicy="no-referrer" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-ink via-ink/40 to-transparent" />
-                  <div className="absolute top-5 left-5 flex gap-2">
-                    <span className="rounded-none bg-saffron text-ink px-3 py-1 text-xs font-semibold">{fr ? 'À la une' : 'Headline'}</span>
-                    {isRecent(featured.date) && <span className="rounded-none bg-salt text-ink px-3 py-1 text-xs font-semibold">{fr ? 'Nouveau' : 'New'}</span>}
-                  </div>
-                  <div className="absolute inset-x-0 bottom-0 p-7 md:p-10 text-salt">
-                    <p className="text-sea text-sm flex flex-wrap gap-x-3">{featured.category && <span className="font-semibold text-salt">{featured.category}</span>}<span>{fmtDate(featured.date, currentLang)}</span><span>· {readingTime(featured.content)} min</span></p>
-                    <h2 className="t-h2 mt-3 max-w-[18ch] group-hover:text-saffron-2 transition-colors">{featured.title}</h2>
-                    <p className="t-body text-sea mt-3 max-w-[52ch] line-clamp-2 hidden sm:block">{Array.isArray(featured.content) ? featured.content[0] : featured.content}</p>
-                    <span className="inline-flex items-center gap-1.5 text-sm font-semibold mt-5 ulink">{t.ui.readMore} <ArrowUpRight size={15} /></span>
-                  </div>
-                </Link>
-              </Reveal>
-              <div className="lg:col-span-5">
-                <Chapter className="mb-6">{fr ? 'Cette semaine' : 'This week'}</Chapter>
-                <ol className="divide-y divide-ink/12 border-y border-ink/12">
-                  {week.map((n, i) => (
-                    <Reveal key={n.id} as="li" delay={0.06 * i}>
-                      <Link to={`/actualites/${n.id}`} className="group flex gap-5 py-6 items-start">
-                        <span className="font-display text-mute text-2xl w-8 shrink-0 leading-none pt-1">{String(i + 1).padStart(2, '0')}</span>
-                        <div className="flex-1 min-w-0">
-                          <p className="t-meta flex flex-wrap gap-x-2">{n.category && <span className="text-ink font-semibold">{n.category}</span>}<span>{fmtDate(n.date, currentLang)}</span><span>· {readingTime(n.content)} min</span>{isRecent(n.date) && <span className="text-saffron font-semibold">{fr ? 'Nouveau' : 'New'}</span>}</p>
-                          <p className="t-h4 mt-1 group-hover:text-ink-3 transition-colors">{n.title}</p>
-                        </div>
-                        <div className="img-frame img-zoom w-20 aspect-square shrink-0 !rounded-none"><img src={n.image} alt="" loading="lazy" referrerPolicy="no-referrer" /></div>
-                      </Link>
-                    </Reveal>
-                  ))}
-                </ol>
-                {week.length === 0 && <p className="t-body text-mute">{t.ui.journalEmpty}</p>}
-              </div>
+          <SectionHead chapter={c.latestNews} title={fr ? 'Les dernières actualités.' : 'Latest news.'} className="mb-12" />
+          {loading ? <p className="text-mute">{t.ui.loading}…</p> : list.length === 0 ? <p className="text-mute">{t.ui.journalEmpty}</p> : (
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-12">
+              {list.slice(0, 6).map((n, i) => (
+                <Reveal key={n.id} delay={(i % 3) * 0.06}>
+                  <Link to={`/actualites/${n.id}`} className="group block">
+                    <div className="relative aspect-[4/3] overflow-hidden bg-sea/40">
+                      <img src={n.image} alt={n.title} loading={i < 3 ? 'eager' : 'lazy'} referrerPolicy="no-referrer" className="w-full h-full object-cover transition-transform duration-[1400ms] ease-[cubic-bezier(.16,1,.3,1)] group-hover:scale-105" />
+                      {isRecent(n.date) && <span className="absolute top-3 left-3 bg-saffron text-ink px-2.5 py-0.5 text-[11px] font-semibold">{fr ? 'Nouveau' : 'New'}</span>}
+                    </div>
+                    <p className="t-meta mt-4 flex flex-wrap gap-x-2">{n.category && <span className="text-ink font-semibold">{n.category}</span>}<span>{fmtDate(n.date, currentLang)}</span><span>· {readingTime(n.content)} min</span></p>
+                    <h2 className="t-h4 mt-1.5 group-hover:text-ink-3 transition-colors">{n.title}</h2>
+                    <p className="t-small text-mute mt-1.5 line-clamp-2">{Array.isArray(n.content) ? n.content[0] : n.content}</p>
+                  </Link>
+                </Reveal>
+              ))}
             </div>
           )}
         </div>
@@ -145,13 +125,7 @@ const News = () => {
       {/* Agenda */}
       <section id="agenda" className="section bg-ink text-salt on-dark grain relative overflow-hidden scroll-mt-20">
         <div className="wrap">
-          <div className="grid lg:grid-cols-12 gap-8 items-end mb-12">
-            <div className="lg:col-span-7">
-              <Chapter saffron className="mb-6">{c.calendar}</Chapter>
-              <h2 className="t-h1 max-w-[12ch]"><WordReveal text={fr ? 'À vos agendas.' : 'Save the dates.'} /></h2>
-            </div>
-            <Reveal className="lg:col-span-5" delay={0.15}><p className="t-body text-sea max-w-[42ch]">{fr ? 'Portes ouvertes, spectacles, réunions, sorties : chaque événement peut être ajouté à votre agenda en un geste.' : 'Open days, shows, meetings, outings: add any event to your calendar in one tap.'}</p></Reveal>
-          </div>
+          <SectionHead dark chapter={c.calendar} title={fr ? 'À vos agendas.' : 'Save the dates.'} lead={fr ? 'Portes ouvertes, spectacles, réunions, sorties : chaque événement peut être ajouté à votre agenda en un geste.' : 'Open days, shows, meetings, outings: add any event to your calendar in one tap.'} className="mb-12" />
           {agenda.length === 0 ? <p className="text-sea">{t.home.noEvents}</p> : (
             <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
               {agenda.map((e, i) => (
@@ -168,7 +142,7 @@ const News = () => {
                       </div>
                     </div>
                     <p className="t-small text-sea-2 mt-4 line-clamp-2 flex-1">{e.description || e.desc}</p>
-                    <div className="mt-5 flex items-center gap-2">
+                    <div className="mt-5 flex flex-wrap items-center gap-2">
                       <a href={icsUrl(e)} download={`${e.title}.ics`} className="btn btn-saffron !h-10 text-sm"><CalendarPlus size={15} /> {fr ? 'Ajouter à mon agenda' : 'Add to calendar'}</a>
                       <button onClick={() => setEvent(e)} className="btn btn-ghost-light !h-10 text-sm" aria-label={t.ui.eventDetails}>{fr ? 'Détails' : 'Details'}</button>
                     </div>
@@ -225,13 +199,7 @@ const News = () => {
       {moments.length > 0 && (
         <section className="section bg-salt-2/60">
           <div className="wrap">
-            <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-10">
-              <div>
-                <Chapter className="mb-6">{c.galleryLabel}</Chapter>
-                <h2 className="t-h2"><WordReveal text={fr ? 'En images, cette semaine.' : 'In pictures, this week.'} /></h2>
-              </div>
-              <Link to="/galerie" className="ulink font-semibold inline-flex items-center gap-1.5">{t.life.exploreGallery} <ArrowUpRight size={15} /></Link>
-            </div>
+            <SectionHead chapter={c.galleryLabel} title={fr ? 'En images, cette semaine.' : 'In pictures, this week.'} link={{ label: t.life.exploreGallery, to: '/galerie' }} className="mb-10" />
             <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
               {moments.map((m, i) => (
                 <Link key={m.id} to="/galerie" className={`img-frame img-zoom relative ${i % 5 === 0 ? 'col-span-2 aspect-[16/10]' : 'aspect-square'}`}>
@@ -246,13 +214,13 @@ const News = () => {
 
       {/* Ne rien manquer */}
       <section id="suivre" className="section bg-saffron text-ink scroll-mt-20">
-        <div className="wrap grid lg:grid-cols-12 gap-10 items-center">
-          <div className="lg:col-span-6">
+        <div className="wrap flex flex-col lg:flex-row lg:items-end justify-between gap-10">
+          <div className="max-w-[720px]">
             <p className="chapter !text-ink/70 mb-6"><Newspaper size={16} /> {fr ? 'Abonnement' : 'Subscribe'}</p>
-            <h2 className="t-h1 max-w-[12ch]"><WordReveal text={fr ? 'Ne rien manquer.' : 'Never miss a thing.'} /></h2>
-            <Reveal delay={0.1}><p className="t-body mt-6 max-w-[46ch] text-ink/80">{fr ? 'Recevez le journal de l’école par email, ou suivez-nous sur WhatsApp et les réseaux : sorties, résultats, événements, toujours au bon moment.' : 'Get the school journal by email, or follow us on WhatsApp and social media: outings, results, events, always on time.'}</p></Reveal>
+            <h2 className="t-h2"><WordReveal text={fr ? 'Ne rien manquer.' : 'Never miss a thing.'} /></h2>
+            <Reveal delay={0.1}><p className="t-body mt-5 max-w-[52ch] text-ink/80">{fr ? 'Recevez le journal de l’école par email, ou suivez-nous sur WhatsApp et les réseaux : sorties, résultats, événements, toujours au bon moment.' : 'Get the school journal by email, or follow us on WhatsApp and social media: outings, results, events, always on time.'}</p></Reveal>
           </div>
-          <Reveal className="lg:col-span-5 lg:col-start-8" delay={0.15}>
+          <Reveal className="w-full lg:w-[440px] shrink-0" delay={0.15}>
             <form onSubmit={subscribe} className="flex flex-col sm:flex-row gap-2">
               <label className="sr-only" htmlFor="j-email">{t.footer.emailPlaceholder}</label>
               <input id="j-email" type="email" required value={email} onChange={(e) => setEmail(e.target.value)} placeholder={t.footer.emailPlaceholder} className="flex-1 h-12 rounded-none bg-white/70 border border-ink/15 px-5 text-ink placeholder:text-ink/50 focus:outline-none focus:border-ink" />

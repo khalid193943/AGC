@@ -6,7 +6,7 @@ import { useLanguage } from '../contexts/LanguageContext';
 import { IMG, MATERNELLE_SECTIONS } from '../content/site';
 import { WordReveal, Reveal, Parallax } from '../components/ui/motion';
 import { Seo, Chapter, schema } from '../components/ui';
-import { PageHero, CtaBand, AfterBac } from '../components/sections';
+import { PageHero, CtaBand, AfterBac, SectionHead } from '../components/sections';
 import { CYCLE_STYLE } from './home/Discover';
 
 const ORDER = ['maternelle', 'primaire', 'college', 'lycee'] as const;
@@ -36,40 +36,20 @@ const Cycle = () => {
   return (
     <main>
       <Seo title={`${c.title} — ${c.subtitle} | Georges Claude Private Academy El Jadida`} description={c.heroDesc} path={`/programmes/${cid}`} image={IMG.cycles[cid]} breadcrumbs={[{ name: t.nav.programs, path: '/programmes' }, { name: c.title, path: `/programmes/${cid}` }]} jsonLd={schema.course({ name: c.title, description: c.heroDesc, path: `/programmes/${cid}`, ages: t.ui.cycleAges[cid], lang: currentLang })} />
-      <PageHero chapter={`${c.title} — ${badge} — ${t.ui.cycleFor} ${t.ui.cycleAges[cid]}`} title={t.copy.cycleTitles[cid]} lead={c.heroDesc} image={IMG.cycles[cid]} imageAlt={c.title}>
+      <PageHero chapter={`${c.title} — ${badge} — ${t.ui.cycleFor} ${t.ui.cycleAges[cid]}`} title={t.copy.cycleTitles[cid]} lead={c.heroDesc}>
         <Link to="/inscription" className="btn btn-saffron">{c.enrollBtn}</Link>
         <Link to="/contact" className="btn btn-ghost-light">{c.admissionBtn}</Link>
       </PageHero>
 
-      {/* Présentation + vision */}
+      {/* Présentation */}
       <section className="section bg-salt">
-        <div className="wrap grid lg:grid-cols-12 gap-12">
-          <div className="lg:col-span-7">
-            <p className="t-statement max-w-[30ch]"><WordReveal text={c.presentation} stagger={0.015} /></p>
-          </div>
-          <div className="lg:col-span-4 lg:col-start-9">
-            <Reveal delay={0.2}>
-              <Chapter className="mb-4">{c.visionTitle}</Chapter>
-              <p className="t-body text-mute">{c.visionText}</p>
-              <p className={`mt-6 inline-flex items-center gap-2 rounded-none px-4 py-2 text-sm font-semibold ${accent}`}><st.Icon size={16} /> {marker}</p>
-            </Reveal>
-          </div>
-        </div>
-      </section>
-
-      {/* Piliers */}
-      <section className="section bg-ink text-salt on-dark grain relative overflow-hidden">
-        <div className="wrap">
-          <Chapter saffron className="mb-6">{t.ui.pillars}</Chapter>
-          <div className="grid md:grid-cols-2 gap-x-12 gap-y-10 mt-6">
-            {c.pillars.map((p: any, i: number) => (
-              <Reveal key={i} delay={0.06 * i} className="border-t border-white/15 pt-6">
-                <span className={`inline-flex w-10 h-10 rounded-full items-center justify-center mb-4 ${st.icon}`}><st.Icon size={18} /></span>
-                <h2 className="t-h3">{p.title}</h2>
-                <p className="t-body text-sea mt-3 max-w-[40ch]">{p.desc}</p>
-              </Reveal>
-            ))}
-          </div>
+        <div className="wrap max-w-[900px] mx-auto">
+          <p className="t-h2"><WordReveal text={c.presentation} stagger={0.02} /></p>
+          <Reveal delay={0.2} className="mt-10 border-t border-ink/15 pt-6">
+            <Chapter className="mb-3">{c.visionTitle}</Chapter>
+            <p className="t-body text-mute max-w-[62ch]">{c.visionText}</p>
+            <p className={`mt-5 inline-flex items-center gap-2 px-4 py-2 text-sm font-semibold ${accent}`}><st.Icon size={16} /> {marker}</p>
+          </Reveal>
         </div>
       </section>
 
@@ -102,13 +82,7 @@ const Cycle = () => {
       {/* Programme */}
       <section className="section bg-salt">
         <div className="wrap">
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-12">
-            <div>
-              <Chapter className="mb-6">{t.common.curriculum}</Chapter>
-              <h2 className="t-h2"><WordReveal text={c.curriculumTitle} /></h2>
-            </div>
-            <Reveal delay={0.1}><p className="t-body text-mute max-w-[40ch]">{c.curriculumSubtitle}</p></Reveal>
-          </div>
+          <SectionHead chapter={t.common.curriculum} title={c.curriculumTitle} lead={c.curriculumSubtitle} className="mb-12" />
           <div className="grid md:grid-cols-3 gap-5">
             {c.curriculum.map((col: any, i: number) => (
               <Reveal key={i} delay={0.08 * i} className="card p-7">
@@ -124,26 +98,14 @@ const Cycle = () => {
       </section>
 
       {/* Journée type — ligne de temps progressive */}
-      <section className="section bg-salt-2/60">
-        <div className="wrap grid lg:grid-cols-12 gap-12">
-          <div className="lg:col-span-5">
-            <div className="lg:sticky lg:top-28">
-              <Chapter className="mb-6">{t.common.dailyLife}</Chapter>
-              <h2 className="t-h2"><WordReveal text={c.dailyLifeTitle} /></h2>
-              <div className="grid grid-cols-2 gap-4 mt-10">
-                {gallery.slice(0, 2).map((src, i) => (
-                  <Parallax key={i} amount={i ? 40 : 20} className={`img-frame ${i ? 'aspect-[3/4] mt-8' : 'aspect-[3/4]'}`}>
-                    <img src={src} alt={`${c.title} ${i + 1}`} loading="lazy" referrerPolicy="no-referrer" className="w-full h-full object-cover scale-110" />
-                  </Parallax>
-                ))}
-              </div>
-            </div>
-          </div>
-          <div ref={dayRef} className="lg:col-span-6 lg:col-start-7 relative pl-10">
+      <section className="section bg-salt-2/70">
+        <div className="wrap">
+          <SectionHead chapter={t.common.dailyLife} title={c.dailyLifeTitle} />
+          <div ref={dayRef} className="relative pl-10 mt-12 max-w-[760px]">
             <div className="absolute left-2 top-2 bottom-2 w-px bg-ink/12" aria-hidden>
               <motion.div className="w-full bg-ink origin-top" style={reduce ? { height: '100%' } : { height: line }} />
             </div>
-            <ol className="space-y-8">
+            <ol className="space-y-7">
               {c.dailyLife.map((d: any, i: number) => (
                 <Reveal key={i} as="li" amount={0.6} className="relative">
                   <span className="absolute -left-10 top-1.5 w-[17px] h-[17px] rounded-full bg-salt border border-ink/25 flex items-center justify-center"><span className="w-1.5 h-1.5 rounded-full bg-ink" /></span>
@@ -159,16 +121,7 @@ const Cycle = () => {
       {/* Espaces */}
       <section className="section bg-salt">
         <div className="wrap">
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-10">
-            <div>
-              <Chapter className="mb-6">{t.common.infrastructure}</Chapter>
-              <h2 className="t-h2"><WordReveal text={c.spacesTitle} /></h2>
-            </div>
-            <Reveal delay={0.1}>
-              <p className="t-body text-mute max-w-[40ch]">{c.spacesSubtitle}</p>
-              <Link to="/vie-scolaire" className="ulink font-semibold inline-flex items-center gap-1.5 mt-3">{t.common.visitCampus} <ArrowUpRight size={15} /></Link>
-            </Reveal>
-          </div>
+          <SectionHead chapter={t.common.infrastructure} title={c.spacesTitle} lead={c.spacesSubtitle} link={{ label: t.common.visitCampus, to: '/vie-scolaire' }} className="mb-10" />
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
             {c.spaces.map((s: any, i: number) => (
               <Reveal key={i} delay={0.06 * i} className="group">

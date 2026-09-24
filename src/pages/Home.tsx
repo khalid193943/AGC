@@ -1,14 +1,11 @@
-import { Link } from 'react-router-dom';
-import { ArrowUpRight } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 import { IMG } from '../content/site';
 import { FAQ } from '../content/faq';
 import { Seo } from '../components/ui';
-import { VideoSection, AfterBac } from '../components/sections';
-import { Reveal } from '../components/ui/motion';
+import { VideoSection } from '../components/sections';
 import { Hero, Identity, Director, Vision } from './home/Hero';
-import { Programs, Openness, Activities, LifeTeaser } from './home/Discover';
-import { Proof, Journal, Practical, Action } from './home/Trust';
+import { Programs, Openness, Activities } from './home/Discover';
+import { Reviews, Practical, AdmissionCta } from './home/Trust';
 
 /**
  * Accueil — un récit en neuf temps :
@@ -30,24 +27,14 @@ export const Home = () => {
       <Hero />
       <Identity />
       <Director />
-      <Vision />
       <VideoSection title={t.copy.videoTitle} desc={t.ui.videoDesc} />
       <Programs />
+      <Vision />
       <Openness />
       <Activities />
-      <LifeTeaser />
-      <Proof />
-      <AfterBac compact />
-      <Journal />
+      <Reviews />
+      <AdmissionCta />
       <Practical />
-      <Action />
-      {/* Recrutement — une ligne, pas une section : ce n'est pas la cible principale */}
-      <Reveal as="div" className="bg-salt border-b border-ink/10">
-        <div className="wrap py-6 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-          <p className="t-small text-mute">{t.recruitment.heroDesc}</p>
-          <Link to="/recrutement" className="inline-flex items-center gap-1.5 font-semibold ulink shrink-0">{t.recruitment.subtitle} <ArrowUpRight size={16} /></Link>
-        </div>
-      </Reveal>
     </main>
   );
 };

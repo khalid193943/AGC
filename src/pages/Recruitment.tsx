@@ -6,7 +6,7 @@ import { useLanguage } from '../contexts/LanguageContext';
 import { IMG } from '../content/site';
 import { WordReveal, Reveal } from '../components/ui/motion';
 import { Seo, Chapter, Button, schema } from '../components/ui';
-import { PageHero } from '../components/sections';
+import { PageHero, SectionHead } from '../components/sections';
 
 interface Job { id: string; title: string; category: 'teacher' | 'driver' | 'intern' | 'other'; description: string; requirements: string[]; active: boolean }
 
@@ -54,14 +54,13 @@ const Recruitment = () => {
   return (
     <main>
       <Seo title={`${r.title} | ${r.subtitle} — Georges Claude Private Academy El Jadida`} description={r.heroDesc} path="/recrutement" image={IMG.team} breadcrumbs={[{ name: t.nav.recruitment, path: '/recrutement' }]} jsonLd={schema.jobs(jobs.map((j) => ({ title: j.title, description: j.description })))} />
-      <PageHero chapter={`${r.title} — ${r.subtitle}`} title={t.copy.recruitTitle} lead={r.heroDesc} image={IMG.team} imageAlt={fr ? 'L’équipe de l’académie' : 'The academy team'} compact />
+      <PageHero chapter={`${r.title} — ${r.subtitle}`} title={t.copy.recruitTitle} lead={r.heroDesc} compact />
 
       <section className="section bg-salt">
         <div className="wrap grid lg:grid-cols-12 gap-12">
           {/* Postes */}
           <div className="lg:col-span-5">
-            <Chapter className="mb-6">{t.ui.jobsTitle}</Chapter>
-            <h2 className="t-h2 mb-8"><WordReveal text={t.copy.recruitJobs} /></h2>
+            <SectionHead chapter={t.ui.jobsTitle} title={t.copy.recruitJobs} className="mb-8" />
             <div className="space-y-3">
               {jobs.length === 0 && <p className="t-body text-mute mb-4">{t.ui.jobsEmpty}</p>}
               {jobs.map((j) => (

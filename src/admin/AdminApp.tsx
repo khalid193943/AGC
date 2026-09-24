@@ -1,7 +1,7 @@
 import { useEffect, useState, FormEvent, lazy, Suspense } from 'react';
 import { Routes, Route, NavLink, Navigate, useNavigate, useLocation, Link } from 'react-router-dom';
 import { motion } from 'motion/react';
-import { LayoutDashboard, Newspaper, CalendarDays, Images, Inbox, UserPlus, Mail, Briefcase, Users, LogOut, ExternalLink, Menu, X, Loader2, Eye, EyeOff } from 'lucide-react';
+import { LayoutDashboard, Newspaper, CalendarDays, Images, Inbox, UserPlus, Mail, Briefcase, Users, LogOut, ExternalLink, Menu, X, Loader2, Eye, EyeOff, CalendarRange } from 'lucide-react';
 import { IMG, SITE } from '../content/site';
 import { login, logout, watchSession, Session } from './auth';
 import { useCollection } from './data';
@@ -16,6 +16,7 @@ const MessagesPage = lazy(() => import('./pages/Messages'));
 const NewsletterPage = lazy(() => import('./pages/Newsletter'));
 const RecruitmentPage = lazy(() => import('./pages/Recruitment'));
 const UsersPage = lazy(() => import('./pages/Users'));
+const PlanningPage = lazy(() => import('./pages/Planning'));
 
 /* ------------------------------------------------------------------ */
 /* Connexion                                                            */
@@ -68,6 +69,7 @@ const NAV = [
   { to: '/admin/messages', label: 'Messages', Icon: Inbox, badge: 'contact' },
   { to: '/admin/newsletter', label: 'Newsletter', Icon: Mail },
   { to: '/admin/recrutement', label: 'Recrutement', Icon: Briefcase, badge: 'applications' },
+  { to: '/admin/planning', label: 'Planning', Icon: CalendarRange },
   { to: '/admin/utilisateurs', label: 'Utilisateurs', Icon: Users, adminOnly: true },
 ];
 
@@ -123,6 +125,7 @@ const Shell = ({ session }: { session: Session }) => {
               <Route path="messages" element={<MessagesPage kind="contact" />} />
               <Route path="newsletter" element={<NewsletterPage />} />
               <Route path="recrutement" element={<RecruitmentPage />} />
+              <Route path="planning" element={<PlanningPage />} />
               <Route path="utilisateurs" element={session.role === 'admin' ? <UsersPage /> : <Navigate to="/admin" replace />} />
               <Route path="dashboard" element={<Navigate to="/admin" replace />} />
               <Route path="*" element={<Navigate to="/admin" replace />} />

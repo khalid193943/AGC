@@ -7,7 +7,7 @@ import { useLanguage } from '../contexts/LanguageContext';
 import { SITE, IMG } from '../content/site';
 import { WordReveal, Reveal } from '../components/ui/motion';
 import { Seo, Chapter, Button } from '../components/ui';
-import { PageHero } from '../components/sections';
+import { PageHero, SectionHead } from '../components/sections';
 
 const Contact = () => {
   const { t, currentLang } = useLanguage();

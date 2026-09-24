@@ -53,17 +53,16 @@ export const Footer = () => {
       {/* Blason en filigrane */}
       <img src={IMG.logo} alt="" className="absolute -right-[6%] top-8 w-[46vw] max-w-[640px] opacity-[0.07] pointer-events-none select-none" referrerPolicy="no-referrer" loading="lazy" aria-hidden />
       {/* Invitation */}
-      <div className="wrap pt-24 pb-16 relative z-10">
-        <div className="grid lg:grid-cols-12 gap-10 items-end">
-          <div className="lg:col-span-7">
-            <p className="chapter saffron mb-6">{t.ui.contactTitle}</p>
-            <h2 className="t-h1 max-w-[12ch]">
-              <WordReveal text={t.copy.footerTitle} />
-            </h2>
+      <div className="wrap pt-24 pb-14 relative z-10">
+        <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-10">
+          <div className="max-w-[720px]">
+            <p className="chapter saffron mb-5">{t.ui.contactTitle}</p>
+            <h2 className="t-h1"><WordReveal text={t.copy.footerTitle} /></h2>
+            <Reveal delay={0.1}><p className="t-body text-sea mt-4 max-w-[52ch]">{t.ui.contactDesc}</p></Reveal>
           </div>
-          <Reveal className="lg:col-span-5 flex flex-col sm:flex-row lg:flex-col gap-3 sm:items-center lg:items-start" delay={0.2}>
-            <Link to="/contact" className="btn btn-saffron btn-lg"><CalendarCheck size={18} /><span className="swap"><span>{t.contact.step2.title}</span><span aria-hidden>{t.contact.step2.title}</span></span></Link>
-            <a href={SITE.whatsappHref} target="_blank" rel="noopener noreferrer" className="btn btn-ghost-light btn-lg"><WhatsAppIcon size={18} />{t.ui.whatsapp} · {SITE.mobile}<ArrowUpRight size={18} /></a>
+          <Reveal className="flex flex-col sm:flex-row gap-3 lg:justify-end shrink-0" delay={0.2}>
+            <Link to="/contact" className="btn btn-saffron btn-lg w-full sm:w-auto"><CalendarCheck size={18} /><span className="swap"><span>{t.contact.step2.title}</span><span aria-hidden>{t.contact.step2.title}</span></span></Link>
+            <a href={SITE.whatsappHref} target="_blank" rel="noopener noreferrer" className="btn btn-ghost-light btn-lg w-full sm:w-auto"><WhatsAppIcon size={18} />{t.ui.whatsapp}<ArrowUpRight size={18} /></a>
           </Reveal>
         </div>
       </div>

@@ -9,7 +9,7 @@ import { SITE, IMG, REQUIREMENTS } from '../content/site';
 import { FAQ } from '../content/faq';
 import { WordReveal, Reveal } from '../components/ui/motion';
 import { Seo, Chapter, Button, Accordion, scrollToId } from '../components/ui';
-import { PageHero } from '../components/sections';
+import { PageHero, SectionHead } from '../components/sections';
 
 const Enrollment = () => {
   const { t, currentLang } = useLanguage();
@@ -36,7 +36,7 @@ const Enrollment = () => {
   return (
     <main>
       <Seo title={`${fr ? 'Inscription en ligne' : 'Online enrolment'} ${SITE.year} | Georges Claude Private Academy El Jadida`} description={e.heroDesc} path="/inscription" image={IMG.kids} faq={faqs} breadcrumbs={[{ name: t.nav.admissions, path: '/inscription' }]} />
-      <PageHero chapter={`${t.nav.admissions} ${SITE.year}`} title={t.copy.enrollTitle} lead={t.copy.enrollLead} image={IMG.kids} imageAlt={fr ? 'Élèves de l’académie' : 'Academy students'}>
+      <PageHero chapter={`${t.nav.admissions} ${SITE.year}`} title={t.copy.enrollTitle} lead={t.copy.enrollLead}>
         <a href="#formulaire" onClick={scrollToId('formulaire')} className="btn btn-saffron">{e.formTitle}</a>
         <a href={SITE.phoneHref} className="btn btn-ghost-light"><Phone size={16} /> {SITE.phone}</a>
       </PageHero>
@@ -44,8 +44,7 @@ const Enrollment = () => {
       {/* Étapes */}
       <section className="section bg-salt">
         <div className="wrap">
-          <Chapter className="mb-6">{t.admissionsPage.journey}</Chapter>
-          <h2 className="t-h2 max-w-[14ch]"><WordReveal text={t.ui.stepsTitle} /></h2>
+          <SectionHead chapter={t.admissionsPage.journey} title={t.ui.stepsTitle} lead={t.admissions.requirementsDesc} />
           <ol className="grid md:grid-cols-4 gap-px bg-ink/12 border border-ink/12 rounded-none overflow-hidden mt-12">
             {e.steps.map((s: any, i: number) => {
               const Ico = [FileText, Handshake, ClipboardCheck, BadgeCheck][i] || BadgeCheck;
@@ -58,7 +57,6 @@ const Enrollment = () => {
               );
             })}
           </ol>
-          <Reveal delay={0.2}><p className="t-body text-mute mt-8 max-w-[60ch]">{t.admissions.requirementsDesc}</p></Reveal>
         </div>
       </section>
 
@@ -66,9 +64,7 @@ const Enrollment = () => {
       <section id="formulaire" className="section bg-ink text-salt on-dark grain relative overflow-hidden scroll-mt-16">
         <div className="wrap grid lg:grid-cols-12 gap-12">
           <div className="lg:col-span-5">
-            <Chapter saffron className="mb-6">{e.formTitle}</Chapter>
-            <h2 className="t-h2 max-w-[12ch]"><WordReveal text={t.copy.enrollFormTitle} /></h2>
-            <Reveal delay={0.1}><p className="t-body text-sea mt-6 max-w-[42ch]">{e.formDesc}</p></Reveal>
+            <SectionHead dark chapter={e.formTitle} title={t.copy.enrollFormTitle} lead={e.formDesc} />
             <Reveal delay={0.2} className="mt-10 space-y-6">
               <div>
                 <p className="t-meta mb-3">{t.enrollment.whyTitle}</p>
@@ -122,25 +118,24 @@ const Enrollment = () => {
         </div>
       </section>
 
-      {/* Dossier + FAQ */}
+      {/* Dossier */}
       <section className="section bg-salt">
-        <div className="wrap grid lg:grid-cols-12 gap-12">
-          <div className="lg:col-span-5">
-            <Chapter className="mb-6">{t.admissions.requirementsTitle}</Chapter>
-            <h2 className="t-h2"><WordReveal text={t.ui.requirementsTitle} /></h2>
-            <Reveal delay={0.1}><p className="t-body text-mute mt-5 max-w-[40ch]">{t.ui.requirementsDesc}</p></Reveal>
-            <ul className="mt-8 divide-y divide-ink/12 border-y border-ink/12">
-              {REQUIREMENTS[currentLang].map((r, i) => (
-                <Reveal key={i} as="li" delay={0.04 * i} amount={0.6} className="py-4 flex gap-4"><span className="w-7 h-7 rounded-full bg-sea/50 flex items-center justify-center shrink-0 text-ink"><Check size={14} /></span><span className="t-body">{r}</span></Reveal>
-              ))}
-            </ul>
-          </div>
-          <div id="faq" className="lg:col-span-6 lg:col-start-7 scroll-mt-28">
-            <Chapter className="mb-6">{t.faq.label}</Chapter>
-            <h2 className="t-h2 mb-8"><WordReveal text={t.faq.title} /></h2>
-            <Accordion items={faqs} />
-            <p className="t-small text-mute mt-6">{t.faq.contactUsDesc} <Link to="/contact" className="ulink font-semibold text-ink">{t.faq.contactUs}</Link></p>
-          </div>
+        <div className="wrap">
+          <SectionHead chapter={t.admissions.requirementsTitle} title={t.ui.requirementsTitle} lead={t.ui.requirementsDesc} />
+          <ul className="mt-10 grid sm:grid-cols-2 gap-x-10 divide-y sm:divide-y-0 divide-ink/12 max-w-[1000px]">
+            {REQUIREMENTS[currentLang].map((r, i) => (
+              <Reveal key={i} as="li" delay={0.04 * i} amount={0.6} className="py-4 flex gap-4 sm:border-t sm:border-ink/12"><span className="w-7 h-7 rounded-full bg-sea/50 flex items-center justify-center shrink-0 text-ink"><Check size={14} /></span><span className="t-body">{r}</span></Reveal>
+            ))}
+          </ul>
+        </div>
+      </section>
+
+      {/* FAQ */}
+      <section className="section bg-salt-2/70">
+        <div className="wrap-narrow">
+          <SectionHead chapter={t.faq.label} title={t.faq.title} className="mb-10" />
+          <Accordion items={faqs} />
+          <p className="t-small text-mute mt-6">{t.faq.contactUsDesc} <Link to="/contact" className="ulink font-semibold text-ink">{t.faq.contactUs}</Link></p>
         </div>
       </section>
     </main>
